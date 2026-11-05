@@ -1,0 +1,1181 @@
+{
+  "version": 1,
+  "notes": "Shared by the Python pipeline and the browser demo. Patterns are case-insensitive and must stay compatible with both Python 're' and JavaScript RegExp (no lookbehind, no named groups). Placeholders {T}, {L}, {S} are expanded at load time. 'unless' suppresses a rule; 'value_min'/'value_max' compare capture group 1 (digits or number words).",
+  "placeholders": {
+    "T": "(?:tenants?|lessees?|licensees?)",
+    "L": "(?:landlords?|lessors?|licensors?|owners?)",
+    "S": "[^.;]*?",
+    "R": "(?:rent|rental|licen[cs]e fees?)"
+  },
+  "risk_labels": {
+    "RISKY": "Risky",
+    "NEUTRAL": "Neutral",
+    "TENANT_FAVORABLE": "Tenant-favourable"
+  },
+  "severity_weight": {
+    "high": 3,
+    "medium": 2,
+    "low": 1
+  },
+  "clause_types": {
+    "RENT": {
+      "label": "Rent & payment",
+      "keywords": [
+        [
+          "\\bmonthly (?:rent|licen[cs]e fee)\\b",
+          3
+        ],
+        [
+          "\\brent\\b|\\blicen[cs]e fee\\b",
+          1
+        ],
+        [
+          "\\bpayable\\b",
+          1
+        ],
+        [
+          "\\bper month\\b",
+          1
+        ],
+        [
+          "\\bdue (?:on|by|before)\\b",
+          2
+        ],
+        [
+          "\\bescalat",
+          2
+        ],
+        [
+          "\\bbank transfer\\b|\\bcheque\\b|\\bupi\\b|\\bneft\\b",
+          2
+        ],
+        [
+          "\\bproperty tax\\b|\\bmaintenance charges\\b|\\butility bills?\\b|\\belectricity (?:and|&) water\\b",
+          2
+        ],
+        [
+          "\\breceipt\\b",
+          1
+        ]
+      ]
+    },
+    "DEPOSIT": {
+      "label": "Security deposit",
+      "keywords": [
+        [
+          "\\bsecurity deposit\\b",
+          4
+        ],
+        [
+          "\\bdeposit\\b",
+          2
+        ],
+        [
+          "\\brefund",
+          2
+        ],
+        [
+          "\\binterest[- ]free\\b",
+          2
+        ],
+        [
+          "\\badvance amount\\b",
+          2
+        ],
+        [
+          "\\bdeduct",
+          1
+        ]
+      ]
+    },
+    "TERMINATION": {
+      "label": "Termination & notice",
+      "keywords": [
+        [
+          "\\bterminat",
+          3
+        ],
+        [
+          "\\bvacate\\b|\\bvacating\\b",
+          2
+        ],
+        [
+          "\\bnotice period\\b",
+          2
+        ],
+        [
+          "\\block[- ]?in\\b",
+          3
+        ],
+        [
+          "\\bevict",
+          3
+        ],
+        [
+          "\\bquit\\b",
+          1
+        ],
+        [
+          "\\bend (?:this|the) (?:agreement|tenancy)\\b",
+          2
+        ],
+        [
+          "\\bnotice\\b",
+          1
+        ]
+      ]
+    },
+    "RENEWAL": {
+      "label": "Renewal & term",
+      "keywords": [
+        [
+          "\\brenew",
+          4
+        ],
+        [
+          "\\bextend|\\bextension\\b",
+          2
+        ],
+        [
+          "\\bfurther period\\b",
+          2
+        ],
+        [
+          "\\bexpir",
+          2
+        ],
+        [
+          "\\bperiod of (?:eleven|11|twelve|12) months\\b",
+          2
+        ],
+        [
+          "\\bterm of\\b",
+          1
+        ]
+      ]
+    },
+    "MAINTENANCE": {
+      "label": "Repairs & maintenance",
+      "keywords": [
+        [
+          "\\brepair",
+          3
+        ],
+        [
+          "\\bmaintenance\\b",
+          2
+        ],
+        [
+          "\\bmaintain",
+          2
+        ],
+        [
+          "\\bwear and tear\\b",
+          3
+        ],
+        [
+          "\\bpainting\\b|\\bwhitewash",
+          2
+        ],
+        [
+          "\\bplumbing\\b|\\belectrical\\b|\\bfixtures\\b|\\bfittings\\b|\\bappliances\\b",
+          2
+        ],
+        [
+          "\\bpest\\b|\\bleak",
+          2
+        ],
+        [
+          "\\bdamage",
+          1
+        ],
+        [
+          "\\bgood (?:and tenantable )?condition\\b",
+          2
+        ]
+      ]
+    },
+    "PENALTY": {
+      "label": "Penalties & late fees",
+      "keywords": [
+        [
+          "\\blate (?:fee|payment|charge)",
+          4
+        ],
+        [
+          "\\bpenalt",
+          4
+        ],
+        [
+          "\\bfine\\b",
+          3
+        ],
+        [
+          "\\binterest (?:at|of)\\b",
+          2
+        ],
+        [
+          "\\bliquidated damages\\b",
+          3
+        ],
+        [
+          "\\bper day\\b|\\beach day\\b",
+          2
+        ],
+        [
+          "\\bdelay",
+          1
+        ],
+        [
+          "\\bdouble\\b|\\btwice\\b",
+          1
+        ],
+        [
+          "\\bdefault",
+          2
+        ],
+        [
+          "\\bbreach",
+          1
+        ]
+      ]
+    },
+    "ENTRY": {
+      "label": "Landlord entry & access",
+      "keywords": [
+        [
+          "\\benter\\b|\\bentry\\b",
+          3
+        ],
+        [
+          "\\binspect",
+          3
+        ],
+        [
+          "\\baccess\\b",
+          2
+        ],
+        [
+          "\\bduplicate key|\\bspare key",
+          3
+        ],
+        [
+          "\\bvisit\\b",
+          1
+        ],
+        [
+          "\\bprospective (?:tenants|buyers)\\b",
+          2
+        ]
+      ]
+    },
+    "LIABILITY": {
+      "label": "Liability & indemnity",
+      "keywords": [
+        [
+          "\\bindemnif",
+          4
+        ],
+        [
+          "\\bliab",
+          3
+        ],
+        [
+          "\\bresponsible for any (?:loss|damage|injury)",
+          2
+        ],
+        [
+          "\\bloss or damage\\b",
+          2
+        ],
+        [
+          "\\binsur",
+          2
+        ],
+        [
+          "\\bclaims?\\b",
+          1
+        ],
+        [
+          "\\btheft\\b|\\binjur",
+          2
+        ]
+      ]
+    },
+    "USE": {
+      "label": "Use of premises",
+      "keywords": [
+        [
+          "\\bsub-?let",
+          4
+        ],
+        [
+          "\\bassign",
+          2
+        ],
+        [
+          "\\bpets?\\b",
+          3
+        ],
+        [
+          "\\bguests?\\b|\\bvisitors?\\b",
+          3
+        ],
+        [
+          "\\bresidential purpose",
+          3
+        ],
+        [
+          "\\bcommercial\\b",
+          1
+        ],
+        [
+          "\\balteration|\\bstructural changes\\b",
+          2
+        ],
+        [
+          "\\bsmok",
+          2
+        ],
+        [
+          "\\boccup",
+          1
+        ],
+        [
+          "\\bnuisance\\b|\\bnoise\\b",
+          2
+        ],
+        [
+          "\\bfamily\\b",
+          1
+        ]
+      ]
+    }
+  },
+  "rules": [
+    {
+      "id": "GEN_SOLE_DISCRETION",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\b(?:sole|absolute|exclusive|own)(?: and (?:absolute|exclusive))? discretion\\b|\\bas (?:he|she|they|it|the {L}) (?:may )?(?:deems?|thinks?|considers?) (?:fit|appropriate|necessary|proper)\\b|\\b(?:his|her|their|the {L}'?s?) decision (?:shall|will) be final\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Decided at the landlord's sole discretion",
+      "explanation": "This clause lets one side decide on its own, with no objective standard and no way for you to challenge the decision.",
+      "ask": "Replace 'sole discretion' with an objective test (e.g. 'reasonable, documented costs') or require mutual agreement."
+    },
+    {
+      "id": "GEN_WAIVER",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\b(?:waive[sd]?|waiver of|give[sn]? up|relinquish(?:es)?)\\b{S}\\b(?:rights?|claims?|remed(?:y|ies)|objections?)\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "You give up legal rights",
+      "explanation": "The clause asks you to waive rights or remedies you would otherwise have. Waivers like this are hard to undo once signed.",
+      "ask": "Strike the waiver, or limit it to a specific, named situation."
+    },
+    {
+      "id": "GEN_UNILATERAL_AMEND",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\b(?:modify|amend|change|alter|revise)\\b{S}\\b(?:terms|rules|conditions|agreement|regulations)\\b{S}(?:at any time|unilaterally|without (?:the )?(?:tenant'?s? |lessee'?s? |licensee'?s? )?(?:consent|notice|approval))|\\b{L}\\s+may\\s+(?:unilaterally\\s+)?(?:change|modify|amend|alter|revise)\\b{S}\\b(?:terms|conditions|rules|agreement)\\b|\\bunilaterally (?:alter|change|modify|amend)",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Terms can be changed one-sidedly",
+      "explanation": "One party can change the agreement after you sign it, so the deal you agreed to may not be the deal you get.",
+      "ask": "Add: 'No change to this agreement is valid unless made in writing and signed by both parties.'"
+    },
+    {
+      "id": "GEN_OPEN_ENDED",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\b(?:whatsoever|howsoever|irrespective of (?:the )?(?:cause|reason|circumstances?|fault)|however (?:small|minor|trivial)|of any (?:kind|nature) whatsoever)\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Open-ended scope",
+      "explanation": "Words like 'whatsoever' or 'irrespective of the cause' make the obligation unlimited, including situations that are not your fault.",
+      "ask": "Limit the obligation to losses caused by your own negligence or breach."
+    },
+    {
+      "id": "GEN_NO_LEGAL_RECOURSE",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\b(?:shall not|cannot|will not|may not|agrees? not to|not to)\\b{S}\\b(?:approach|move|file|go to|initiate)\\b{S}\\b(?:court|tribunal|authority|legal proceedings?|rent controller)\\b|\\bwaives?\\b{S}\\bright to (?:approach|move|file)",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Blocks you from legal remedies",
+      "explanation": "The clause tries to stop you from going to a court or rent authority. You should never sign away access to dispute resolution.",
+      "ask": "Delete this clause; any dispute clause should apply equally to both parties."
+    },
+    {
+      "id": "DEP_NONREFUNDABLE",
+      "types": [
+        "DEPOSIT",
+        "RENT"
+      ],
+      "pattern": "\\bnon[- ]?refundable\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Non-refundable money",
+      "explanation": "Part of what you pay will not come back to you, even if you leave the property in perfect condition.",
+      "ask": "Ask for the full deposit to be refundable, minus documented damage beyond normal wear and tear."
+    },
+    {
+      "id": "DEP_FORFEIT",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\bforfeit|\\bretain (?:the )?(?:entire|whole|full|complete) (?:security )?deposit\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Deposit can be forfeited",
+      "explanation": "The landlord can keep the whole deposit as a penalty, not just the cost of actual damage or unpaid rent.",
+      "ask": "Limit deductions to unpaid rent and documented repair costs; remove forfeiture."
+    },
+    {
+      "id": "DEP_FIXED_DEDUCTION",
+      "types": [
+        "DEPOSIT",
+        "MAINTENANCE"
+      ],
+      "pattern": "\\bdeduct\\w*{S}\\b(?:painting|repainting|whitewash\\w*|cleaning|deep clean\\w*)\\b|\\b(?:painting|repainting|whitewash\\w*|cleaning)\\b{S}\\bdeduct",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Automatic deductions from deposit",
+      "explanation": "A fixed charge (often painting or cleaning) comes out of your deposit whatever condition you leave the home in. Repainting after normal use is usually ordinary wear and tear.",
+      "ask": "Make painting/cleaning deductions conditional on actual damage, with receipts."
+    },
+    {
+      "id": "DEP_TIMELINE",
+      "types": [
+        "DEPOSIT"
+      ],
+      "pattern": "\\b(?:refund\\w*|return\\w*|repaid)\\b{S}(?:\\bwithin\\s+(?:\\w+\\s*)?(?:\\(\\d+\\)\\s*)?(?:days?|weeks?|working days)\\b|\\bat the time of (?:handing over|vacating)|\\bsimultaneously\\b|\\bimmediately\\b)",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Clear refund deadline",
+      "explanation": "The deposit has a defined return deadline, which protects you from indefinite delays."
+    },
+    {
+      "id": "DEP_ITEMISED",
+      "types": [
+        "DEPOSIT"
+      ],
+      "pattern": "\\bitemi[sz]ed\\b|\\b(?:supported|accompanied) by (?:bills|receipts|invoices)\\b|\\bwritten statement of (?:deductions|account)\\b|\\bwith (?:supporting )?(?:bills|receipts|invoices)\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Deductions must be justified",
+      "explanation": "Any deduction must be backed by an itemised statement or receipts, so you can check what you are charged for."
+    },
+    {
+      "id": "TERM_LANDLORD_ANYTIME",
+      "types": [
+        "TERMINATION"
+      ],
+      "pattern": "\\b(?:at any time|for any reason|without (?:assigning|giving|stating|any) (?:any )?reasons?|without (?:any )?(?:prior )?notice)\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Can be ended without reason or notice",
+      "explanation": "The tenancy can be ended at any time or without a reason, leaving you exposed to sudden loss of your home.",
+      "ask": "Require a written notice period (at least 1 month) and limit landlord termination to specific breaches.",
+      "unless": "\\b(?:either party|both parties|either of the parties)\\b"
+    },
+    {
+      "id": "TERM_LOCKIN",
+      "types": [
+        "TERMINATION",
+        "RENEWAL"
+      ],
+      "pattern": "\\block[- ]?in\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Lock-in period",
+      "explanation": "You cannot leave during the lock-in without a penalty. If your plans change (job, studies, family), you may still owe money.",
+      "ask": "Keep the lock-in short and make it apply to both sides equally.",
+      "unless": "\\b(?:either party|both parties|neither party|mutual|binding on both)\\b"
+    },
+    {
+      "id": "TERM_PAY_REMAINDER",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\b(?:{R}|pay|liable)\\b{S}\\b(?:remaining|balance|unexpired|entire|whole|rest of the)\\b{S}\\b(?:period|term|months|lock[- ]?in|tenure)\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Pay rent for months you don't live there",
+      "explanation": "If you leave early you must pay rent for the rest of the term, which can be a large lump sum.",
+      "ask": "Cap early-exit cost at one month's rent, or allow you to leave once a replacement tenant is found."
+    },
+    {
+      "id": "TERM_ONLY_LANDLORD",
+      "types": [
+        "TERMINATION"
+      ],
+      "pattern": "\\bonly (?:the )?{L}\\b{S}\\bterminat|\\b{T}\\s+(?:shall|will|may|can)\\s*not\\s+(?:be (?:entitled|allowed|permitted)\\s+to\\s+|have (?:the|any) right to\\s+)?(?:terminat|cancel|end)\\w*\\b(?!{S}\\block[- ]?in)",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Only the landlord can end the agreement",
+      "explanation": "The right to terminate is one-sided. You are bound for the full term while the landlord is not.",
+      "ask": "Make termination rights and notice periods equal for both parties."
+    },
+    {
+      "id": "TERM_SELF_HELP",
+      "types": [
+        "TERMINATION",
+        "PENALTY",
+        "ENTRY",
+        "*"
+      ],
+      "pattern": "\\b(?:disconnect|cut off|stop|suspend)\\w*{S}\\b(?:electricity|water|power|gas|supply|supplies)\\b|\\bchange the locks?\\b|\\block (?:up )?the (?:premises|flat|house)\\b|\\blocked out\\b|\\bremove (?:the )?(?:{T}'?s? )?(?:belongings|possessions|articles)\\b|\\bforcibly\\b|\\btake (?:back )?possession\\b{S}\\bwithout\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Self-help eviction",
+      "explanation": "The landlord may cut utilities, change locks or remove your belongings. Evicting a tenant normally requires due legal process, not self-help.",
+      "ask": "Delete this clause entirely."
+    },
+    {
+      "id": "TERM_MUTUAL",
+      "types": [
+        "TERMINATION"
+      ],
+      "pattern": "\\b(?:either party|both parties|either of the parties|either side)\\b{S}\\b(?:terminat|notice|vacat|end)|\\b(?:terminat|notice)\\w*{S}\\b(?:by )?(?:either party|both parties)\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Mutual termination rights",
+      "explanation": "Both sides can end the agreement on the same terms, so neither party has an unfair advantage."
+    },
+    {
+      "id": "REN_AUTO",
+      "types": [
+        "RENEWAL",
+        "TERMINATION"
+      ],
+      "pattern": "\\bautomatic(?:ally)?\\b{S}\\b(?:renew|extend|continu)|\\b(?:renew|extend)\\w*{S}\\bautomatic|\\bauto[- ]?renew|\\bdeemed (?:to (?:have been|be) )?(?:renewed|extended)\\b|\\bstand (?:automatically )?(?:renewed|extended)\\b|\\bshall continue\\b{S}\\bunless\\b{S}\\bnotice\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Automatic renewal",
+      "explanation": "The agreement renews by itself unless someone gives notice in time. Miss the window and you can be bound for another term, often at a higher rent.",
+      "ask": "Put the notice deadline in your calendar, or ask for renewal only by mutual written agreement."
+    },
+    {
+      "id": "REN_RENT_INCREASE_HIGH",
+      "types": [
+        "RENEWAL",
+        "RENT"
+      ],
+      "pattern": "\\b(?:increase|enhance|escalat|hike|revis)\\w*{S}(\\d+(?:\\.\\d+)?)\\s*(?:%|percent|per cent)",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Steep rent increase",
+      "explanation": "The rent rises by more than 10%, above the increases customary on renewal (often around 5-10%).",
+      "ask": "Negotiate a lower cap (e.g. 5%) or a fixed rent for the first renewal.",
+      "value_min": 11
+    },
+    {
+      "id": "REN_UNBOUNDED_INCREASE",
+      "types": [
+        "RENEWAL",
+        "RENT"
+      ],
+      "pattern": "\\b(?:increase|enhance|escalat|hike|revis)\\w*{S}\\b(?:as (?:decided|determined|fixed) by|at the (?:sole )?discretion|prevailing market|market rate|as (?:he|she|they|the {L}) (?:may )?(?:deems?|thinks?|considers?) fit|from time to time|whenever)\\b|\\b{L}\\s+(?:may|can|shall be entitled to)\\s+(?:at any (?:time|point) )?(?:increase|revise|enhance|demand an increased)\\b(?![^.]*(?:%|percent|per cent))|\\b(?:fix|decide|determine)\\w* any rent\\b|\\brent\\b{S}\\bdecided by the {L}",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Rent increase with no cap",
+      "explanation": "The rent can be raised without a fixed limit, so you cannot predict what renewal will cost.",
+      "ask": "Ask for a fixed percentage cap written into the agreement."
+    },
+    {
+      "id": "REN_TENANT_OPTION",
+      "types": [
+        "RENEWAL"
+      ],
+      "pattern": "\\b{T}\\s+(?:shall have|has|will have|is entitled to)\\s+(?:the|an|a)\\s+(?:first\\s+)?(?:option|right)\\s+to\\s+(?:renew|extend)|\\b{T}\\s+may,?\\s+at (?:his|her|their|its) (?:sole )?option,?\\s+(?:renew|extend)",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Renewal at your option",
+      "explanation": "You decide whether to renew, which gives you security of tenure."
+    },
+    {
+      "id": "REN_CAPPED",
+      "types": [
+        "RENEWAL",
+        "RENT"
+      ],
+      "pattern": "\\b(?:not (?:exceed|be more than|more than)|maximum of|capped at|at most)\\s*(?:\\w+\\s*)?(?:\\(\\d+\\)\\s*)?\\d*\\s*(?:%|percent|per cent)",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Rent increase is capped",
+      "explanation": "Any increase is limited to a stated maximum, so future rent is predictable."
+    },
+    {
+      "id": "MAINT_ALL_REPAIRS",
+      "types": [
+        "MAINTENANCE"
+      ],
+      "pattern": "\\b{T}\\b{S}\\b(?:bear|pay|carry out|do|undertake|responsible for|liable for)\\b{S}\\b(?:all|any|every)\\b{S}\\b(?:repairs?|maintenance|replacement)\\b|\\ball (?:repairs|maintenance|replacements?)\\b{S}\\b(?:borne|paid|responsibility|cost)\\b{S}\\b{T}\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "You pay for all repairs",
+      "explanation": "Making you responsible for every repair includes major and structural problems that are normally the landlord's job.",
+      "ask": "Split responsibilities: minor day-to-day repairs for you, major/structural repairs for the landlord.",
+      "unless": "\\b(?:minor|day[- ]to[- ]day|small) (?:repairs|day)"
+    },
+    {
+      "id": "MAINT_STRUCTURAL_TENANT",
+      "types": [
+        "MAINTENANCE"
+      ],
+      "pattern": "\\b{T}\\b{S}\\b(?:repair|replace|bear|pay)\\w*{S}\\b(?:structural|roof|foundation|walls?|pipelines?|wiring)\\b|\\b(?:structural|major)\\b{S}\\b(?:borne|paid) by (?:the )?{T}\\b|\\b(?:roof|structural|foundation|overhead (?:water )?tank|drainage|main (?:water|drainage|sewer)\\w*)\\b{S}\\b(?:responsibility of|borne by|paid by|done by|carried out by) (?:the )?{T}\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Structural repairs on you",
+      "explanation": "Structural repairs (roof, walls, main plumbing or wiring) are expensive and are normally the owner's responsibility.",
+      "ask": "Make structural and major repairs the landlord's responsibility."
+    },
+    {
+      "id": "MAINT_WEAR_TEAR_INCLUDED",
+      "types": [
+        "MAINTENANCE",
+        "DEPOSIT"
+      ],
+      "pattern": "\\b(?:including|irrespective of|regardless of|even if due to)\\b{S}\\b(?:(?:normal|reasonable|fair|ordinary) (?:wear and tear|use)|ageing|aging|natural deterioration)\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Charged for normal wear and tear",
+      "explanation": "You can be charged for the natural ageing of the home from ordinary use, which tenants usually aren't liable for.",
+      "ask": "Add 'normal wear and tear excepted'."
+    },
+    {
+      "id": "MAINT_WEAR_TEAR_EXCEPTED",
+      "types": [
+        "MAINTENANCE",
+        "DEPOSIT"
+      ],
+      "pattern": "\\b(?:except|excepting|excluding|other than|save for|barring|subject to)\\b{S}\\b(?:normal|reasonable|fair|ordinary) wear and tear\\b|\\b(?:normal|reasonable|fair|ordinary) wear and tear (?:excepted|exempted|being excepted)\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Normal wear and tear excluded",
+      "explanation": "You aren't charged for ordinary ageing of the property."
+    },
+    {
+      "id": "MAINT_LANDLORD_MAJOR",
+      "types": [
+        "MAINTENANCE"
+      ],
+      "pattern": "\\b{L}\\b{S}\\b(?:shall|will|agrees to)\\b{S}\\b(?:major|structural|all)\\b{S}\\brepairs?\\b|\\b(?:major|structural)\\b{S}\\b(?:by|borne by|responsibility of) (?:the )?{L}\\b|\\b{L}\\b{S}\\bat (?:his|her|their|its) (?:own )?cost\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Landlord handles major repairs",
+      "explanation": "The landlord is responsible for major or structural repairs, as is standard."
+    },
+    {
+      "id": "PEN_HIGH_MONTHLY_INTEREST",
+      "types": [
+        "PENALTY",
+        "RENT"
+      ],
+      "pattern": "\\binterest\\b{S}(\\d+(?:\\.\\d+)?)\\s*(?:%|percent|per cent)\\s*(?:per month|pm|a month|monthly|per mensem)",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "High monthly interest on late payment",
+      "explanation": "Interest of 2% or more per month is 24%+ per year, far above normal lending rates.",
+      "ask": "Ask for a modest flat late fee or a low annual interest rate.",
+      "value_min": 2
+    },
+    {
+      "id": "PEN_DAILY",
+      "types": [
+        "PENALTY"
+      ],
+      "pattern": "\\b(?:per day|each day|every day|daily|for each day)\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Daily penalty",
+      "explanation": "Charges that accrue every day add up quickly, especially if a payment is delayed by a bank holiday or an emergency.",
+      "ask": "Ask for a grace period and a capped one-time late fee."
+    },
+    {
+      "id": "PEN_MULTIPLE_RENT",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\b(?:double|twice|two times|2x|three times|triple|thrice)\\b{S}\\b{R}\\b|\\b{R}\\b{S}\\b(?:double|twice|two times|three times|triple)\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Penalty of multiple times the rent",
+      "explanation": "Overstaying or a breach costs double (or more) the rent, a penalty far larger than the landlord's actual loss.",
+      "ask": "Replace with ordinary per-day rent for any overstay agreed in writing."
+    },
+    {
+      "id": "PEN_GRACE",
+      "types": [
+        "PENALTY",
+        "RENT"
+      ],
+      "pattern": "\\bgrace period\\b|\\bwithin a grace\\b|\\bdays of grace\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Grace period for payment",
+      "explanation": "You get extra days to pay before any penalty applies."
+    },
+    {
+      "id": "ENTRY_ANYTIME",
+      "types": [
+        "ENTRY"
+      ],
+      "pattern": "\\b(?:enter|entry|access|inspect\\w*|visit|show)\\b{S}(?:\\bat any (?:time|hour)\\b|\\bany time\\b|\\bwithout (?:any )?(?:prior )?(?:notice|intimation|informing)\\b|\\bwith or without (?:prior )?notice\\b|\\bat all times\\b|\\bwhenever (?:he|she|they|it)? ?(?:wish|like|want|choose)e?s?\\b)|\\bsurprise (?:inspections?|visits?)\\b|\\bunrestricted access\\b|\\bfree access\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Landlord can enter without notice",
+      "explanation": "The landlord can come into your home whenever they like, which affects your privacy and security.",
+      "ask": "Require at least 24 hours' written notice except in a genuine emergency.",
+      "unless": "\\bemergenc"
+    },
+    {
+      "id": "ENTRY_DUPLICATE_KEY",
+      "types": [
+        "ENTRY",
+        "USE",
+        "*"
+      ],
+      "pattern": "\\b(?:retain|keep|hold|have)\\w*{S}\\b(?:duplicate|spare|extra|second|master) (?:set of )?keys?\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Landlord keeps a key",
+      "explanation": "The landlord keeps a key to your home, so entry is possible without you knowing.",
+      "ask": "Ask that keys be used only in emergencies or with your consent."
+    },
+    {
+      "id": "ENTRY_NOTICE",
+      "types": [
+        "ENTRY"
+      ],
+      "pattern": "\\b(?:\\d+|one|two|twenty[- ]four|forty[- ]eight|seventy[- ]two)\\s*(?:\\(\\d+\\)\\s*)?(?:hours?|days?)'?s?\\s*(?:prior |advance )?(?:written )?notice\\b|\\breasonable (?:prior |advance )?(?:written )?notice\\b|\\bprior (?:written )?(?:notice|appointment|intimation)\\b|\\bwith the (?:prior )?(?:consent|permission) of the {T}\\b|\\bnot enter\\b{S}\\bwithout\\b{S}\\b(?:consent|permission|notice)\\b|\\bin the presence of the {T}",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Entry only with notice",
+      "explanation": "The landlord must give advance notice before entering, protecting your privacy.",
+      "unless": "\\bwithout (?:any )?(?:prior |advance )?(?:written )?notice\\b|\\bat any time\\b"
+    },
+    {
+      "id": "LIAB_BROAD_INDEMNITY",
+      "types": [
+        "LIABILITY"
+      ],
+      "pattern": "\\bindemnif\\w*{S}\\b(?:all|any|every)\\b{S}\\b(?:loss(?:es)?|claims?|damages?|costs?|expenses?|liabilit)",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Broad indemnity",
+      "explanation": "You agree to cover the landlord's losses or claims broadly, possibly including ones you did not cause.",
+      "ask": "Limit the indemnity to losses caused by your negligence or breach of the agreement.",
+      "unless": "\\b(?:caused by|arising (?:out of|from)|due to|attributable to) (?:the )?(?:{T}'?s? )?(?:negligence|default|breach|wilful)"
+    },
+    {
+      "id": "LIAB_LANDLORD_EXEMPT",
+      "types": [
+        "LIABILITY"
+      ],
+      "pattern": "\\b{L}\\b{S}\\b(?:shall not|will not|is not|not) (?:be )?(?:held )?(?:liable|responsible)\\b{S}\\b(?:any|all)\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Landlord excluded from all liability",
+      "explanation": "The landlord is not responsible for losses or injuries, even ones caused by poor upkeep of the building.",
+      "ask": "Add an exception for loss caused by the landlord's negligence or failure to repair.",
+      "unless": "\\b(?:except|unless|save)\\b{S}\\b(?:negligence|default|failure)"
+    },
+    {
+      "id": "LIAB_FAULT_BASED",
+      "types": [
+        "LIABILITY"
+      ],
+      "pattern": "\\b(?:caused by|arising (?:out of|from)|due to|attributable to)\\b{S}\\b(?:negligence|default|breach|wilful)",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Liability limited to fault",
+      "explanation": "Responsibility depends on who was actually at fault, which is fair to both sides."
+    },
+    {
+      "id": "USE_GUEST_RESTRICTION",
+      "types": [
+        "USE"
+      ],
+      "pattern": "\\b(?:guests?|visitors?|friends|relatives)\\b{S}(?:\\bnot (?:be )?(?:allowed|permitted)\\b|\\bprohibited\\b|\\bprior (?:written )?(?:permission|consent|approval)\\b|\\bwithout (?:the )?(?:{L}'?s? )?(?:prior )?(?:written )?(?:permission|consent|approval)\\b)|\\bno (?:overnight )?(?:guests|visitors)\\b|\\b(?:guests?|visitors)\\b{S}\\bprohibited\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Restrictions on guests",
+      "explanation": "You need permission to have guests, which reaches into your private life in your own home.",
+      "ask": "Limit restrictions to long-term additional occupants, not ordinary visitors."
+    },
+    {
+      "id": "USE_UNREASONABLY_WITHHELD",
+      "types": [
+        "USE"
+      ],
+      "pattern": "\\bnot (?:to )?be unreasonably (?:withheld|refused|denied)\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Consent can't be unreasonably refused",
+      "explanation": "The landlord must have a good reason to say no, which keeps the permission process fair."
+    },
+    {
+      "id": "RENT_CASH_NO_RECEIPT",
+      "types": [
+        "RENT"
+      ],
+      "pattern": "\\bcash\\b{S}\\b(?:no|without|not)\\b{S}\\b(?:receipts?|acknowledg\\w*)\\b|\\bno (?:written )?(?:receipts?|acknowledgement)\\b|\\bnot (?:be )?(?:obliged|required|bound) to (?:issue|give|provide) (?:any )?receipts?\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "No proof of payment",
+      "explanation": "Paying without receipts leaves you with no proof that rent was paid if a dispute arises.",
+      "ask": "Pay by bank transfer/UPI or insist on signed receipts."
+    },
+    {
+      "id": "RENT_RECEIPT",
+      "types": [
+        "RENT"
+      ],
+      "pattern": "\\b{L}\\b{S}\\b(?:issue|provide|give|furnish|acknowledge)\\w*{S}\\b(?:receipts?|payments?)\\b|\\b(?:receipt|register|acknowledg\\w*)\\b{S}\\bsigned by the {L}",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Rent receipts provided",
+      "explanation": "You get written proof of each payment.",
+      "unless": "\\bno (?:written )?(?:receipts?|acknowledg)|\\bnot (?:be )?(?:obliged|required|bound)|\\breceipt of which\\b"
+    },
+    {
+      "id": "RENT_LANDLORD_TAXES",
+      "types": [
+        "RENT",
+        "*"
+      ],
+      "pattern": "\\b{T}\\b{S}\\b(?:property tax|house tax|municipal tax(?:es)?)\\b|\\b(?:property tax|house tax|municipal tax(?:es)?)\\b{S}\\b(?:borne|paid) by (?:the )?{T}\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Owner's taxes passed to you",
+      "explanation": "Property/municipal tax is normally the owner's liability; this clause shifts it to you.",
+      "ask": "Ask that property and municipal taxes stay with the owner."
+    },
+    {
+      "id": "GEN_UNCAPPED",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\bwithout (?:any )?(?:limit|cap|ceiling|upper limit)\\b|\\bunlimited\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "No upper limit",
+      "explanation": "The amount you can be asked to pay has no ceiling.",
+      "ask": "Ask for a fixed cap on the amount."
+    },
+    {
+      "id": "GEN_LEGAL_COSTS",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\b{T}\\b{S}\\b(?:pay|bear|reimburse)\\b{S}\\b{L}'?s? (?:legal|litigation|advocate'?s?|lawyer'?s?) (?:costs|fees|expenses|charges)\\b|\\b{T}\\b{S}\\b(?:pay|bear)\\b{S}\\b{L}'?s? legal",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "You pay the landlord's legal costs",
+      "explanation": "You cover the landlord's lawyer fees, even when the landlord is in the wrong or the paperwork benefits them.",
+      "ask": "Each party should bear its own legal costs, or costs should follow the outcome of a dispute."
+    },
+    {
+      "id": "GEN_ONE_SIDED_ARBITRATION",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\barbitrat\\w*\\b{S}\\b(?:appointed|nominated|chosen|selected)\\b{S}\\b(?:solely|alone|only|exclusively)\\b|\\barbitrat\\w*\\b{S}\\b(?:solely|alone|only|exclusively)\\b{S}\\b{L}\\b|\\b{L}\\b{S}\\b(?:solely|alone|only) (?:appoint|nominate)",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Landlord picks the arbitrator",
+      "explanation": "Disputes go to an arbitrator chosen by the landlord alone, which is not a neutral forum.",
+      "ask": "Ask for an arbitrator appointed jointly, or keep access to the Rent Authority/courts."
+    },
+    {
+      "id": "GEN_MUTUAL_AMEND",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\b(?:amendment|modification|change|variation)\\w*{S}\\b(?:in writing|written)\\b{S}\\b(?:signed by both|both parties|by both)\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Changes need both signatures",
+      "explanation": "The agreement can only be changed with both parties' written signatures, so nothing changes behind your back."
+    },
+    {
+      "id": "GEN_CLEAR_TITLE",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\b{L}\\b{S}\\b(?:clear|marketable|absolute|valid) title\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Landlord confirms ownership",
+      "explanation": "The landlord confirms they own the property and can rent it out, which protects you from a disputed tenancy."
+    },
+    {
+      "id": "RENT_ADVANCE",
+      "types": [
+        "RENT",
+        "DEPOSIT"
+      ],
+      "pattern": "\\b(\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty)\\s*(?:\\(\\d+\\)\\s*)?months?'?\\s*(?:rent|licen[cs]e fee)\\b{S}\\bin advance\\b|\\bin advance\\b{S}\\b(\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty)\\s*months|\\badvance\\b{S}\\b(?:equivalent to|equal to|of)\\s+(\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty)\\s*(?:\\(\\d+\\)\\s*)?months?'?\\s*(?:rent|licen[cs]e fee)",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Large advance rent",
+      "explanation": "Several months of rent are paid up front, so a lot of your money is locked in before you even move in.",
+      "ask": "Limit advance rent to one month.",
+      "value_min": 3
+    },
+    {
+      "id": "RENT_FIXED",
+      "types": [
+        "RENT",
+        "RENEWAL"
+      ],
+      "pattern": "\\brent\\b{S}\\b(?:remain fixed|shall not be (?:revised|increased|enhanced)|not be increased)\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Rent fixed for the term",
+      "explanation": "Your rent cannot go up during the agreement."
+    },
+    {
+      "id": "DEP_LARGE",
+      "types": [
+        "DEPOSIT"
+      ],
+      "pattern": "\\bdeposit\\b{S}\\b(\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty)\\s*(?:\\(\\d+\\)\\s*)?months?'?",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Deposit of several months' rent",
+      "explanation": "The deposit equals several months of rent, which is a lot of your money held by the landlord. India's Model Tenancy Act, 2021 suggests a cap of two months' rent for homes (only in states that have adopted it).",
+      "ask": "Negotiate the deposit down to 2-3 months' rent.",
+      "value_min": 3
+    },
+    {
+      "id": "DEP_CAPPED",
+      "types": [
+        "DEPOSIT"
+      ],
+      "pattern": "\\bdeposit\\b{S}\\b(?:not exceed|maximum of|capped at|limited to|no more than)\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Deposit is capped",
+      "explanation": "The deposit amount is limited, keeping more of your money with you."
+    },
+    {
+      "id": "DEP_LATE_INTEREST",
+      "types": [
+        "DEPOSIT"
+      ],
+      "pattern": "\\b{L}\\s+(?:shall|will)\\s+pay\\s+interest\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Interest if the deposit is late",
+      "explanation": "The landlord pays you interest if the deposit is returned late, which encourages on-time refunds."
+    },
+    {
+      "id": "DEP_JOINT_INSPECTION",
+      "types": [
+        "DEPOSIT",
+        "MAINTENANCE"
+      ],
+      "pattern": "\\bjoint(?:ly)? inspect|\\bjoint inspection\\b|\\binspect\\w*{S}\\bin the presence of both\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Joint inspection before deductions",
+      "explanation": "Damage is assessed together with you, so you can dispute claims on the spot."
+    },
+    {
+      "id": "TERM_SHORT_NOTICE",
+      "types": [
+        "TERMINATION"
+      ],
+      "pattern": "\\b{L}\\b{S}\\b(?:terminat\\w*|vacate|cancel\\w*|revoke\\w*|end)\\b{S}\\b(\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty)\\s*(?:\\(\\d+\\)\\s*)?(?:clear\\s+)?days?\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Very short notice to vacate",
+      "explanation": "The landlord can end the tenancy with under a month's notice, which is very little time to find a new home.",
+      "ask": "Ask for at least one month's written notice.",
+      "unless": "\\b(?:either party|both parties)\\b|\\bto (?:remedy|rectify|cure)\\b",
+      "value_max": 29
+    },
+    {
+      "id": "TERM_IMMEDIATE_VACATE",
+      "types": [
+        "TERMINATION",
+        "*"
+      ],
+      "pattern": "\\bvacate\\b{S}\\bwithin\\b{S}\\bhours?\\b|\\bvacate (?:forthwith|immediately)\\b|\\bimmediately (?:cancel|terminate|revoke)\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Must leave immediately",
+      "explanation": "You may have to leave within hours or immediately, with no time to find another home.",
+      "ask": "Require at least 30 days' written notice and a chance to fix any breach."
+    },
+    {
+      "id": "TERM_FOR_CAUSE",
+      "types": [
+        "TERMINATION"
+      ],
+      "pattern": "\\b{L}\\b{S}\\bterminat\\w*{S}\\bonly (?:if|in case|on|upon|when)\\b|\\bopportunity to (?:remedy|rectify|cure)\\b|\\bnotice to (?:remedy|rectify|cure)\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Landlord can end it only for a reason",
+      "explanation": "The landlord can only end the tenancy for a real breach, and you get a chance to fix it first."
+    },
+    {
+      "id": "TERM_NO_PENALTY_EXIT",
+      "types": [
+        "TERMINATION"
+      ],
+      "pattern": "\\b{T}\\b{S}\\b(?:terminat|end|exit|vacate|leave)\\w*{S}\\bwithout (?:any )?(?:penalty|charge|forfeiture)\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Early exit without penalty",
+      "explanation": "You can leave early in the stated situations without paying a penalty."
+    },
+    {
+      "id": "MAINT_REPAINT",
+      "types": [
+        "MAINTENANCE",
+        "DEPOSIT"
+      ],
+      "pattern": "\\b{T}\\b{S}\\b(?:repaint\\w*|re-paint\\w*|get (?:the )?(?:entire )?(?:flat|premises|house|home) (?:re)?painted)\\b|\\b(?:regardless|irrespective) of (?:its|the|their) (?:condition|state)\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Repainting regardless of condition",
+      "explanation": "You must pay for repainting whatever state the home is in. Repainting after normal use is usually the owner's cost.",
+      "ask": "Make repainting conditional on damage beyond normal wear and tear."
+    },
+    {
+      "id": "MAINT_REPLACE_NEW",
+      "types": [
+        "MAINTENANCE"
+      ],
+      "pattern": "\\b{T}\\b{S}\\breplace\\b{S}\\bnew\\b|\\breplace\\w*{S}\\b(?:appliances?|fixtures?|fittings?)\\b{S}\\b(?:his|her|their|own) (?:cost|expense)",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Replace items with new ones",
+      "explanation": "If something the landlord supplied breaks, even from age, you must buy a new one.",
+      "ask": "Limit this to damage you caused; normal breakdowns should be the owner's cost."
+    },
+    {
+      "id": "MAINT_NOT_AT_FAULT",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\b{T}\\b{S}\\b(?:pay|bear|liable|responsible)\\w*\\b{S}\\b(?:natural calamit\\w*|acts? of god|earthquake|flood|adjoining (?:flats?|premises)|neighbou?ring flats?)\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Liable for damage you didn't cause",
+      "explanation": "You pay for damage from events outside your control, such as natural disasters or leaks from neighbours.",
+      "ask": "Limit your liability to damage caused by you, your family or guests."
+    },
+    {
+      "id": "MAINT_REPAIR_DEADLINE",
+      "types": [
+        "MAINTENANCE"
+      ],
+      "pattern": "\\b{L}\\b{S}\\brepair\\w*{S}\\bwithin\\b|\\bfailing which,? the {T} may\\b|\\bdeduct the cost from the rent\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Repairs within a deadline",
+      "explanation": "The landlord must fix problems within a set time, and you have a remedy if they don't."
+    },
+    {
+      "id": "LIAB_LANDLORD_LIABLE",
+      "types": [
+        "LIABILITY"
+      ],
+      "pattern": "\\b{L}\\s+(?:shall|will) be (?:liable|responsible)\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Landlord accepts liability",
+      "explanation": "The landlord takes responsibility for losses caused by the building's condition."
+    },
+    {
+      "id": "LIAB_PRIOR_DUES",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\bdues\\b{S}\\b(?:pending|outstanding|arrears)\\b{S}\\bbefore\\b|\\b(?:past dues|previous dues|dues pending from before)\\b|\\b(?:previous|earlier|former) (?:tenants?|occupants?|owners?)\\b{S}\\b(?:dues|arrears|bills)\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Pay dues from before you moved in",
+      "explanation": "You may be charged for unpaid bills or society dues that belong to an earlier period.",
+      "ask": "Make dues before your move-in date the owner's responsibility."
+    },
+    {
+      "id": "USE_LIFESTYLE",
+      "types": [
+        "USE",
+        "*"
+      ],
+      "pattern": "\\bnot (?:cook|eat|consume)\\b|\\bnon[- ]?veg\\w*\\b{S}\\b(?:not|prohibited|banned)\\b|\\bopposite (?:gender|sex)\\b|\\bcurfew\\b|\\bbe (?:home|back|in) (?:by|before) \\d+\\s*(?:pm|am)?\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "Restrictions on your personal life",
+      "explanation": "The clause controls private choices (food, who visits, when you come home) that have nothing to do with protecting the property.",
+      "ask": "Ask to remove lifestyle restrictions not tied to damage or nuisance."
+    },
+    {
+      "id": "USE_TENANT_PERMITTED",
+      "types": [
+        "USE"
+      ],
+      "pattern": "\\b{T}\\s+may\\s+(?:have|receive|invite|install|work|keep (?:a|one))\\b",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "title": "Explicit freedom of use",
+      "explanation": "The agreement confirms things you are allowed to do, avoiding later disputes."
+    },
+    {
+      "id": "TERM_ON_ANY_BREACH",
+      "types": [
+        "TERMINATION",
+        "PENALTY",
+        "*"
+      ],
+      "pattern": "\\b(?:fail\\w*|default\\w*|breach\\w*|violat\\w*|non-?compliance|contravene\\w*)\\b{S}\\b(?:automatic(?:ally)? terminat\\w*|stand terminated|immediate(?:ly)? terminat\\w*|terminat\\w* (?:immediately|forthwith|automatically)|(?:cause|grounds?) for (?:immediate )?termination|self[- ]?evict\\w*|vacate (?:immediately|forthwith))|\\b(?:automatic(?:ally)? terminat\\w*|stand terminated|cause for (?:immediate )?termination|grounds? for termination)\\b{S}\\b(?:fail\\w*|default\\w*|breach\\w*|violat\\w*|non-?compliance)\\b",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Ended for any breach",
+      "explanation": "The agreement can end automatically or immediately for any failure to comply, however small, with no notice or chance to fix it.",
+      "ask": "Limit termination to serious breaches, after written notice and at least 15-30 days to remedy.",
+      "unless": "\\b(?:notice to (?:remedy|rectify|cure)|opportunity to (?:remedy|rectify|cure)|after (?:giving|serving)\\b[^.;]*?\\bnotice|days'? (?:written )?notice to)\\b"
+    },
+    {
+      "id": "MAINT_TENANT_REPAIR_REPLACE",
+      "types": [
+        "MAINTENANCE",
+        "*"
+      ],
+      "pattern": "\\b{T}\\b{S}\\b(?:responsible|liable)\\b{S}\\b(?:repair\\w*|replac\\w*)\\b(?!{S}\\b(?:caused by|due to|resulting from|arising from)\\b)",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "You repair or replace items",
+      "explanation": "You must pay to repair or replace fixtures and appliances, which may include breakdowns from age or normal use.",
+      "ask": "Limit this to damage caused by you or your guests; normal breakdowns should be the owner's cost.",
+      "unless": "\\b(?:minor|day[- ]to[- ]day|small)\\b|\\b(?:caused by|due to|resulting from)\\b{S}\\b(?:negligence|misuse|carelessness|wilful)\\b|\\bwear and tear\\b"
+    },
+    {
+      "id": "GEN_ATTORNEY_FEES",
+      "types": [
+        "*"
+      ],
+      "pattern": "\\b{T}\\b{S}\\b(?:pay|bear|reimburse|liable for)\\b{S}\\b(?:attorney'?s?'?|lawyer'?s?'?|advocate'?s?'?|legal|collection)\\s+(?:fees|costs|charges|expenses)\\b",
+      "risk": "RISKY",
+      "severity": "medium",
+      "title": "You pay legal or collection costs",
+      "explanation": "You must pay the landlord's lawyer or collection costs, which can add up quickly in any dispute.",
+      "ask": "Each party should bear its own legal costs, or costs should follow the outcome.",
+      "unless": "\\b(?:each party|both parties|prevailing party|equally)\\b"
+    }
+  ]
+}

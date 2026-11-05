@@ -1,0 +1,36 @@
+RENTAL AGREEMENT RISK DETECTION - START HERE
+============================================
+
+1. JUST WANT THE DASHBOARD?
+   Double-click  Open_Dashboard.html
+   No installation needed. Works offline in any browser.
+   Upload .txt files or paste text (a full agreement, or one clause per line).
+
+2. WANT TO RUN THE FULL PYTHON SYSTEM (trained model, PDF/Word input, evaluation)?
+   Needs Python 3.10 or newer (python.org).
+   Windows:      double-click  run_windows.bat
+   Mac / Linux:  run  ./run_mac_linux.sh  in a terminal
+   This installs requirements, trains the model, analyses the sample agreements,
+   writes the evaluation, and opens the dashboard.
+
+3. ANALYSE YOUR OWN AGREEMENT
+   python -m rental_risk analyze path\to\agreement.pdf -v
+   (also .docx and .txt)  -> report appears in the "reports" folder; open the .html one.
+
+4. TRAIN ON MORE DATA
+   python -m rental_risk prepare my_agreements_folder --out data/my_labels.xlsx
+   (label it in Excel using the dropdowns and data/LABELLING_GUIDE.md, then)
+   python -m rental_risk train --data data/clauses.csv data/my_labels.xlsx
+   Full steps: README.md, section "Training on more data".
+
+WHAT'S INSIDE
+   Open_Dashboard.html     interactive dashboard (same as demo/dashboard.html)
+   reports/                ready-made reports + evaluation.md (results tables for the paper)
+   rental_risk/            the Python system (pipeline, rules, model, evaluation)
+   rental_risk/rules.json  all 65 risk rules
+   data/                   labelled datasets + sample agreements
+   models/                 trained model
+   demo/                   web demo + dashboard sources
+   tests/                  automated tests
+   README.md               full documentation
+python -m rental_risk evaluate --data data\clauses.csv --test data\my_labels.xlsx

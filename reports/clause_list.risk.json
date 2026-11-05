@@ -1,0 +1,432 @@
+{
+  "title": "clause list",
+  "engine": "hybrid",
+  "clauses": [
+    {
+      "index": 1,
+      "number": "",
+      "heading": "",
+      "text": "The Tenant shall pay a monthly rent of Rs. 18,000 on or before the 5th of every month by bank transfer.",
+      "clause_type": "RENT",
+      "type_label": "Rent & payment",
+      "risk": "NEUTRAL",
+      "severity": "",
+      "findings": [],
+      "explanation": "Standard clause; no risk indicators found.",
+      "ask": "",
+      "key_facts": [
+        "₹18,000"
+      ],
+      "detail": {
+        "ml_type": "RENT",
+        "ml_type_conf": 0.482,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.695,
+        "rule_type": "RENT"
+      }
+    },
+    {
+      "index": 2,
+      "number": "",
+      "heading": "",
+      "text": "The security deposit of Rs. 1,08,000 shall be refunded after the Tenant vacates, less any deductions the Owner deems necessary.",
+      "clause_type": "DEPOSIT",
+      "type_label": "Security deposit",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "DEP_NO_TIMELINE",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "No deadline for returning the deposit",
+          "explanation": "The clause says the deposit will be returned but gives no deadline, so the landlord can delay it indefinitely.",
+          "ask": "Add a fixed timeline, e.g. 'refunded within 15 days of handing over possession'.",
+          "evidence": "refunded"
+        },
+        {
+          "rule_id": "DOC_DEPOSIT_RATIO",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Deposit is about 6.0× the monthly rent",
+          "explanation": "The security deposit equals roughly 6.0 months of rent. That is a lot of your money held by the landlord, and it is harder to recover in a dispute. For reference, India's Model Tenancy Act, 2021 suggests a cap of two months' rent for residential premises (it applies only in states that have adopted it).",
+          "ask": "Negotiate the deposit down to 2-3 months' rent, or ask for interest on the excess.",
+          "evidence": ""
+        }
+      ],
+      "explanation": "The security deposit equals roughly 6.0 months of rent. That is a lot of your money held by the landlord, and it is harder to recover in a dispute. For reference, India's Model Tenancy Act, 2021 suggests a cap of two months' rent for residential premises (it applies only in states that have adopted it). The clause says the deposit will be returned but gives no deadline, so the landlord can delay it indefinitely. Key numbers: ₹108,000.",
+      "ask": "Negotiate the deposit down to 2-3 months' rent, or ask for interest on the excess.",
+      "key_facts": [
+        "₹108,000"
+      ],
+      "detail": {
+        "ml_type": "DEPOSIT",
+        "ml_type_conf": 0.938,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.687,
+        "rule_type": "DEPOSIT"
+      }
+    },
+    {
+      "index": 3,
+      "number": "",
+      "heading": "",
+      "text": "The Owner may terminate this agreement by giving the Tenant ten days' notice.",
+      "clause_type": "TERMINATION",
+      "type_label": "Termination & notice",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "TERM_SHORT_NOTICE",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Very short notice to vacate",
+          "explanation": "The landlord can end the tenancy with under a month's notice, which is very little time to find a new home.",
+          "ask": "Ask for at least one month's written notice.",
+          "evidence": "Owner may terminate this agreement by giving the Tenant ten days"
+        },
+        {
+          "rule_id": "DOC_NOTICE_ASYMMETRY",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "You must give more notice than the landlord",
+          "explanation": "You have to give about 60 days' notice to leave, but the landlord only has to give about 10 days. The termination terms are tilted against you.",
+          "ask": "Ask for the same notice period for both parties.",
+          "evidence": ""
+        }
+      ],
+      "explanation": "The landlord can end the tenancy with under a month's notice, which is very little time to find a new home. You have to give about 60 days' notice to leave, but the landlord only has to give about 10 days. The termination terms are tilted against you. Key numbers: 10 day(s).",
+      "ask": "Ask for at least one month's written notice.",
+      "key_facts": [
+        "10 day(s)"
+      ],
+      "detail": {
+        "ml_type": "TERMINATION",
+        "ml_type_conf": 0.859,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.932,
+        "rule_type": "TERMINATION"
+      }
+    },
+    {
+      "index": 4,
+      "number": "",
+      "heading": "",
+      "text": "The Tenant may terminate this agreement by giving two months' written notice to the Owner.",
+      "clause_type": "TERMINATION",
+      "type_label": "Termination & notice",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "DOC_NOTICE_ASYMMETRY",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "You must give more notice than the landlord",
+          "explanation": "You have to give about 60 days' notice to leave, but the landlord only has to give about 10 days. The termination terms are tilted against you.",
+          "ask": "Ask for the same notice period for both parties.",
+          "evidence": ""
+        }
+      ],
+      "explanation": "You have to give about 60 days' notice to leave, but the landlord only has to give about 10 days. The termination terms are tilted against you. Key numbers: 2 month(s).",
+      "ask": "Ask for the same notice period for both parties.",
+      "key_facts": [
+        "2 month(s)"
+      ],
+      "detail": {
+        "ml_type": "TERMINATION",
+        "ml_type_conf": 0.83,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.82,
+        "rule_type": "TERMINATION"
+      }
+    },
+    {
+      "index": 5,
+      "number": "",
+      "heading": "",
+      "text": "This agreement shall stand automatically renewed for eleven months unless the Tenant gives notice sixty days before expiry.",
+      "clause_type": "RENEWAL",
+      "type_label": "Renewal & term",
+      "risk": "RISKY",
+      "severity": "medium",
+      "findings": [
+        {
+          "rule_id": "REN_AUTO",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Automatic renewal",
+          "explanation": "The agreement renews by itself unless someone gives notice in time. Miss the window and you can be bound for another term, often at a higher rent.",
+          "ask": "Put the notice deadline in your calendar, or ask for renewal only by mutual written agreement.",
+          "evidence": "stand automatically renewed"
+        }
+      ],
+      "explanation": "The agreement renews by itself unless someone gives notice in time. Miss the window and you can be bound for another term, often at a higher rent. Key numbers: 2 month(s), 11 month(s).",
+      "ask": "Put the notice deadline in your calendar, or ask for renewal only by mutual written agreement.",
+      "key_facts": [
+        "2 month(s)",
+        "11 month(s)"
+      ],
+      "detail": {
+        "ml_type": "RENEWAL",
+        "ml_type_conf": 0.755,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.772,
+        "rule_type": "RENEWAL"
+      }
+    },
+    {
+      "index": 6,
+      "number": "",
+      "heading": "",
+      "text": "On renewal the rent shall be increased by 12% of the last rent paid.",
+      "clause_type": "RENEWAL",
+      "type_label": "Renewal & term",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "REN_RENT_INCREASE_HIGH",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Steep rent increase",
+          "explanation": "The rent rises by 10% or more, which is above typical annual increases (often around 5-10%).",
+          "ask": "Negotiate a lower cap (e.g. 5%) or a fixed rent for the first renewal.",
+          "evidence": "increased by 12%"
+        }
+      ],
+      "explanation": "The rent rises by 10% or more, which is above typical annual increases (often around 5-10%). Key numbers: 12%.",
+      "ask": "Negotiate a lower cap (e.g. 5%) or a fixed rent for the first renewal.",
+      "key_facts": [
+        "12%"
+      ],
+      "detail": {
+        "ml_type": "RENEWAL",
+        "ml_type_conf": 0.747,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.389,
+        "rule_type": "RENEWAL"
+      }
+    },
+    {
+      "index": 7,
+      "number": "",
+      "heading": "",
+      "text": "Minor repairs shall be done by the Tenant; major and structural repairs shall be done by the Owner at his own cost.",
+      "clause_type": "MAINTENANCE",
+      "type_label": "Repairs & maintenance",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "MAINT_LANDLORD_MAJOR",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Landlord handles major repairs",
+          "explanation": "The landlord is responsible for major or structural repairs, as is standard.",
+          "ask": "",
+          "evidence": "major and structural repairs shall be done by the Owner"
+        }
+      ],
+      "explanation": "The landlord is responsible for major or structural repairs, as is standard.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "MAINTENANCE",
+        "ml_type_conf": 0.924,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.567,
+        "rule_type": "MAINTENANCE"
+      }
+    },
+    {
+      "index": 8,
+      "number": "",
+      "heading": "",
+      "text": "The Owner may visit and inspect the flat at any time without prior notice.",
+      "clause_type": "ENTRY",
+      "type_label": "Landlord entry & access",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "ENTRY_ANYTIME",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Landlord can enter without notice",
+          "explanation": "The landlord can come into your home whenever they like, which affects your privacy and security.",
+          "ask": "Require at least 24 hours' written notice except in a genuine emergency.",
+          "evidence": "visit and inspect the flat at any time"
+        }
+      ],
+      "explanation": "The landlord can come into your home whenever they like, which affects your privacy and security.",
+      "ask": "Require at least 24 hours' written notice except in a genuine emergency.",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "ENTRY",
+        "ml_type_conf": 0.799,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.841,
+        "rule_type": "ENTRY"
+      }
+    },
+    {
+      "index": 9,
+      "number": "",
+      "heading": "",
+      "text": "Late payment shall attract interest at 2% per month on the amount due.",
+      "clause_type": "PENALTY",
+      "type_label": "Penalties & late fees",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "PEN_HIGH_MONTHLY_INTEREST",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "High monthly interest on late payment",
+          "explanation": "Interest of 2% or more per month is 24%+ per year, far above normal lending rates.",
+          "ask": "Ask for a modest flat late fee or a low annual interest rate.",
+          "evidence": "interest at 2% per month"
+        }
+      ],
+      "explanation": "Interest of 2% or more per month is 24%+ per year, far above normal lending rates. Key numbers: 2%.",
+      "ask": "Ask for a modest flat late fee or a low annual interest rate.",
+      "key_facts": [
+        "2%"
+      ],
+      "detail": {
+        "ml_type": "PENALTY",
+        "ml_type_conf": 0.835,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.36,
+        "rule_type": "PENALTY"
+      }
+    },
+    {
+      "index": 10,
+      "number": "",
+      "heading": "",
+      "text": "The Tenant shall keep the flat in good condition, normal wear and tear excepted.",
+      "clause_type": "MAINTENANCE",
+      "type_label": "Repairs & maintenance",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "MAINT_WEAR_TEAR_EXCEPTED",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Normal wear and tear excluded",
+          "explanation": "You aren't charged for ordinary ageing of the property.",
+          "ask": "",
+          "evidence": "normal wear and tear excepted"
+        }
+      ],
+      "explanation": "You aren't charged for ordinary ageing of the property.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "MAINTENANCE",
+        "ml_type_conf": 0.688,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.724,
+        "rule_type": "MAINTENANCE"
+      }
+    },
+    {
+      "index": 11,
+      "number": "",
+      "heading": "",
+      "text": "Overnight guests are not permitted without the Owner's written approval.",
+      "clause_type": "USE",
+      "type_label": "Use of premises",
+      "risk": "RISKY",
+      "severity": "medium",
+      "findings": [
+        {
+          "rule_id": "USE_GUEST_RESTRICTION",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Restrictions on guests",
+          "explanation": "You need permission to have guests, which reaches into your private life in your own home.",
+          "ask": "Limit restrictions to long-term additional occupants, not ordinary visitors.",
+          "evidence": "guests are not permitted"
+        }
+      ],
+      "explanation": "You need permission to have guests, which reaches into your private life in your own home.",
+      "ask": "Limit restrictions to long-term additional occupants, not ordinary visitors.",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "USE",
+        "ml_type_conf": 0.398,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.568,
+        "rule_type": "USE"
+      }
+    },
+    {
+      "index": 12,
+      "number": "",
+      "heading": "",
+      "text": "Either party may refer any dispute to the Rent Authority having jurisdiction.",
+      "clause_type": "RENT",
+      "type_label": "Rent & payment",
+      "risk": "NEUTRAL",
+      "severity": "",
+      "findings": [],
+      "explanation": "Standard clause; no risk indicators found.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "OTHER",
+        "ml_type_conf": 0.493,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.385,
+        "rule_type": "RENT"
+      }
+    }
+  ],
+  "document_findings": [
+    {
+      "check_id": "DOC_DEPOSIT_RATIO",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Deposit is about 6.0× the monthly rent",
+      "explanation": "The security deposit equals roughly 6.0 months of rent. That is a lot of your money held by the landlord, and it is harder to recover in a dispute. For reference, India's Model Tenancy Act, 2021 suggests a cap of two months' rent for residential premises (it applies only in states that have adopted it).",
+      "ask": "Negotiate the deposit down to 2-3 months' rent, or ask for interest on the excess.",
+      "clause_indexes": [
+        1,
+        2
+      ]
+    },
+    {
+      "check_id": "DOC_NOTICE_ASYMMETRY",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "You must give more notice than the landlord",
+      "explanation": "You have to give about 60 days' notice to leave, but the landlord only has to give about 10 days. The termination terms are tilted against you.",
+      "ask": "Ask for the same notice period for both parties.",
+      "clause_indexes": [
+        3,
+        4
+      ]
+    }
+  ],
+  "summary": {
+    "clauses": 12,
+    "risk_counts": {
+      "RISKY": 8,
+      "NEUTRAL": 2,
+      "TENANT_FAVORABLE": 2
+    },
+    "severity_counts": {
+      "high": 8,
+      "medium": 2,
+      "low": 0
+    },
+    "score": 28,
+    "rating": "High"
+  }
+}

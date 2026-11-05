@@ -1,0 +1,61 @@
+id,text,clause_type,risk,source
+t001,"The Licensee shall pay a monthly compensation of Rs. 21,000 on or before the 3rd of each month through UPI.",RENT,NEUTRAL,authored-heldout
+t002,"The Landlord may at any point demand an increased rent, which the Tenant shall be bound to pay from the following month.",RENT,RISKY,authored-heldout
+t003,Payment of rent shall be made in cash and no written acknowledgement shall be required.,RENT,RISKY,authored-heldout
+t004,The rent agreed herein shall not be increased during the period of this agreement.,RENT,TENANT_FAVORABLE,authored-heldout
+t005,Municipal property tax for the premises shall be the liability of the Tenant.,RENT,RISKY,authored-heldout
+t006,The Tenant shall pay the electricity bills directly to BESCOM as per the meter.,RENT,NEUTRAL,authored-heldout
+t007,"A refundable deposit of Rs. 45,000 has been paid by the Tenant, receipt of which the Landlord hereby acknowledges.",DEPOSIT,NEUTRAL,authored-heldout
+t008,"The Lessor shall return the deposit within ten days from the date the Lessee vacates, after deducting proven unpaid dues.",DEPOSIT,TENANT_FAVORABLE,authored-heldout
+t009,The deposit will be refunded whenever the Owner is in a position to do so after the Tenant leaves.,DEPOSIT,RISKY,authored-heldout
+t010,Painting charges equal to one month's rent will be adjusted from the deposit on vacating.,DEPOSIT,RISKY,authored-heldout
+t011,The Tenant shall deposit an amount equivalent to six months' rent as security.,DEPOSIT,RISKY,authored-heldout
+t012,"The Owner shall provide a written list of deductions, with receipts, before adjusting any amount from the deposit.",DEPOSIT,TENANT_FAVORABLE,authored-heldout
+t013,"Should the Tenant leave before eleven months, the full deposit shall stand forfeited to the Owner.",DEPOSIT,RISKY,authored-heldout
+t014,Either side can end this agreement with a written notice of thirty days.,TERMINATION,TENANT_FAVORABLE,authored-heldout
+t015,The Owner may ask the Tenant to vacate with a notice of ten days.,TERMINATION,RISKY,authored-heldout
+t016,The Licensee cannot cancel this agreement during its subsistence under any circumstances.,TERMINATION,RISKY,authored-heldout
+t017,"Should the Tenant exit before the lock-in of nine months ends, he shall be liable to pay rent for the unexpired lock-in period.",TERMINATION,RISKY,authored-heldout
+t018,"On expiry or earlier termination, the Licensee shall hand back the keys and the premises in good order.",TERMINATION,NEUTRAL,authored-heldout
+t019,The Lessor may cancel the lease on any breach of its terms without giving the Lessee any opportunity to rectify.,TERMINATION,RISKY,authored-heldout
+t020,The Tenant may terminate without penalty if the premises become uninhabitable due to the Landlord's failure to repair.,TERMINATION,TENANT_FAVORABLE,authored-heldout
+t021,This agreement will be auto-renewed for successive eleven-month periods unless cancelled by the Tenant in writing three months in advance.,RENEWAL,RISKY,authored-heldout
+t022,The Licensee shall be entitled to renew this licence for one more term on the same terms and conditions.,RENEWAL,TENANT_FAVORABLE,authored-heldout
+t023,The rent for any renewed term shall be increased by twenty five percent.,RENEWAL,RISKY,authored-heldout
+t024,The period of this licence is eleven months beginning 1 July 2026.,RENEWAL,NEUTRAL,authored-heldout
+t025,Any extension of this agreement shall be on terms mutually agreed and recorded in writing.,RENEWAL,NEUTRAL,authored-heldout
+t026,The rent on extension shall be decided by the Owner at the time of extension.,RENEWAL,RISKY,authored-heldout
+t027,Day-to-day minor repairs shall be the Tenant's responsibility; structural repairs shall be done by the Landlord.,MAINTENANCE,TENANT_FAVORABLE,authored-heldout
+t028,Any repair of whatever nature required in the flat shall be carried out by the Tenant at his expense.,MAINTENANCE,RISKY,authored-heldout
+t029,The Licensee shall hand back the premises freshly painted at his own cost.,MAINTENANCE,RISKY,authored-heldout
+t030,The Tenant shall take reasonable care of the fixtures and fittings.,MAINTENANCE,NEUTRAL,authored-heldout
+t031,Leakages in the roof or walls shall be repaired by the Tenant at his cost.,MAINTENANCE,RISKY,authored-heldout
+t032,The Owner shall be responsible for repairing any defect in the electrical wiring or plumbing within a week of complaint.,MAINTENANCE,TENANT_FAVORABLE,authored-heldout
+t033,"In case of delay in payment, interest at 4% per month shall be charged on the amount due.",PENALTY,RISKY,authored-heldout
+t034,A one-time late payment fee of Rs. 300 shall apply if rent is paid after the 10th.,PENALTY,NEUTRAL,authored-heldout
+t035,"For each day the rent remains unpaid, a fine of Rs. 750 shall be levied.",PENALTY,RISKY,authored-heldout
+t036,"If the Tenant continues to occupy after expiry, he shall pay twice the monthly rent as damages.",PENALTY,RISKY,authored-heldout
+t037,No penalty shall be levied if rent is paid within seven days of the due date.,PENALTY,TENANT_FAVORABLE,authored-heldout
+t038,The Landlord may enter the flat for inspection with at least one day's prior notice to the Tenant.,ENTRY,TENANT_FAVORABLE,authored-heldout
+t039,The Owner shall have unrestricted access to the premises at all times.,ENTRY,RISKY,authored-heldout
+t040,The Owner retains a duplicate key and may open the flat in the Tenant's absence for inspection.,ENTRY,RISKY,authored-heldout
+t041,In case of an emergency the Landlord may enter the premises without prior notice.,ENTRY,NEUTRAL,authored-heldout
+t042,The Licensor's representatives may visit the premises without any prior intimation.,ENTRY,RISKY,authored-heldout
+t043,The Tenant shall indemnify the Owner against any and all claims whatsoever arising from the use of the premises.,LIABILITY,RISKY,authored-heldout
+t044,Neither party shall be liable for losses not caused by its own negligence or breach.,LIABILITY,TENANT_FAVORABLE,authored-heldout
+t045,"The Owner shall in no event be liable for any loss or injury to the Tenant, his family or visitors.",LIABILITY,RISKY,authored-heldout
+t046,The Tenant is advised to insure his personal belongings.,LIABILITY,NEUTRAL,authored-heldout
+t047,The Tenant shall bear the Owner's legal expenses in connection with any dispute under this agreement.,LIABILITY,RISKY,authored-heldout
+t048,The flat shall be used solely for residential purposes.,USE,NEUTRAL,authored-heldout
+t049,Overnight visitors are prohibited without the Landlord's consent.,USE,RISKY,authored-heldout
+t050,The Tenant shall not sublet the premises.,USE,NEUTRAL,authored-heldout
+t051,"The Tenant may keep pets with the Landlord's consent, which shall not be unreasonably withheld.",USE,TENANT_FAVORABLE,authored-heldout
+t052,Friends and relatives of the Licensee are not permitted to visit the premises.,USE,RISKY,authored-heldout
+t053,The Tenant shall abide by the bye-laws of the apartment association.,USE,NEUTRAL,authored-heldout
+t054,This agreement is entered into at Pune on 12 May 2026.,OTHER,NEUTRAL,authored-heldout
+t055,The Landlord may unilaterally alter any condition of this agreement and such alteration shall bind the Tenant.,OTHER,RISKY,authored-heldout
+t056,All disputes shall be decided by an arbitrator nominated by the Owner alone.,OTHER,RISKY,authored-heldout
+t057,Any modification to this agreement must be in writing and signed by both parties.,OTHER,TENANT_FAVORABLE,authored-heldout
+t058,The Tenant waives his right to approach the Rent Authority for any grievance under this agreement.,OTHER,RISKY,authored-heldout
+t059,The stamp duty on this agreement shall be borne by the Tenant and the Landlord in equal shares.,OTHER,NEUTRAL,authored-heldout
+t060,This agreement contains the entire understanding between the parties.,OTHER,NEUTRAL,authored-heldout

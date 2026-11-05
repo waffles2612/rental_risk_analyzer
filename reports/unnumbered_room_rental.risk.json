@@ -1,0 +1,265 @@
+{
+  "title": "unnumbered room rental",
+  "engine": "hybrid",
+  "clauses": [
+    {
+      "index": 1,
+      "number": "",
+      "heading": "Room Rental Agreement",
+      "text": "This agreement is between the Owner, Mr. D. Rao, and the Tenant, Mr. V. Nair, for a furnished room in a shared flat in Koramangala.",
+      "clause_type": "OTHER",
+      "type_label": "Other",
+      "risk": "NEUTRAL",
+      "severity": "",
+      "findings": [],
+      "explanation": "Standard clause; no risk indicators found.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "OTHER",
+        "ml_type_conf": 0.704,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.525,
+        "rule_type": "OTHER"
+      }
+    },
+    {
+      "index": 2,
+      "number": "",
+      "heading": "Rent",
+      "text": "The rent is Rs. 12,000 per month, payable in cash on the first day of every month. No receipts will be issued for cash payments.",
+      "clause_type": "RENT",
+      "type_label": "Rent & payment",
+      "risk": "RISKY",
+      "severity": "medium",
+      "findings": [
+        {
+          "rule_id": "RENT_CASH_NO_RECEIPT",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "No proof of payment",
+          "explanation": "Paying without receipts leaves you with no proof that rent was paid if a dispute arises.",
+          "ask": "Pay by bank transfer/UPI or insist on signed receipts.",
+          "evidence": "No receipts"
+        }
+      ],
+      "explanation": "Paying without receipts leaves you with no proof that rent was paid if a dispute arises. Key numbers: ₹12,000.",
+      "ask": "Pay by bank transfer/UPI or insist on signed receipts.",
+      "key_facts": [
+        "₹12,000"
+      ],
+      "detail": {
+        "ml_type": "PENALTY",
+        "ml_type_conf": 0.445,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.457,
+        "rule_type": "RENT"
+      }
+    },
+    {
+      "index": 3,
+      "number": "",
+      "heading": "Deposit",
+      "text": "The tenant shall pay a deposit equal to three months' rent. A sum of Rs. 5,000 from the deposit is non-refundable and will be retained towards administrative charges.",
+      "clause_type": "DEPOSIT",
+      "type_label": "Security deposit",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "DEP_NONREFUNDABLE",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Non-refundable money",
+          "explanation": "Part of what you pay will not come back to you, even if you leave the property in perfect condition.",
+          "ask": "Ask for the full deposit to be refundable, minus documented damage beyond normal wear and tear.",
+          "evidence": "non-refundable"
+        },
+        {
+          "rule_id": "DEP_LARGE",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Deposit of several months' rent",
+          "explanation": "The deposit equals several months of rent, which is a lot of your money held by the landlord. India's Model Tenancy Act, 2021 suggests a cap of two months' rent for homes (only in states that have adopted it).",
+          "ask": "Negotiate the deposit down to 2-3 months' rent.",
+          "evidence": "Deposit: The tenant shall pay a deposit equal to three months'"
+        }
+      ],
+      "explanation": "Part of what you pay will not come back to you, even if you leave the property in perfect condition. The deposit equals several months of rent, which is a lot of your money held by the landlord. India's Model Tenancy Act, 2021 suggests a cap of two months' rent for homes (only in states that have adopted it). Key numbers: 3 month(s), ₹5,000.",
+      "ask": "Ask for the full deposit to be refundable, minus documented damage beyond normal wear and tear.",
+      "key_facts": [
+        "3 month(s)",
+        "₹5,000"
+      ],
+      "detail": {
+        "ml_type": "DEPOSIT",
+        "ml_type_conf": 0.832,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.809,
+        "rule_type": "DEPOSIT"
+      }
+    },
+    {
+      "index": 4,
+      "number": "",
+      "heading": "",
+      "text": "The tenant must keep the room clean and is responsible for any damage to furniture provided in the room. Common areas will be cleaned by a housekeeper arranged by the owner.",
+      "clause_type": "LIABILITY",
+      "type_label": "Liability & indemnity",
+      "risk": "RISKY",
+      "severity": "medium",
+      "findings": [],
+      "explanation": "The trained model rates this clause as risky because its wording resembles risky clauses in the training data (driven by “owner”, “for any”, “will be”, “damage to”). Read it carefully and ask what each obligation means for you in practice.",
+      "ask": "Ask the landlord to clarify or narrow this clause in writing.",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "LIABILITY",
+        "ml_type_conf": 0.367,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.538,
+        "rule_type": "LIABILITY"
+      }
+    },
+    {
+      "index": 5,
+      "number": "",
+      "heading": "",
+      "text": "The owner may revise the rent at any time as the owner deems fit, with intimation to the tenant.",
+      "clause_type": "RENT",
+      "type_label": "Rent & payment",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "GEN_SOLE_DISCRETION",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Decided at the landlord's sole discretion",
+          "explanation": "This clause lets one side decide on its own, with no objective standard and no way for you to challenge the decision.",
+          "ask": "Replace 'sole discretion' with an objective test (e.g. 'reasonable, documented costs') or require mutual agreement.",
+          "evidence": "as the owner deems fit"
+        },
+        {
+          "rule_id": "REN_UNBOUNDED_INCREASE",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Rent increase with no cap",
+          "explanation": "The rent can be raised without a fixed limit, so you cannot predict what renewal will cost.",
+          "ask": "Ask for a fixed percentage cap written into the agreement.",
+          "evidence": "owner may revise"
+        }
+      ],
+      "explanation": "This clause lets one side decide on its own, with no objective standard and no way for you to challenge the decision. The rent can be raised without a fixed limit, so you cannot predict what renewal will cost.",
+      "ask": "Replace 'sole discretion' with an objective test (e.g. 'reasonable, documented costs') or require mutual agreement.",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "RENT",
+        "ml_type_conf": 0.333,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.887,
+        "rule_type": "RENT"
+      }
+    },
+    {
+      "index": 6,
+      "number": "",
+      "heading": "",
+      "text": "Either party may end this arrangement with thirty days' notice.",
+      "clause_type": "TERMINATION",
+      "type_label": "Termination & notice",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "TERM_MUTUAL",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Mutual termination rights",
+          "explanation": "Both sides can end the agreement on the same terms, so neither party has an unfair advantage.",
+          "ask": "",
+          "evidence": "Either party may end"
+        }
+      ],
+      "explanation": "Both sides can end the agreement on the same terms, so neither party has an unfair advantage.",
+      "ask": "",
+      "key_facts": [
+        "1 month(s)"
+      ],
+      "detail": {
+        "ml_type": "TERMINATION",
+        "ml_type_conf": 0.636,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.847,
+        "rule_type": "TERMINATION"
+      }
+    },
+    {
+      "index": 7,
+      "number": "",
+      "heading": "",
+      "text": "The tenant shall not keep pets or smoke inside the flat. Loud music after 10 pm is not allowed.",
+      "clause_type": "USE",
+      "type_label": "Use of premises",
+      "risk": "NEUTRAL",
+      "severity": "",
+      "findings": [],
+      "explanation": "Standard clause; no risk indicators found.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "USE",
+        "ml_type_conf": 0.514,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.677,
+        "rule_type": "USE"
+      }
+    },
+    {
+      "index": 8,
+      "number": "",
+      "heading": "",
+      "text": "Electricity charges will be split equally among all occupants of the flat.",
+      "clause_type": "USE",
+      "type_label": "Use of premises",
+      "risk": "NEUTRAL",
+      "severity": "",
+      "findings": [],
+      "explanation": "Standard clause; no risk indicators found.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "RENT",
+        "ml_type_conf": 0.32,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.656,
+        "rule_type": "USE"
+      }
+    }
+  ],
+  "document_findings": [
+    {
+      "check_id": "DOC_MISSING_MAINTENANCE",
+      "risk": "RISKY",
+      "severity": "low",
+      "title": "No repairs clause",
+      "explanation": "Nothing says who pays for repairs. That ambiguity usually ends up costing the tenant.",
+      "ask": "Ask for this to be added in writing before signing.",
+      "clause_indexes": []
+    }
+  ],
+  "summary": {
+    "clauses": 8,
+    "risk_counts": {
+      "RISKY": 4,
+      "NEUTRAL": 3,
+      "TENANT_FAVORABLE": 1
+    },
+    "severity_counts": {
+      "high": 2,
+      "medium": 2,
+      "low": 1
+    },
+    "score": 11,
+    "rating": "Moderate"
+  }
+}

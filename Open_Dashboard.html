@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fine Print</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700;8..144,800&family=Roboto+Mono:wght@400;500&display=swap">
+<style>html,body{margin:0}[hidden]{display:none!important}</style>
+<style>
+/* Layout: control strip (add documents) -> KPI band -> two charts -> agreement-level findings -> clause register + "why" panel.
+   Identity follows the project deck: navy ink, highlighter yellow for flagged wording. */
+:root {
+  --paper: #eef1f6;
+  --sheet: #ffffff;
+  --ink: #14213a;
+  --ink-soft: #586581;
+  --rule: #dbe1ea;
+  --highlight: #ffd84d;
+  --risk: #b3261e;
+  --risk-wash: #fbe7e5;
+  --fair: #1e7a43;
+  --fair-wash: #e2f3e7;
+  --neutral-bar: #c3cbd8;
+  --caution: #8a5a00;
+  --mark-risk: #ffe27a;
+  --mark-fair: #c9ecd3;
+  --row-hover: #f5f7fb;
+  --row-sel: #fff6d1;
+  --font-ui: "Roboto Flex", "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0a1322; --sheet: #111c31; --ink: #e7ecf5; --ink-soft: #9ba9c2; --rule: #24334f;
+    --highlight: #f2c230; --risk: #ff8e85; --risk-wash: #3b1c23; --fair: #7fd6a0; --fair-wash: #15321f;
+    --neutral-bar: #3a4a68; --caution: #f0c46a; --mark-risk: #6b5410; --mark-fair: #1f4a2e;
+    --row-hover: #16233d; --row-sel: #2c2a16; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0a1322; --sheet: #111c31; --ink: #e7ecf5; --ink-soft: #9ba9c2; --rule: #24334f;
+  --highlight: #f2c230; --risk: #ff8e85; --risk-wash: #3b1c23; --fair: #7fd6a0; --fair-wash: #15321f;
+  --neutral-bar: #3a4a68; --caution: #f0c46a; --mark-risk: #6b5410; --mark-fair: #1f4a2e;
+  --row-hover: #16233d; --row-sel: #2c2a16; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--paper); color: var(--ink); font: 14px/1.5 var(--font-ui); }
+.wrap { max-width: 1400px; margin: 0 auto; padding-block: 22px 48px; display: grid; gap: 16px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.panel { background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; min-width: 0; }
+.eyebrow, .lbl { font: 500 11.5px/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+button { font: inherit; color: inherit; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .row:focus-visible { outline: 2px solid var(--highlight); outline-offset: 2px; }
+
+/* Top bar */
+.top { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: end; justify-content: space-between; }
+.top h1 { margin: 2px 0 0; font: 800 clamp(22px, 3vw, 30px)/1.1 var(--font-ui); letter-spacing: -.01em; text-wrap: balance; }
+.top h1 .hl { background: linear-gradient(transparent 58%, var(--highlight) 58%, var(--highlight) 92%, transparent 92%); padding: 0 2px; }
+.top p { margin: 4px 0 0; color: var(--ink-soft); max-width: 70ch; }
+
+/* Intake */
+.intake { padding: 14px; display: grid; gap: 12px; }
+.intake-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
+.drop { flex: 1 1 320px; border: 1.5px dashed var(--ink-soft); border-radius: 8px; padding: 12px 14px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.drop.over { border-color: var(--ink); background: color-mix(in srgb, var(--highlight) 22%, var(--sheet)); }
+.drop p { margin: 0; flex: 1 1 200px; color: var(--ink-soft); }
+.drop p strong { color: var(--ink); }
+.btn { border: 1px solid var(--ink); background: var(--ink); color: var(--sheet); border-radius: 7px; padding: 9px 14px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--rule); font-weight: 500; }
+.filepick { position: relative; }
+.filepick input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.paste { display: grid; gap: 8px; border-top: 1px solid var(--rule); padding-top: 12px; }
+.paste-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.paste input[type=text] { flex: 1 1 220px; border: 1px solid var(--rule); border-radius: 7px; padding: 8px 10px; background: var(--paper); color: var(--ink); }
+.paste textarea { width: 100%; min-height: 160px; resize: vertical; border: 1px solid var(--rule); border-radius: 8px; padding: 10px; background: var(--paper); color: var(--ink); font: 12.5px/1.6 var(--font-mono); }
+.hint { margin: 0; font-size: 12.5px; color: var(--ink-soft); }
+.docs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--rule); background: var(--paper); border-radius: 999px; padding: 5px 6px 5px 11px; font-size: 13px; cursor: pointer; }
+.chip.solo { padding-right: 11px; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--sheet); border-color: var(--ink); }
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--neutral-bar); }
+.chip .dot.High { background: var(--risk); } .chip .dot.Moderate { background: var(--highlight); } .chip .dot.Low { background: var(--fair); }
+.chip .x { border: 0; background: none; cursor: pointer; padding: 0 4px; font-size: 15px; line-height: 1; opacity: .7; }
+.chip .x:hover { opacity: 1; }
+.samples { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.link { background: none; border: 0; padding: 0; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-size: 13px; }
+
+/* KPIs */
+.kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 960px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .kpis .kpi:first-child { grid-column: 1 / -1; } }
+.kpi { padding: 12px 14px; display: grid; gap: 2px; align-content: start; }
+.kpi b { font: 800 30px/1.1 var(--font-ui); font-variant-numeric: tabular-nums; }
+.kpi span.sub { font-size: 12.5px; color: var(--ink-soft); }
+.kpi.rating.High { background: var(--risk-wash); border-color: transparent; } .kpi.rating.High b { color: var(--risk); }
+.kpi.rating.Moderate { background: color-mix(in srgb, var(--highlight) 26%, var(--sheet)); border-color: transparent; } .kpi.rating.Moderate b { color: var(--caution); }
+.kpi.rating.Low { background: var(--fair-wash); border-color: transparent; } .kpi.rating.Low b { color: var(--fair); }
+.kpi .sevbar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--rule); margin-top: 6px; }
+.kpi .sevbar i { display: block; height: 100%; }
+
+/* Charts */
+.charts { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 960px) { .charts { grid-template-columns: minmax(0, 1fr); } }
+.card { padding: 14px 16px; display: grid; gap: 10px; align-content: start; }
+.card h2 { margin: 0; font: 700 15px/1.25 var(--font-ui); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.card h2 small { font: 400 12.5px var(--font-ui); color: var(--ink-soft); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-soft); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+.bars { display: grid; gap: 4px; }
+.bar-row { display: grid; grid-template-columns: minmax(96px, 160px) minmax(0, 1fr) 3.5em; gap: 10px; align-items: center; padding: 4px 6px; border-radius: 6px; border: 0; background: none; text-align: left; cursor: pointer; width: 100%; }
+.bar-row:hover { background: var(--row-hover); }
+.bar-row[aria-pressed="true"] { background: var(--row-sel); }
+.bar-row .name { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-row .track { display: flex; height: 14px; border-radius: 3px; overflow: hidden; }
+.bar-row .track i { display: block; height: 100%; min-width: 0; }
+.bar-row .val { font: 500 12.5px var(--font-mono); text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+.seg-r { background: var(--risk); } .seg-n { background: var(--neutral-bar); } .seg-f { background: var(--fair); } .seg-h { background: var(--highlight); }
+.empty-note { color: var(--ink-soft); font-size: 13px; margin: 0; }
+
+/* Agreement-level findings */
+.docf { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 10px; }
+.docf li { border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; display: grid; gap: 4px; align-content: start; }
+.docf .t { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-weight: 700; }
+.docf p { margin: 0; font-size: 13px; }
+.docf .src { font-size: 12px; color: var(--ink-soft); }
+.sev { font: 500 10.5px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; border-radius: 4px; padding: 3px 6px; white-space: nowrap; }
+.sev.high { background: var(--risk); color: var(--sheet); }
+.sev.medium { background: var(--risk-wash); color: var(--risk); }
+.sev.low { border: 1px solid var(--rule); color: var(--ink-soft); }
+
+/* Register + detail */
+.register { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px; align-items: start; }
+@media (max-width: 1080px) { .register { grid-template-columns: minmax(0, 1fr); } }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.toolbar select, .toolbar input[type=search] { border: 1px solid var(--rule); border-radius: 7px; padding: 7px 9px; background: var(--paper); color: var(--ink); font: inherit; font-size: 13px; }
+.toolbar input[type=search] { flex: 1 1 180px; min-width: 0; }
+.active-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.active-filters button { border: 1px solid var(--ink); background: var(--row-sel); border-radius: 999px; padding: 3px 10px; font-size: 12.5px; cursor: pointer; }
+.table-wrap { overflow-x: auto; border-top: 1px solid var(--rule); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; font: 500 11px/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); padding: 9px 8px; border-bottom: 1px solid var(--rule); white-space: nowrap; position: sticky; top: 0; background: var(--sheet); }
+td { padding: 9px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+tr.row { cursor: pointer; }
+tr.row:hover td { background: var(--row-hover); }
+tr.row[aria-selected="true"] td { background: var(--row-sel); }
+tr.row td:first-child { box-shadow: inset 4px 0 0 var(--rule); }
+tr.row.RISKY td:first-child { box-shadow: inset 4px 0 0 var(--risk); }
+tr.row.TENANT_FAVORABLE td:first-child { box-shadow: inset 4px 0 0 var(--fair); }
+.ref { font: 500 12px var(--font-mono); white-space: nowrap; }
+.ref small { display: block; color: var(--ink-soft); font: 400 11.5px var(--font-ui); white-space: nowrap; max-width: 140px; overflow: hidden; text-overflow: ellipsis; }
+.badge { display: inline-block; font-weight: 700; font-size: 12px; border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+.badge.RISKY { background: var(--risk-wash); color: var(--risk); }
+.badge.TENANT_FAVORABLE { background: var(--fair-wash); color: var(--fair); }
+.badge.NEUTRAL { color: var(--ink-soft); border: 1px solid var(--rule); }
+.reason { font-weight: 500; min-width: 160px; }
+.excerpt { color: var(--ink-soft); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-width: 220px; }
+.foot { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; padding-top: 8px; font-size: 12.5px; color: var(--ink-soft); }
+.detail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); max-height: calc(100vh - 24px); overflow: auto; }
+@media (max-width: 1080px) { .detail { position: static; max-height: none; } }
+.detail .head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.detail .ctype { font: 500 11.5px/1 var(--font-mono); letter-spacing: .05em; text-transform: uppercase; background: var(--paper); border-radius: 4px; padding: 4px 7px; }
+.detail blockquote { margin: 0; padding: 10px 12px; background: var(--paper); border-radius: 8px; font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+mark { color: inherit; border-radius: 2px; padding: 0 1px; }
+mark.r { background: var(--mark-risk); } mark.f { background: var(--mark-fair); }
+.why-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.why-list li { border-left: 3px solid var(--rule); padding: 2px 0 2px 10px; display: grid; gap: 3px; }
+.why-list li.r { border-left-color: var(--risk); } .why-list li.f { border-left-color: var(--fair); }
+.why-list .t { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-weight: 700; }
+.why-list p { margin: 0; font-size: 13px; }
+.ask { background: color-mix(in srgb, var(--highlight) 22%, var(--sheet)); border-radius: 6px; padding: 6px 9px; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px; }
+.facts span { font: 500 12px var(--font-mono); border: 1px solid var(--rule); border-radius: 4px; padding: 3px 7px; }
+.navbtns { display: flex; gap: 6px; margin-left: auto; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 18px); background: var(--ink); color: var(--sheet); padding: 9px 14px; border-radius: 8px; font-size: 13px; z-index: 20; }
+footer { font-size: 12.5px; color: var(--ink-soft); max-width: 90ch; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <span class="eyebrow">Fine Print · <span id="rule-count"></span> checks for tenants</span>
+      <h1>Know what you're <span class="hl">signing</span></h1>
+      <p>Add agreements or lists of clauses as text. Each clause is classified, rated, and explained; click any row to see why.</p>
+    </div>
+  </header>
+
+  <section class="panel intake" aria-label="Add documents">
+    <div class="intake-row">
+      <div class="drop" id="drop">
+        <p><strong>Drop .txt files here</strong> — a full agreement, or one clause per line.</p>
+        <span class="btn filepick">Choose files<input id="file" type="file" accept=".txt,text/plain" multiple aria-label="Choose text files"></span>
+        <button class="btn ghost" type="button" id="toggle-paste" aria-expanded="false" aria-controls="paste">Paste text</button>
+      </div>
+    </div>
+    <div class="paste" id="paste" hidden>
+      <div class="paste-head">
+        <label class="lbl" for="paste-name">Name</label>
+        <input type="text" id="paste-name" placeholder="e.g. Flat 304 agreement">
+        <button class="btn" type="button" id="paste-add">Analyse and add</button>
+      </div>
+      <textarea id="paste-text" spellcheck="false" aria-label="Agreement or clause text" placeholder="Paste a full agreement, or one clause per line."></textarea>
+    </div>
+    <div class="docs" id="docs" role="group" aria-label="Documents in view"></div>
+    <div class="samples"><span class="hint">Try a sample:</span><span id="samples" class="samples"></span><span class="hint">·</span><button type="button" class="link" id="clear-all">Remove all</button></div>
+  </section>
+
+  <section class="kpis" id="kpis" aria-label="Summary"></section>
+
+  <section class="charts">
+    <div class="panel card">
+      <h2>Risk by clause type <small>click a row to filter</small></h2>
+      <div class="legend"><span><i class="seg-r"></i>Risky</span><span><i class="seg-n"></i>Neutral</span><span><i class="seg-f"></i>Tenant-favourable</span></div>
+      <div class="bars" id="chart-types"></div>
+    </div>
+    <div class="panel card">
+      <h2>Most common reasons <small>risky findings, click to filter</small></h2>
+      <div class="legend"><span><i class="seg-r"></i>High</span><span><i class="seg-h"></i>Medium</span><span><i class="seg-n"></i>Low</span></div>
+      <div class="bars" id="chart-reasons"></div>
+    </div>
+  </section>
+
+  <section class="panel card" id="docf-card">
+    <h2>Whole-agreement findings <small>risks that appear only when clauses are read together</small></h2>
+    <ul class="docf" id="docf"></ul>
+  </section>
+
+  <section class="register">
+    <div class="panel card">
+      <h2>Clause register <small id="count"></small></h2>
+      <div class="toolbar">
+        <select id="f-risk" aria-label="Risk level">
+          <option value="">All ratings</option><option value="RISKY">Risky</option><option value="NEUTRAL">Neutral</option><option value="TENANT_FAVORABLE">Tenant-favourable</option>
+        </select>
+        <select id="f-sev" aria-label="Severity">
+          <option value="">Any severity</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option>
+        </select>
+        <select id="f-type" aria-label="Clause type"></select>
+        <input type="search" id="f-q" placeholder="Search clause text" aria-label="Search clause text">
+      </div>
+      <div class="active-filters" id="active-filters"></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Clause</th><th>Type</th><th>Rating</th><th>Why flagged</th><th>Text</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="foot"><span>Sorted by severity, then by position in the agreement.</span><button class="btn ghost" type="button" id="copy-csv">Copy table as CSV</button></div>
+    </div>
+    <aside class="panel card detail" id="detail" aria-live="polite"></aside>
+  </section>
+
+  <footer>Automated screening, not legal advice. It catches common one-sided wording; it can miss unusual phrasing and flag clauses that are fine in context. Text never leaves your browser.</footer>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+const RULES = {"version": 1, "notes": "Shared by the Python pipeline and the browser demo. Patterns are case-insensitive and must stay compatible with both Python 're' and JavaScript RegExp (no lookbehind, no named groups). Placeholders {T}, {L}, {S} are expanded at load time. 'unless' suppresses a rule; 'value_min'/'value_max' compare capture group 1 (digits or number words).", "placeholders": {"T": "(?:tenants?|lessees?|licensees?)", "L": "(?:landlords?|lessors?|licensors?|owners?)", "S": "[^.;]*?", "R": "(?:rent|rental|licen[cs]e fees?)"}, "risk_labels": {"RISKY": "Risky", "NEUTRAL": "Neutral", "TENANT_FAVORABLE": "Tenant-favourable"}, "severity_weight": {"high": 3, "medium": 2, "low": 1}, "clause_types": {"RENT": {"label": "Rent & payment", "keywords": [["\\bmonthly (?:rent|licen[cs]e fee)\\b", 3], ["\\brent\\b|\\blicen[cs]e fee\\b", 1], ["\\bpayable\\b", 1], ["\\bper month\\b", 1], ["\\bdue (?:on|by|before)\\b", 2], ["\\bescalat", 2], ["\\bbank transfer\\b|\\bcheque\\b|\\bupi\\b|\\bneft\\b", 2], ["\\bproperty tax\\b|\\bmaintenance charges\\b|\\butility bills?\\b|\\belectricity (?:and|&) water\\b", 2], ["\\breceipt\\b", 1]]}, "DEPOSIT": {"label": "Security deposit", "keywords": [["\\bsecurity deposit\\b", 4], ["\\bdeposit\\b", 2], ["\\brefund", 2], ["\\binterest[- ]free\\b", 2], ["\\badvance amount\\b", 2], ["\\bdeduct", 1]]}, "TERMINATION": {"label": "Termination & notice", "keywords": [["\\bterminat", 3], ["\\bvacate\\b|\\bvacating\\b", 2], ["\\bnotice period\\b", 2], ["\\block[- ]?in\\b", 3], ["\\bevict", 3], ["\\bquit\\b", 1], ["\\bend (?:this|the) (?:agreement|tenancy)\\b", 2], ["\\bnotice\\b", 1]]}, "RENEWAL": {"label": "Renewal & term", "keywords": [["\\brenew", 4], ["\\bextend|\\bextension\\b", 2], ["\\bfurther period\\b", 2], ["\\bexpir", 2], ["\\bperiod of (?:eleven|11|twelve|12) months\\b", 2], ["\\bterm of\\b", 1]]}, "MAINTENANCE": {"label": "Repairs & maintenance", "keywords": [["\\brepair", 3], ["\\bmaintenance\\b", 2], ["\\bmaintain", 2], ["\\bwear and tear\\b", 3], ["\\bpainting\\b|\\bwhitewash", 2], ["\\bplumbing\\b|\\belectrical\\b|\\bfixtures\\b|\\bfittings\\b|\\bappliances\\b", 2], ["\\bpest\\b|\\bleak", 2], ["\\bdamage", 1], ["\\bgood (?:and tenantable )?condition\\b", 2]]}, "PENALTY": {"label": "Penalties & late fees", "keywords": [["\\blate (?:fee|payment|charge)", 4], ["\\bpenalt", 4], ["\\bfine\\b", 3], ["\\binterest (?:at|of)\\b", 2], ["\\bliquidated damages\\b", 3], ["\\bper day\\b|\\beach day\\b", 2], ["\\bdelay", 1], ["\\bdouble\\b|\\btwice\\b", 1], ["\\bdefault", 2], ["\\bbreach", 1]]}, "ENTRY": {"label": "Landlord entry & access", "keywords": [["\\benter\\b|\\bentry\\b", 3], ["\\binspect", 3], ["\\baccess\\b", 2], ["\\bduplicate key|\\bspare key", 3], ["\\bvisit\\b", 1], ["\\bprospective (?:tenants|buyers)\\b", 2]]}, "LIABILITY": {"label": "Liability & indemnity", "keywords": [["\\bindemnif", 4], ["\\bliab", 3], ["\\bresponsible for any (?:loss|damage|injury)", 2], ["\\bloss or damage\\b", 2], ["\\binsur", 2], ["\\bclaims?\\b", 1], ["\\btheft\\b|\\binjur", 2]]}, "USE": {"label": "Use of premises", "keywords": [["\\bsub-?let", 4], ["\\bassign", 2], ["\\bpets?\\b", 3], ["\\bguests?\\b|\\bvisitors?\\b", 3], ["\\bresidential purpose", 3], ["\\bcommercial\\b", 1], ["\\balteration|\\bstructural changes\\b", 2], ["\\bsmok", 2], ["\\boccup", 1], ["\\bnuisance\\b|\\bnoise\\b", 2], ["\\bfamily\\b", 1]]}}, "rules": [{"id": "GEN_SOLE_DISCRETION", "types": ["*"], "pattern": "\\b(?:sole|absolute|exclusive|own)(?: and (?:absolute|exclusive))? discretion\\b|\\bas (?:he|she|they|it|the {L}) (?:may )?(?:deems?|thinks?|considers?) (?:fit|appropriate|necessary|proper)\\b|\\b(?:his|her|their|the {L}'?s?) decision (?:shall|will) be final\\b", "risk": "RISKY", "severity": "high", "title": "Decided at the landlord's sole discretion", "explanation": "This clause lets one side decide on its own, with no objective standard and no way for you to challenge the decision.", "ask": "Replace 'sole discretion' with an objective test (e.g. 'reasonable, documented costs') or require mutual agreement."}, {"id": "GEN_WAIVER", "types": ["*"], "pattern": "\\b(?:waive[sd]?|waiver of|give[sn]? up|relinquish(?:es)?)\\b{S}\\b(?:rights?|claims?|remed(?:y|ies)|objections?)\\b", "risk": "RISKY", "severity": "high", "title": "You give up legal rights", "explanation": "The clause asks you to waive rights or remedies you would otherwise have. Waivers like this are hard to undo once signed.", "ask": "Strike the waiver, or limit it to a specific, named situation."}, {"id": "GEN_UNILATERAL_AMEND", "types": ["*"], "pattern": "\\b(?:modify|amend|change|alter|revise)\\b{S}\\b(?:terms|rules|conditions|agreement|regulations)\\b{S}(?:at any time|unilaterally|without (?:the )?(?:tenant'?s? |lessee'?s? |licensee'?s? )?(?:consent|notice|approval))|\\b{L}\\s+may\\s+(?:unilaterally\\s+)?(?:change|modify|amend|alter|revise)\\b{S}\\b(?:terms|conditions|rules|agreement)\\b|\\bunilaterally (?:alter|change|modify|amend)", "risk": "RISKY", "severity": "high", "title": "Terms can be changed one-sidedly", "explanation": "One party can change the agreement after you sign it, so the deal you agreed to may not be the deal you get.", "ask": "Add: 'No change to this agreement is valid unless made in writing and signed by both parties.'"}, {"id": "GEN_OPEN_ENDED", "types": ["*"], "pattern": "\\b(?:whatsoever|howsoever|irrespective of (?:the )?(?:cause|reason|circumstances?|fault)|however (?:small|minor|trivial)|of any (?:kind|nature) whatsoever)\\b", "risk": "RISKY", "severity": "medium", "title": "Open-ended scope", "explanation": "Words like 'whatsoever' or 'irrespective of the cause' make the obligation unlimited, including situations that are not your fault.", "ask": "Limit the obligation to losses caused by your own negligence or breach."}, {"id": "GEN_NO_LEGAL_RECOURSE", "types": ["*"], "pattern": "\\b(?:shall not|cannot|will not|may not|agrees? not to|not to)\\b{S}\\b(?:approach|move|file|go to|initiate)\\b{S}\\b(?:court|tribunal|authority|legal proceedings?|rent controller)\\b|\\bwaives?\\b{S}\\bright to (?:approach|move|file)", "risk": "RISKY", "severity": "high", "title": "Blocks you from legal remedies", "explanation": "The clause tries to stop you from going to a court or rent authority. You should never sign away access to dispute resolution.", "ask": "Delete this clause; any dispute clause should apply equally to both parties."}, {"id": "DEP_NONREFUNDABLE", "types": ["DEPOSIT", "RENT"], "pattern": "\\bnon[- ]?refundable\\b", "risk": "RISKY", "severity": "high", "title": "Non-refundable money", "explanation": "Part of what you pay will not come back to you, even if you leave the property in perfect condition.", "ask": "Ask for the full deposit to be refundable, minus documented damage beyond normal wear and tear."}, {"id": "DEP_FORFEIT", "types": ["*"], "pattern": "\\bforfeit|\\bretain (?:the )?(?:entire|whole|full|complete) (?:security )?deposit\\b", "risk": "RISKY", "severity": "high", "title": "Deposit can be forfeited", "explanation": "The landlord can keep the whole deposit as a penalty, not just the cost of actual damage or unpaid rent.", "ask": "Limit deductions to unpaid rent and documented repair costs; remove forfeiture."}, {"id": "DEP_FIXED_DEDUCTION", "types": ["DEPOSIT", "MAINTENANCE"], "pattern": "\\bdeduct\\w*{S}\\b(?:painting|repainting|whitewash\\w*|cleaning|deep clean\\w*)\\b|\\b(?:painting|repainting|whitewash\\w*|cleaning)\\b{S}\\bdeduct", "risk": "RISKY", "severity": "medium", "title": "Automatic deductions from deposit", "explanation": "A fixed charge (often painting or cleaning) comes out of your deposit whatever condition you leave the home in. Repainting after normal use is usually ordinary wear and tear.", "ask": "Make painting/cleaning deductions conditional on actual damage, with receipts."}, {"id": "DEP_TIMELINE", "types": ["DEPOSIT"], "pattern": "\\b(?:refund\\w*|return\\w*|repaid)\\b{S}(?:\\bwithin\\s+(?:\\w+\\s*)?(?:\\(\\d+\\)\\s*)?(?:days?|weeks?|working days)\\b|\\bat the time of (?:handing over|vacating)|\\bsimultaneously\\b|\\bimmediately\\b)", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Clear refund deadline", "explanation": "The deposit has a defined return deadline, which protects you from indefinite delays."}, {"id": "DEP_ITEMISED", "types": ["DEPOSIT"], "pattern": "\\bitemi[sz]ed\\b|\\b(?:supported|accompanied) by (?:bills|receipts|invoices)\\b|\\bwritten statement of (?:deductions|account)\\b|\\bwith (?:supporting )?(?:bills|receipts|invoices)\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Deductions must be justified", "explanation": "Any deduction must be backed by an itemised statement or receipts, so you can check what you are charged for."}, {"id": "TERM_LANDLORD_ANYTIME", "types": ["TERMINATION"], "pattern": "\\b(?:at any time|for any reason|without (?:assigning|giving|stating|any) (?:any )?reasons?|without (?:any )?(?:prior )?notice)\\b", "risk": "RISKY", "severity": "high", "title": "Can be ended without reason or notice", "explanation": "The tenancy can be ended at any time or without a reason, leaving you exposed to sudden loss of your home.", "ask": "Require a written notice period (at least 1 month) and limit landlord termination to specific breaches.", "unless": "\\b(?:either party|both parties|either of the parties)\\b"}, {"id": "TERM_LOCKIN", "types": ["TERMINATION", "RENEWAL"], "pattern": "\\block[- ]?in\\b", "risk": "RISKY", "severity": "medium", "title": "Lock-in period", "explanation": "You cannot leave during the lock-in without a penalty. If your plans change (job, studies, family), you may still owe money.", "ask": "Keep the lock-in short and make it apply to both sides equally.", "unless": "\\b(?:either party|both parties|neither party|mutual|binding on both)\\b"}, {"id": "TERM_PAY_REMAINDER", "types": ["*"], "pattern": "\\b(?:{R}|pay|liable)\\b{S}\\b(?:remaining|balance|unexpired|entire|whole|rest of the)\\b{S}\\b(?:period|term|months|lock[- ]?in|tenure)\\b", "risk": "RISKY", "severity": "high", "title": "Pay rent for months you don't live there", "explanation": "If you leave early you must pay rent for the rest of the term, which can be a large lump sum.", "ask": "Cap early-exit cost at one month's rent, or allow you to leave once a replacement tenant is found."}, {"id": "TERM_ONLY_LANDLORD", "types": ["TERMINATION"], "pattern": "\\bonly (?:the )?{L}\\b{S}\\bterminat|\\b{T}\\s+(?:shall|will|may|can)\\s*not\\s+(?:be (?:entitled|allowed|permitted)\\s+to\\s+|have (?:the|any) right to\\s+)?(?:terminat|cancel|end)\\w*\\b(?!{S}\\block[- ]?in)", "risk": "RISKY", "severity": "high", "title": "Only the landlord can end the agreement", "explanation": "The right to terminate is one-sided. You are bound for the full term while the landlord is not.", "ask": "Make termination rights and notice periods equal for both parties."}, {"id": "TERM_SELF_HELP", "types": ["TERMINATION", "PENALTY", "ENTRY", "*"], "pattern": "\\b(?:disconnect|cut off|stop|suspend)\\w*{S}\\b(?:electricity|water|power|gas|supply|supplies)\\b|\\bchange the locks?\\b|\\block (?:up )?the (?:premises|flat|house)\\b|\\blocked out\\b|\\bremove (?:the )?(?:{T}'?s? )?(?:belongings|possessions|articles)\\b|\\bforcibly\\b|\\btake (?:back )?possession\\b{S}\\bwithout\\b", "risk": "RISKY", "severity": "high", "title": "Self-help eviction", "explanation": "The landlord may cut utilities, change locks or remove your belongings. Evicting a tenant normally requires due legal process, not self-help.", "ask": "Delete this clause entirely."}, {"id": "TERM_MUTUAL", "types": ["TERMINATION"], "pattern": "\\b(?:either party|both parties|either of the parties|either side)\\b{S}\\b(?:terminat|notice|vacat|end)|\\b(?:terminat|notice)\\w*{S}\\b(?:by )?(?:either party|both parties)\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Mutual termination rights", "explanation": "Both sides can end the agreement on the same terms, so neither party has an unfair advantage."}, {"id": "REN_AUTO", "types": ["RENEWAL", "TERMINATION"], "pattern": "\\bautomatic(?:ally)?\\b{S}\\b(?:renew|extend|continu)|\\b(?:renew|extend)\\w*{S}\\bautomatic|\\bauto[- ]?renew|\\bdeemed (?:to (?:have been|be) )?(?:renewed|extended)\\b|\\bstand (?:automatically )?(?:renewed|extended)\\b|\\bshall continue\\b{S}\\bunless\\b{S}\\bnotice\\b", "risk": "RISKY", "severity": "medium", "title": "Automatic renewal", "explanation": "The agreement renews by itself unless someone gives notice in time. Miss the window and you can be bound for another term, often at a higher rent.", "ask": "Put the notice deadline in your calendar, or ask for renewal only by mutual written agreement."}, {"id": "REN_RENT_INCREASE_HIGH", "types": ["RENEWAL", "RENT"], "pattern": "\\b(?:increase|enhance|escalat|hike|revis)\\w*{S}(\\d+(?:\\.\\d+)?)\\s*(?:%|percent|per cent)", "risk": "RISKY", "severity": "high", "title": "Steep rent increase", "explanation": "The rent rises by more than 10%, above the increases customary on renewal (often around 5-10%).", "ask": "Negotiate a lower cap (e.g. 5%) or a fixed rent for the first renewal.", "value_min": 11}, {"id": "REN_UNBOUNDED_INCREASE", "types": ["RENEWAL", "RENT"], "pattern": "\\b(?:increase|enhance|escalat|hike|revis)\\w*{S}\\b(?:as (?:decided|determined|fixed) by|at the (?:sole )?discretion|prevailing market|market rate|as (?:he|she|they|the {L}) (?:may )?(?:deems?|thinks?|considers?) fit|from time to time|whenever)\\b|\\b{L}\\s+(?:may|can|shall be entitled to)\\s+(?:at any (?:time|point) )?(?:increase|revise|enhance|demand an increased)\\b(?![^.]*(?:%|percent|per cent))|\\b(?:fix|decide|determine)\\w* any rent\\b|\\brent\\b{S}\\bdecided by the {L}", "risk": "RISKY", "severity": "high", "title": "Rent increase with no cap", "explanation": "The rent can be raised without a fixed limit, so you cannot predict what renewal will cost.", "ask": "Ask for a fixed percentage cap written into the agreement."}, {"id": "REN_TENANT_OPTION", "types": ["RENEWAL"], "pattern": "\\b{T}\\s+(?:shall have|has|will have|is entitled to)\\s+(?:the|an|a)\\s+(?:first\\s+)?(?:option|right)\\s+to\\s+(?:renew|extend)|\\b{T}\\s+may,?\\s+at (?:his|her|their|its) (?:sole )?option,?\\s+(?:renew|extend)", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Renewal at your option", "explanation": "You decide whether to renew, which gives you security of tenure."}, {"id": "REN_CAPPED", "types": ["RENEWAL", "RENT"], "pattern": "\\b(?:not (?:exceed|be more than|more than)|maximum of|capped at|at most)\\s*(?:\\w+\\s*)?(?:\\(\\d+\\)\\s*)?\\d*\\s*(?:%|percent|per cent)", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Rent increase is capped", "explanation": "Any increase is limited to a stated maximum, so future rent is predictable."}, {"id": "MAINT_ALL_REPAIRS", "types": ["MAINTENANCE"], "pattern": "\\b{T}\\b{S}\\b(?:bear|pay|carry out|do|undertake|responsible for|liable for)\\b{S}\\b(?:all|any|every)\\b{S}\\b(?:repairs?|maintenance|replacement)\\b|\\ball (?:repairs|maintenance|replacements?)\\b{S}\\b(?:borne|paid|responsibility|cost)\\b{S}\\b{T}\\b", "risk": "RISKY", "severity": "high", "title": "You pay for all repairs", "explanation": "Making you responsible for every repair includes major and structural problems that are normally the landlord's job.", "ask": "Split responsibilities: minor day-to-day repairs for you, major/structural repairs for the landlord.", "unless": "\\b(?:minor|day[- ]to[- ]day|small) (?:repairs|day)"}, {"id": "MAINT_STRUCTURAL_TENANT", "types": ["MAINTENANCE"], "pattern": "\\b{T}\\b{S}\\b(?:repair|replace|bear|pay)\\w*{S}\\b(?:structural|roof|foundation|walls?|pipelines?|wiring)\\b|\\b(?:structural|major)\\b{S}\\b(?:borne|paid) by (?:the )?{T}\\b|\\b(?:roof|structural|foundation|overhead (?:water )?tank|drainage|main (?:water|drainage|sewer)\\w*)\\b{S}\\b(?:responsibility of|borne by|paid by|done by|carried out by) (?:the )?{T}\\b", "risk": "RISKY", "severity": "high", "title": "Structural repairs on you", "explanation": "Structural repairs (roof, walls, main plumbing or wiring) are expensive and are normally the owner's responsibility.", "ask": "Make structural and major repairs the landlord's responsibility."}, {"id": "MAINT_WEAR_TEAR_INCLUDED", "types": ["MAINTENANCE", "DEPOSIT"], "pattern": "\\b(?:including|irrespective of|regardless of|even if due to)\\b{S}\\b(?:(?:normal|reasonable|fair|ordinary) (?:wear and tear|use)|ageing|aging|natural deterioration)\\b", "risk": "RISKY", "severity": "high", "title": "Charged for normal wear and tear", "explanation": "You can be charged for the natural ageing of the home from ordinary use, which tenants usually aren't liable for.", "ask": "Add 'normal wear and tear excepted'."}, {"id": "MAINT_WEAR_TEAR_EXCEPTED", "types": ["MAINTENANCE", "DEPOSIT"], "pattern": "\\b(?:except|excepting|excluding|other than|save for|barring|subject to)\\b{S}\\b(?:normal|reasonable|fair|ordinary) wear and tear\\b|\\b(?:normal|reasonable|fair|ordinary) wear and tear (?:excepted|exempted|being excepted)\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Normal wear and tear excluded", "explanation": "You aren't charged for ordinary ageing of the property."}, {"id": "MAINT_LANDLORD_MAJOR", "types": ["MAINTENANCE"], "pattern": "\\b{L}\\b{S}\\b(?:shall|will|agrees to)\\b{S}\\b(?:major|structural|all)\\b{S}\\brepairs?\\b|\\b(?:major|structural)\\b{S}\\b(?:by|borne by|responsibility of) (?:the )?{L}\\b|\\b{L}\\b{S}\\bat (?:his|her|their|its) (?:own )?cost\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Landlord handles major repairs", "explanation": "The landlord is responsible for major or structural repairs, as is standard."}, {"id": "PEN_HIGH_MONTHLY_INTEREST", "types": ["PENALTY", "RENT"], "pattern": "\\binterest\\b{S}(\\d+(?:\\.\\d+)?)\\s*(?:%|percent|per cent)\\s*(?:per month|pm|a month|monthly|per mensem)", "risk": "RISKY", "severity": "high", "title": "High monthly interest on late payment", "explanation": "Interest of 2% or more per month is 24%+ per year, far above normal lending rates.", "ask": "Ask for a modest flat late fee or a low annual interest rate.", "value_min": 2}, {"id": "PEN_DAILY", "types": ["PENALTY"], "pattern": "\\b(?:per day|each day|every day|daily|for each day)\\b", "risk": "RISKY", "severity": "medium", "title": "Daily penalty", "explanation": "Charges that accrue every day add up quickly, especially if a payment is delayed by a bank holiday or an emergency.", "ask": "Ask for a grace period and a capped one-time late fee."}, {"id": "PEN_MULTIPLE_RENT", "types": ["*"], "pattern": "\\b(?:double|twice|two times|2x|three times|triple|thrice)\\b{S}\\b{R}\\b|\\b{R}\\b{S}\\b(?:double|twice|two times|three times|triple)\\b", "risk": "RISKY", "severity": "high", "title": "Penalty of multiple times the rent", "explanation": "Overstaying or a breach costs double (or more) the rent, a penalty far larger than the landlord's actual loss.", "ask": "Replace with ordinary per-day rent for any overstay agreed in writing."}, {"id": "PEN_GRACE", "types": ["PENALTY", "RENT"], "pattern": "\\bgrace period\\b|\\bwithin a grace\\b|\\bdays of grace\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Grace period for payment", "explanation": "You get extra days to pay before any penalty applies."}, {"id": "ENTRY_ANYTIME", "types": ["ENTRY"], "pattern": "\\b(?:enter|entry|access|inspect\\w*|visit|show)\\b{S}(?:\\bat any (?:time|hour)\\b|\\bany time\\b|\\bwithout (?:any )?(?:prior )?(?:notice|intimation|informing)\\b|\\bwith or without (?:prior )?notice\\b|\\bat all times\\b|\\bwhenever (?:he|she|they|it)? ?(?:wish|like|want|choose)e?s?\\b)|\\bsurprise (?:inspections?|visits?)\\b|\\bunrestricted access\\b|\\bfree access\\b", "risk": "RISKY", "severity": "high", "title": "Landlord can enter without notice", "explanation": "The landlord can come into your home whenever they like, which affects your privacy and security.", "ask": "Require at least 24 hours' written notice except in a genuine emergency.", "unless": "\\bemergenc"}, {"id": "ENTRY_DUPLICATE_KEY", "types": ["ENTRY", "USE", "*"], "pattern": "\\b(?:retain|keep|hold|have)\\w*{S}\\b(?:duplicate|spare|extra|second|master) (?:set of )?keys?\\b", "risk": "RISKY", "severity": "medium", "title": "Landlord keeps a key", "explanation": "The landlord keeps a key to your home, so entry is possible without you knowing.", "ask": "Ask that keys be used only in emergencies or with your consent."}, {"id": "ENTRY_NOTICE", "types": ["ENTRY"], "pattern": "\\b(?:\\d+|one|two|twenty[- ]four|forty[- ]eight|seventy[- ]two)\\s*(?:\\(\\d+\\)\\s*)?(?:hours?|days?)'?s?\\s*(?:prior |advance )?(?:written )?notice\\b|\\breasonable (?:prior |advance )?(?:written )?notice\\b|\\bprior (?:written )?(?:notice|appointment|intimation)\\b|\\bwith the (?:prior )?(?:consent|permission) of the {T}\\b|\\bnot enter\\b{S}\\bwithout\\b{S}\\b(?:consent|permission|notice)\\b|\\bin the presence of the {T}", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Entry only with notice", "explanation": "The landlord must give advance notice before entering, protecting your privacy.", "unless": "\\bwithout (?:any )?(?:prior |advance )?(?:written )?notice\\b|\\bat any time\\b"}, {"id": "LIAB_BROAD_INDEMNITY", "types": ["LIABILITY"], "pattern": "\\bindemnif\\w*{S}\\b(?:all|any|every)\\b{S}\\b(?:loss(?:es)?|claims?|damages?|costs?|expenses?|liabilit)", "risk": "RISKY", "severity": "medium", "title": "Broad indemnity", "explanation": "You agree to cover the landlord's losses or claims broadly, possibly including ones you did not cause.", "ask": "Limit the indemnity to losses caused by your negligence or breach of the agreement.", "unless": "\\b(?:caused by|arising (?:out of|from)|due to|attributable to) (?:the )?(?:{T}'?s? )?(?:negligence|default|breach|wilful)"}, {"id": "LIAB_LANDLORD_EXEMPT", "types": ["LIABILITY"], "pattern": "\\b{L}\\b{S}\\b(?:shall not|will not|is not|not) (?:be )?(?:held )?(?:liable|responsible)\\b{S}\\b(?:any|all)\\b", "risk": "RISKY", "severity": "medium", "title": "Landlord excluded from all liability", "explanation": "The landlord is not responsible for losses or injuries, even ones caused by poor upkeep of the building.", "ask": "Add an exception for loss caused by the landlord's negligence or failure to repair.", "unless": "\\b(?:except|unless|save)\\b{S}\\b(?:negligence|default|failure)"}, {"id": "LIAB_FAULT_BASED", "types": ["LIABILITY"], "pattern": "\\b(?:caused by|arising (?:out of|from)|due to|attributable to)\\b{S}\\b(?:negligence|default|breach|wilful)", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Liability limited to fault", "explanation": "Responsibility depends on who was actually at fault, which is fair to both sides."}, {"id": "USE_GUEST_RESTRICTION", "types": ["USE"], "pattern": "\\b(?:guests?|visitors?|friends|relatives)\\b{S}(?:\\bnot (?:be )?(?:allowed|permitted)\\b|\\bprohibited\\b|\\bprior (?:written )?(?:permission|consent|approval)\\b|\\bwithout (?:the )?(?:{L}'?s? )?(?:prior )?(?:written )?(?:permission|consent|approval)\\b)|\\bno (?:overnight )?(?:guests|visitors)\\b|\\b(?:guests?|visitors)\\b{S}\\bprohibited\\b", "risk": "RISKY", "severity": "medium", "title": "Restrictions on guests", "explanation": "You need permission to have guests, which reaches into your private life in your own home.", "ask": "Limit restrictions to long-term additional occupants, not ordinary visitors."}, {"id": "USE_UNREASONABLY_WITHHELD", "types": ["USE"], "pattern": "\\bnot (?:to )?be unreasonably (?:withheld|refused|denied)\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Consent can't be unreasonably refused", "explanation": "The landlord must have a good reason to say no, which keeps the permission process fair."}, {"id": "RENT_CASH_NO_RECEIPT", "types": ["RENT"], "pattern": "\\bcash\\b{S}\\b(?:no|without|not)\\b{S}\\b(?:receipts?|acknowledg\\w*)\\b|\\bno (?:written )?(?:receipts?|acknowledgement)\\b|\\bnot (?:be )?(?:obliged|required|bound) to (?:issue|give|provide) (?:any )?receipts?\\b", "risk": "RISKY", "severity": "medium", "title": "No proof of payment", "explanation": "Paying without receipts leaves you with no proof that rent was paid if a dispute arises.", "ask": "Pay by bank transfer/UPI or insist on signed receipts."}, {"id": "RENT_RECEIPT", "types": ["RENT"], "pattern": "\\b{L}\\b{S}\\b(?:issue|provide|give|furnish|acknowledge)\\w*{S}\\b(?:receipts?|payments?)\\b|\\b(?:receipt|register|acknowledg\\w*)\\b{S}\\bsigned by the {L}", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Rent receipts provided", "explanation": "You get written proof of each payment.", "unless": "\\bno (?:written )?(?:receipts?|acknowledg)|\\bnot (?:be )?(?:obliged|required|bound)|\\breceipt of which\\b"}, {"id": "RENT_LANDLORD_TAXES", "types": ["RENT", "*"], "pattern": "\\b{T}\\b{S}\\b(?:property tax|house tax|municipal tax(?:es)?)\\b|\\b(?:property tax|house tax|municipal tax(?:es)?)\\b{S}\\b(?:borne|paid) by (?:the )?{T}\\b", "risk": "RISKY", "severity": "medium", "title": "Owner's taxes passed to you", "explanation": "Property/municipal tax is normally the owner's liability; this clause shifts it to you.", "ask": "Ask that property and municipal taxes stay with the owner."}, {"id": "GEN_UNCAPPED", "types": ["*"], "pattern": "\\bwithout (?:any )?(?:limit|cap|ceiling|upper limit)\\b|\\bunlimited\\b", "risk": "RISKY", "severity": "medium", "title": "No upper limit", "explanation": "The amount you can be asked to pay has no ceiling.", "ask": "Ask for a fixed cap on the amount."}, {"id": "GEN_LEGAL_COSTS", "types": ["*"], "pattern": "\\b{T}\\b{S}\\b(?:pay|bear|reimburse)\\b{S}\\b{L}'?s? (?:legal|litigation|advocate'?s?|lawyer'?s?) (?:costs|fees|expenses|charges)\\b|\\b{T}\\b{S}\\b(?:pay|bear)\\b{S}\\b{L}'?s? legal", "risk": "RISKY", "severity": "medium", "title": "You pay the landlord's legal costs", "explanation": "You cover the landlord's lawyer fees, even when the landlord is in the wrong or the paperwork benefits them.", "ask": "Each party should bear its own legal costs, or costs should follow the outcome of a dispute."}, {"id": "GEN_ONE_SIDED_ARBITRATION", "types": ["*"], "pattern": "\\barbitrat\\w*\\b{S}\\b(?:appointed|nominated|chosen|selected)\\b{S}\\b(?:solely|alone|only|exclusively)\\b|\\barbitrat\\w*\\b{S}\\b(?:solely|alone|only|exclusively)\\b{S}\\b{L}\\b|\\b{L}\\b{S}\\b(?:solely|alone|only) (?:appoint|nominate)", "risk": "RISKY", "severity": "high", "title": "Landlord picks the arbitrator", "explanation": "Disputes go to an arbitrator chosen by the landlord alone, which is not a neutral forum.", "ask": "Ask for an arbitrator appointed jointly, or keep access to the Rent Authority/courts."}, {"id": "GEN_MUTUAL_AMEND", "types": ["*"], "pattern": "\\b(?:amendment|modification|change|variation)\\w*{S}\\b(?:in writing|written)\\b{S}\\b(?:signed by both|both parties|by both)\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Changes need both signatures", "explanation": "The agreement can only be changed with both parties' written signatures, so nothing changes behind your back."}, {"id": "GEN_CLEAR_TITLE", "types": ["*"], "pattern": "\\b{L}\\b{S}\\b(?:clear|marketable|absolute|valid) title\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Landlord confirms ownership", "explanation": "The landlord confirms they own the property and can rent it out, which protects you from a disputed tenancy."}, {"id": "RENT_ADVANCE", "types": ["RENT", "DEPOSIT"], "pattern": "\\b(\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty)\\s*(?:\\(\\d+\\)\\s*)?months?'?\\s*(?:rent|licen[cs]e fee)\\b{S}\\bin advance\\b|\\bin advance\\b{S}\\b(\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty)\\s*months|\\badvance\\b{S}\\b(?:equivalent to|equal to|of)\\s+(\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty)\\s*(?:\\(\\d+\\)\\s*)?months?'?\\s*(?:rent|licen[cs]e fee)", "risk": "RISKY", "severity": "medium", "title": "Large advance rent", "explanation": "Several months of rent are paid up front, so a lot of your money is locked in before you even move in.", "ask": "Limit advance rent to one month.", "value_min": 3}, {"id": "RENT_FIXED", "types": ["RENT", "RENEWAL"], "pattern": "\\brent\\b{S}\\b(?:remain fixed|shall not be (?:revised|increased|enhanced)|not be increased)\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Rent fixed for the term", "explanation": "Your rent cannot go up during the agreement."}, {"id": "DEP_LARGE", "types": ["DEPOSIT"], "pattern": "\\bdeposit\\b{S}\\b(\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty)\\s*(?:\\(\\d+\\)\\s*)?months?'?", "risk": "RISKY", "severity": "medium", "title": "Deposit of several months' rent", "explanation": "The deposit equals several months of rent, which is a lot of your money held by the landlord. India's Model Tenancy Act, 2021 suggests a cap of two months' rent for homes (only in states that have adopted it).", "ask": "Negotiate the deposit down to 2-3 months' rent.", "value_min": 3}, {"id": "DEP_CAPPED", "types": ["DEPOSIT"], "pattern": "\\bdeposit\\b{S}\\b(?:not exceed|maximum of|capped at|limited to|no more than)\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Deposit is capped", "explanation": "The deposit amount is limited, keeping more of your money with you."}, {"id": "DEP_LATE_INTEREST", "types": ["DEPOSIT"], "pattern": "\\b{L}\\s+(?:shall|will)\\s+pay\\s+interest\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Interest if the deposit is late", "explanation": "The landlord pays you interest if the deposit is returned late, which encourages on-time refunds."}, {"id": "DEP_JOINT_INSPECTION", "types": ["DEPOSIT", "MAINTENANCE"], "pattern": "\\bjoint(?:ly)? inspect|\\bjoint inspection\\b|\\binspect\\w*{S}\\bin the presence of both\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Joint inspection before deductions", "explanation": "Damage is assessed together with you, so you can dispute claims on the spot."}, {"id": "TERM_SHORT_NOTICE", "types": ["TERMINATION"], "pattern": "\\b{L}\\b{S}\\b(?:terminat\\w*|vacate|cancel\\w*|revoke\\w*|end)\\b{S}\\b(\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty)\\s*(?:\\(\\d+\\)\\s*)?(?:clear\\s+)?days?\\b", "risk": "RISKY", "severity": "high", "title": "Very short notice to vacate", "explanation": "The landlord can end the tenancy with under a month's notice, which is very little time to find a new home.", "ask": "Ask for at least one month's written notice.", "unless": "\\b(?:either party|both parties)\\b|\\bto (?:remedy|rectify|cure)\\b", "value_max": 29}, {"id": "TERM_IMMEDIATE_VACATE", "types": ["TERMINATION", "*"], "pattern": "\\bvacate\\b{S}\\bwithin\\b{S}\\bhours?\\b|\\bvacate (?:forthwith|immediately)\\b|\\bimmediately (?:cancel|terminate|revoke)\\b", "risk": "RISKY", "severity": "high", "title": "Must leave immediately", "explanation": "You may have to leave within hours or immediately, with no time to find another home.", "ask": "Require at least 30 days' written notice and a chance to fix any breach."}, {"id": "TERM_FOR_CAUSE", "types": ["TERMINATION"], "pattern": "\\b{L}\\b{S}\\bterminat\\w*{S}\\bonly (?:if|in case|on|upon|when)\\b|\\bopportunity to (?:remedy|rectify|cure)\\b|\\bnotice to (?:remedy|rectify|cure)\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Landlord can end it only for a reason", "explanation": "The landlord can only end the tenancy for a real breach, and you get a chance to fix it first."}, {"id": "TERM_NO_PENALTY_EXIT", "types": ["TERMINATION"], "pattern": "\\b{T}\\b{S}\\b(?:terminat|end|exit|vacate|leave)\\w*{S}\\bwithout (?:any )?(?:penalty|charge|forfeiture)\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Early exit without penalty", "explanation": "You can leave early in the stated situations without paying a penalty."}, {"id": "MAINT_REPAINT", "types": ["MAINTENANCE", "DEPOSIT"], "pattern": "\\b{T}\\b{S}\\b(?:repaint\\w*|re-paint\\w*|get (?:the )?(?:entire )?(?:flat|premises|house|home) (?:re)?painted)\\b|\\b(?:regardless|irrespective) of (?:its|the|their) (?:condition|state)\\b", "risk": "RISKY", "severity": "medium", "title": "Repainting regardless of condition", "explanation": "You must pay for repainting whatever state the home is in. Repainting after normal use is usually the owner's cost.", "ask": "Make repainting conditional on damage beyond normal wear and tear."}, {"id": "MAINT_REPLACE_NEW", "types": ["MAINTENANCE"], "pattern": "\\b{T}\\b{S}\\breplace\\b{S}\\bnew\\b|\\breplace\\w*{S}\\b(?:appliances?|fixtures?|fittings?)\\b{S}\\b(?:his|her|their|own) (?:cost|expense)", "risk": "RISKY", "severity": "medium", "title": "Replace items with new ones", "explanation": "If something the landlord supplied breaks, even from age, you must buy a new one.", "ask": "Limit this to damage you caused; normal breakdowns should be the owner's cost."}, {"id": "MAINT_NOT_AT_FAULT", "types": ["*"], "pattern": "\\b{T}\\b{S}\\b(?:pay|bear|liable|responsible)\\w*\\b{S}\\b(?:natural calamit\\w*|acts? of god|earthquake|flood|adjoining (?:flats?|premises)|neighbou?ring flats?)\\b", "risk": "RISKY", "severity": "high", "title": "Liable for damage you didn't cause", "explanation": "You pay for damage from events outside your control, such as natural disasters or leaks from neighbours.", "ask": "Limit your liability to damage caused by you, your family or guests."}, {"id": "MAINT_REPAIR_DEADLINE", "types": ["MAINTENANCE"], "pattern": "\\b{L}\\b{S}\\brepair\\w*{S}\\bwithin\\b|\\bfailing which,? the {T} may\\b|\\bdeduct the cost from the rent\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Repairs within a deadline", "explanation": "The landlord must fix problems within a set time, and you have a remedy if they don't."}, {"id": "LIAB_LANDLORD_LIABLE", "types": ["LIABILITY"], "pattern": "\\b{L}\\s+(?:shall|will) be (?:liable|responsible)\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Landlord accepts liability", "explanation": "The landlord takes responsibility for losses caused by the building's condition."}, {"id": "LIAB_PRIOR_DUES", "types": ["*"], "pattern": "\\bdues\\b{S}\\b(?:pending|outstanding|arrears)\\b{S}\\bbefore\\b|\\b(?:past dues|previous dues|dues pending from before)\\b|\\b(?:previous|earlier|former) (?:tenants?|occupants?|owners?)\\b{S}\\b(?:dues|arrears|bills)\\b", "risk": "RISKY", "severity": "medium", "title": "Pay dues from before you moved in", "explanation": "You may be charged for unpaid bills or society dues that belong to an earlier period.", "ask": "Make dues before your move-in date the owner's responsibility."}, {"id": "USE_LIFESTYLE", "types": ["USE", "*"], "pattern": "\\bnot (?:cook|eat|consume)\\b|\\bnon[- ]?veg\\w*\\b{S}\\b(?:not|prohibited|banned)\\b|\\bopposite (?:gender|sex)\\b|\\bcurfew\\b|\\bbe (?:home|back|in) (?:by|before) \\d+\\s*(?:pm|am)?\\b", "risk": "RISKY", "severity": "medium", "title": "Restrictions on your personal life", "explanation": "The clause controls private choices (food, who visits, when you come home) that have nothing to do with protecting the property.", "ask": "Ask to remove lifestyle restrictions not tied to damage or nuisance."}, {"id": "USE_TENANT_PERMITTED", "types": ["USE"], "pattern": "\\b{T}\\s+may\\s+(?:have|receive|invite|install|work|keep (?:a|one))\\b", "risk": "TENANT_FAVORABLE", "severity": "low", "title": "Explicit freedom of use", "explanation": "The agreement confirms things you are allowed to do, avoiding later disputes."}, {"id": "TERM_ON_ANY_BREACH", "types": ["TERMINATION", "PENALTY", "*"], "pattern": "\\b(?:fail\\w*|default\\w*|breach\\w*|violat\\w*|non-?compliance|contravene\\w*)\\b{S}\\b(?:automatic(?:ally)? terminat\\w*|stand terminated|immediate(?:ly)? terminat\\w*|terminat\\w* (?:immediately|forthwith|automatically)|(?:cause|grounds?) for (?:immediate )?termination|self[- ]?evict\\w*|vacate (?:immediately|forthwith))|\\b(?:automatic(?:ally)? terminat\\w*|stand terminated|cause for (?:immediate )?termination|grounds? for termination)\\b{S}\\b(?:fail\\w*|default\\w*|breach\\w*|violat\\w*|non-?compliance)\\b", "risk": "RISKY", "severity": "high", "title": "Ended for any breach", "explanation": "The agreement can end automatically or immediately for any failure to comply, however small, with no notice or chance to fix it.", "ask": "Limit termination to serious breaches, after written notice and at least 15-30 days to remedy.", "unless": "\\b(?:notice to (?:remedy|rectify|cure)|opportunity to (?:remedy|rectify|cure)|after (?:giving|serving)\\b[^.;]*?\\bnotice|days'? (?:written )?notice to)\\b"}, {"id": "MAINT_TENANT_REPAIR_REPLACE", "types": ["MAINTENANCE", "*"], "pattern": "\\b{T}\\b{S}\\b(?:responsible|liable)\\b{S}\\b(?:repair\\w*|replac\\w*)\\b(?!{S}\\b(?:caused by|due to|resulting from|arising from)\\b)", "risk": "RISKY", "severity": "medium", "title": "You repair or replace items", "explanation": "You must pay to repair or replace fixtures and appliances, which may include breakdowns from age or normal use.", "ask": "Limit this to damage caused by you or your guests; normal breakdowns should be the owner's cost.", "unless": "\\b(?:minor|day[- ]to[- ]day|small)\\b|\\b(?:caused by|due to|resulting from)\\b{S}\\b(?:negligence|misuse|carelessness|wilful)\\b|\\bwear and tear\\b"}, {"id": "GEN_ATTORNEY_FEES", "types": ["*"], "pattern": "\\b{T}\\b{S}\\b(?:pay|bear|reimburse|liable for)\\b{S}\\b(?:attorney'?s?'?|lawyer'?s?'?|advocate'?s?'?|legal|collection)\\s+(?:fees|costs|charges|expenses)\\b", "risk": "RISKY", "severity": "medium", "title": "You pay legal or collection costs", "explanation": "You must pay the landlord's lawyer or collection costs, which can add up quickly in any dispute.", "ask": "Each party should bear its own legal costs, or costs should follow the outcome.", "unless": "\\b(?:each party|both parties|prevailing party|equally)\\b"}]};
+const SAMPLES = [{"name": "Risky leave & licence", "text": "LEAVE AND LICENSE AGREEMENT\n\nThis Leave and License Agreement is made and executed at Bengaluru on this 1st day of August 2026 between Mr. R. Prakash (hereinafter called the \"Licensor\") and Ms. A. Menon (hereinafter called the \"Licensee\").\n\nWHEREAS the Licensor is the absolute owner of Flat No. 304, Green Meadows Apartments, and has agreed to grant the Licensee a licence to occupy the said premises on the following terms:\n\n1. TERM: The licence is granted for a period of eleven (11) months commencing from 1st August 2026. This agreement shall be automatically renewed for a further period of eleven months unless the Licensee gives written notice at least ninety (90) days before expiry.\n\n2. LICENSE FEE: The Licensee shall pay a monthly license fee of Rs. 25,000/- (Rupees Twenty Five Thousand only) on or before the 5th day of every month. Upon renewal the license fee shall be increased by 15% over the last paid license fee.\n\n3. SECURITY DEPOSIT: The Licensee has paid an interest-free security deposit of Rs. 2,50,000/- to the Licensor. The deposit shall be refunded after the Licensee vacates the premises, after deducting any amounts due, at the sole discretion of the Licensor.\n\n4. A sum equivalent to one month's license fee shall be deducted from the security deposit towards painting and cleaning charges at the time of vacating, irrespective of the condition of the premises.\n\n5. LOCK-IN: There shall be a lock-in period of eleven months. If the Licensee vacates during the lock-in period, the Licensee shall pay the license fee for the remaining lock-in period and the security deposit shall stand forfeited.\n\n6. TERMINATION: The Licensor may terminate this agreement at any time without assigning any reason by giving fifteen (15) days notice to the Licensee. The Licensee may terminate this agreement by giving three (3) months notice in writing to the Licensor.\n\n7. LATE PAYMENT: If the license fee is not paid by the due date, the Licensee shall pay a late fee of Rs. 500/- per day of delay along with interest at 3% per month on the outstanding amount.\n\n8. REPAIRS: The Licensee shall carry out all repairs and maintenance of the premises at her own cost, including normal wear and tear, plumbing, electrical and structural repairs.\n\n9. INSPECTION: The Licensor or his agents shall be entitled to enter and inspect the premises at any time without prior notice. The Licensor shall retain a duplicate set of keys to the premises.\n\n10. GUESTS: The Licensee shall not allow any guests or visitors to stay overnight in the premises without the prior written permission of the Licensor.\n\n11. INDEMNITY: The Licensee shall indemnify the Licensor against all losses, claims and damages of whatsoever nature arising in connection with the premises. The Licensor shall not be liable for any loss, theft or injury suffered by the Licensee or her guests.\n\n12. TAXES: Property tax and all municipal taxes in respect of the premises shall be borne by the Licensee during the term of this agreement.\n\n13. DEFAULT: In case of any default, the Licensor shall be entitled to disconnect the electricity and water supply and change the locks of the premises.\n\n14. AMENDMENT: The Licensor may modify the rules and conditions of this agreement at any time by written intimation to the Licensee.\n\n15. OVERSTAY: If the Licensee fails to vacate on expiry, she shall pay double the license fee for every month of overstay.\n\n16. The Licensee hereby waives all rights to object to any deduction made from the security deposit.\n\n17. The premises shall be used only for residential purposes by the Licensee and her immediate family. The Licensee shall not sublet or assign the premises.\n\n18. Disputes arising under this agreement shall be subject to the jurisdiction of courts in Bengaluru.\n\nIN WITNESS WHEREOF the parties have signed this agreement on the date first mentioned above.\n\nLicensor                                   Licensee\nWitness 1                                  Witness 2\n"}, {"name": "Balanced lease", "text": "RESIDENTIAL TENANCY AGREEMENT\n\nThis Tenancy Agreement is entered into on 10 September 2026 between Mrs. S. Iyer (\"Landlord\") and Mr. K. Thomas (\"Tenant\") for the residential premises at No. 12, 3rd Cross, Jayanagar, Bengaluru.\n\n1. Term\n1.1 The tenancy shall be for a period of twelve (12) months starting 1 October 2026. The Tenant shall have the option to renew the tenancy for a further twelve months on the same terms, subject to the rent increase in clause 2.3.\n\n2. Rent\n2.1 The monthly rent is Rs. 30,000, payable by bank transfer on or before the 5th of each month.\n2.2 The Landlord shall issue a written receipt for every payment received.\n2.3 On renewal, the rent may be increased by not more than 5% of the rent last paid.\n\n3. Security Deposit\n3.1 The Tenant shall pay a refundable security deposit of Rs. 60,000.\n3.2 The deposit shall be refunded within fifteen (15) days of the Tenant handing over vacant possession, less any amounts for damage beyond normal wear and tear, supported by an itemised statement with bills.\n\n4. Repairs and Maintenance\n4.1 The Tenant shall carry out minor day-to-day repairs such as replacing bulbs and fuses.\n4.2 The Landlord shall carry out all major and structural repairs, including roof, plumbing lines and wiring, within a reasonable time of being informed.\n4.3 The Tenant shall keep the premises in good condition, normal wear and tear excepted.\n\n5. Late Payment\n5.1 If rent remains unpaid seven days after the due date (grace period), a one-time late fee of Rs. 500 shall be payable.\n\n6. Access\n6.1 The Landlord may enter the premises for inspection or repairs with at least 24 hours prior written notice to the Tenant, except in an emergency.\n\n7. Termination\n7.1 Either party may terminate this agreement by giving one month's written notice to the other party.\n7.2 The Landlord may terminate the tenancy earlier only if the Tenant fails to pay rent for two consecutive months or materially breaches this agreement, after giving thirty days' written notice to remedy the breach.\n\n8. Use of Premises\n8.1 The premises shall be used for residential purposes only. The Tenant shall not sublet the premises without the Landlord's written consent, which shall not be unreasonably withheld.\n8.2 The Tenant may keep one domestic pet.\n\n9. Liability\n9.1 Each party shall be responsible only for loss or damage caused by its own negligence or breach of this agreement.\n\n10. Utilities\n10.1 Electricity and water charges as per meter readings shall be paid by the Tenant. Property tax shall be paid by the Landlord.\n\n11. Disputes\n11.1 Any dispute shall first be discussed in good faith, failing which either party may approach the Rent Authority or competent court.\n"}, {"name": "Room rental (unnumbered)", "text": "ROOM RENTAL AGREEMENT\n\nThis agreement is between the Owner, Mr. D. Rao, and the Tenant, Mr. V. Nair, for a furnished room in a shared flat in Koramangala.\n\nRent: The rent is Rs. 12,000 per month, payable in cash on the first day of every month. No receipts will be issued for cash payments.\n\nDeposit: The tenant shall pay a deposit equal to three months' rent. A sum of Rs. 5,000 from the deposit is non-refundable and will be retained towards administrative charges.\n\nThe tenant must keep the room clean and is responsible for any damage to furniture provided in the room. Common areas will be cleaned by a housekeeper arranged by the owner.\n\nThe owner may revise the rent at any time as the owner deems fit, with intimation to the tenant.\n\nEither party may end this arrangement with thirty days' notice.\n\nThe tenant shall not keep pets or smoke inside the flat. Loud music after 10 pm is not allowed.\n\nElectricity charges will be split equally among all occupants of the flat.\n"}, {"name": "Clause list (one per line)", "text": "The Tenant shall pay a monthly rent of Rs. 18,000 on or before the 5th of every month by bank transfer.\nThe security deposit of Rs. 1,08,000 shall be refunded after the Tenant vacates, less any deductions the Owner deems necessary.\nThe Owner may terminate this agreement by giving the Tenant ten days' notice.\nThe Tenant may terminate this agreement by giving two months' written notice to the Owner.\nThis agreement shall stand automatically renewed for eleven months unless the Tenant gives notice sixty days before expiry.\nOn renewal the rent shall be increased by 12% of the last rent paid.\nMinor repairs shall be done by the Tenant; major and structural repairs shall be done by the Owner at his own cost.\nThe Owner may visit and inspect the flat at any time without prior notice.\nLate payment shall attract interest at 2% per month on the amount due.\nThe Tenant shall keep the flat in good condition, normal wear and tear excepted.\nOvernight guests are not permitted without the Owner's written approval.\nEither party may refer any dispute to the Rent Authority having jurisdiction.\n"}];
+</script>
+<script>
+"use strict";
+// ---------- Rule book (shared rules.json, same semantics as rental_risk/rules.py) ----------
+const expand = p => Object.entries(RULES.placeholders).reduce((s, [k, v]) => s.split("{" + k + "}").join(v), p);
+const BOOK = {
+  types: Object.fromEntries(Object.entries(RULES.clause_types).map(([t, spec]) => [t, spec.keywords.map(([p, w]) => [new RegExp(p, "gi"), w])])),
+  rules: RULES.rules.map(r => ({ ...r, rx: new RegExp(expand(r.pattern), "i"), rxg: new RegExp(expand(r.pattern), "gi"),
+    unlessRx: r.unless ? new RegExp(expand(r.unless), "i") : null, types: new Set(r.types) })),
+};
+const RISKY = "RISKY", NEUTRAL = "NEUTRAL", FAV = "TENANT_FAVORABLE";
+const LABEL = { RISKY: "Risky", NEUTRAL: "Neutral", TENANT_FAVORABLE: "Tenant-favourable" };
+const SEV = { high: 3, medium: 2, low: 1, "": 0 };
+const NUMWORDS = { a: 1, an: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+  eleven: 11, twelve: 12, fifteen: 15, twenty: 20, thirty: 30, "forty five": 45, sixty: 60, ninety: 90 };
+
+function normalize(t) {
+  t = t.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
+  t = t.replace(/\b(rs|no|nos|mr|mrs|ms|dr|smt|shri|sri|st|viz|vs|etc|ltd|pvt|approx|sq|ft)\./gi, "$1");
+  t = t.replace(/\bi\.e\./gi, "ie").replace(/\be\.g\./gi, "eg").replace(/\bp\.\s?([am])\./gi, "p$1");
+  t = t.replace(/(\d)\.(\d)/g, "$1·$2").replace(/\/-/g, "");
+  return t.replace(/\s+/g, " ").trim();
+}
+function num(s) {
+  if (s == null) return null;
+  const w = s.trim().toLowerCase();
+  if (w in NUMWORDS) return NUMWORDS[w];
+  const v = parseFloat(w.replace("·", ".").replace(/,/g, ""));
+  return isNaN(v) ? null : v;
+}
+function classifyType(text) {
+  const norm = normalize(text);
+  const head = norm.slice(0, 60).includes(":") ? norm.slice(0, 60).split(":")[0] : "";
+  const scores = {};
+  for (const [t, kws] of Object.entries(BOOK.types)) {
+    let s = 0;
+    for (const [rx, w] of kws) {
+      const n = (norm.match(rx) || []).length;
+      if (n) { s += w * Math.min(n, 3); if (head && (head.match(rx) || []).length) s += w * 2; }
+    }
+    scores[t] = s;
+  }
+  let best = "OTHER", bs = 0;
+  for (const [t, s] of Object.entries(scores)) if (s > bs) { best = t; bs = s; }
+  return [best, scores];
+}
+function secondBest(scores) {
+  const r = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  return r.length > 1 && r[1][1] > 0 && r[1][1] >= 0.5 * r[0][1] ? r[1][0] : null;
+}
+function matchRules(text, ctype, secondary) {
+  const norm = normalize(text), hits = [], seen = new Set();
+  for (const r of BOOK.rules) {
+    if (!r.types.has("*") && !r.types.has(ctype) && !(secondary && r.types.has(secondary))) continue;
+    const m = norm.match(r.rx);
+    if (!m) continue;
+    if (r.unlessRx && r.unlessRx.test(norm)) continue;
+    if (r.value_min != null || r.value_max != null) {
+      const vals = [];
+      for (const mm of norm.matchAll(r.rxg)) { const g = mm.slice(1).find(x => x); const v = num(g); if (v != null) vals.push(v); }
+      if (!vals.length) continue;
+      if (r.value_min != null && Math.max(...vals) < r.value_min) continue;
+      if (r.value_max != null && Math.min(...vals) > r.value_max) continue;
+    }
+    if (seen.has(r.id)) continue;
+    seen.add(r.id);
+    hits.push({ rule_id: r.id, risk: r.risk, severity: r.severity, title: r.title, explanation: r.explanation, ask: r.ask || "",
+      evidence: m[0].replace(/·/g, ".").slice(0, 160) });
+  }
+  return hits;
+}
+const riskFromHits = h => h.some(x => x.risk === RISKY) ? RISKY : h.some(x => x.risk === FAV) ? FAV : NEUTRAL;
+
+// ---------- Segmentation (mirrors rental_risk/ingest.py) ----------
+const NUM_START = /^\s*(?:((?:clause|article|section)\s+[\dIVXivx]+[.:)]?)|(\d{1,2}(?:\.\d{1,2}){0,3}[.)]|\d{1,2}(?:\.\d{1,2}){1,3})(?=\s+\S)|(\(?[a-hj-z]\)|\([ivx]{1,4}\)|[ivx]{1,4}[.)])(?=\s+\S))\s*/i;
+const HEADING = /^\s*(?:[A-Z][A-Z0-9 &\/,'()-]{2,60}|[A-Z][a-zA-Z &\/,'-]{2,40}:)\s*$/;
+const INLINE_HEADING = /^\s*([A-Z][A-Za-z &\/'-]{2,40}?)\s*[:–—-]\s+(?=[A-Z])/;
+const END_OF_TERMS = /^\s*(?:in witness where(?:of|to)|signed (?:sealed )?and delivered|witnesses?\s*[:1]|schedule\s+[a-z0-9]*\s*$)/i;
+const BOILERPLATE = /^(?:witness(?:es)?|signature|signed|landlord|tenant|lessor|lessee|licensor|licensee|date|place|name)\b.{0,40}$/i;
+const SMALL = new Set(["and", "of", "the", "to", "for", "in", "on", "by", "with", "a", "an", "&", "or"]);
+function isHeadingText(rest) {
+  const words = rest.replace(/:$/, "").split(/\s+/).filter(Boolean);
+  if (!words.length || rest.length >= 45 || words.length > 6 || /[.;,]$/.test(rest)) return false;
+  if (SMALL.has(words[words.length - 1].toLowerCase())) return false;
+  return words.every(w => /^[A-Z]/.test(w) || SMALL.has(w.toLowerCase()) || !/^[A-Za-z]/.test(w));
+}
+const titleCase = s => s.toLowerCase().replace(/\b[a-z]/g, c => c.toUpperCase());
+const splitSentences = t => t.replace(/([.;])\s+(?=[A-Z(])/g, "$1\u0001").split("\u0001");
+
+const ABBR = new Set(["mr", "mrs", "ms", "dr", "rs", "no", "nos", "smt", "shri", "sri", "st", "s/o", "d/o", "w/o", "viz", "vs", "etc",
+  "ltd", "pvt", "co", "sq", "ft", "approx", "sl", "dt", "ref", "inr", "re", "rd", "opp", "nr", "ph", "e.g", "i.e"]);
+const BOUNDARY = /[.;]\s+(?=[A-Z("'\u201c])/g;
+const PAGE_MARK = /^\s*-\s*\d{1,3}\s*-\s*/;
+const MAX_CLAUSE = 500, MIN_PIECE = 60;
+function splitLong(text, maxLen = MAX_CLAUSE) {
+  if (text.length <= maxLen) return [text];
+  const pieces = []; let start = 0;
+  for (const m of text.matchAll(BOUNDARY)) {
+    const before = text.slice(start, m.index).split(/\s+/).filter(Boolean);
+    const last = before.length ? before[before.length - 1].toLowerCase().replace(/^[("']+|[("']+$/g, "") : "";
+    if (ABBR.has(last) || last.length <= 1 || /^(?:[a-z]\.)+[a-z]?$/.test(last)) continue;
+    pieces.push(text.slice(start, m.index + 1).trim());
+    start = m.index + m[0].length;
+  }
+  pieces.push(text.slice(start).trim());
+  const out = [];
+  for (const p of pieces) { if (out.length && out[out.length - 1].length < MIN_PIECE) out[out.length - 1] += " " + p; else out.push(p); }
+  if (out.length > 1 && out[out.length - 1].length < MIN_PIECE) { const l = out.pop(); out[out.length - 1] += " " + l; }
+  return out.filter(Boolean);
+}
+function joinWrapped(lines) {
+  const out = [];
+  for (const ln of lines) {
+    if (out.length && !/[.;:]\s*$/.test(out[out.length - 1]) && /^[a-z0-9(]/.test(ln)) out[out.length - 1] += " " + ln;
+    else out.push(ln);
+  }
+  return out;
+}
+function segment(text, minChars = 30) {
+  text = text.replace(/\r\n?/g, "\n").replace(/ /g, " ");
+  const lines = text.split("\n").map(l => l.replace(PAGE_MARK, "").replace(/\s+$/, ""));
+  const raw = [];
+  const starts = lines.filter(l => NUM_START.test(l)).length;
+  if (starts >= 3) {
+    let curNum = "", curHead = "", buf = [], pending = "";
+    for (const ln of lines) {
+      if (!ln.trim() || /^\s*(?:page\s*)?\d+(?:\s*of\s*\d+)?\s*$/i.test(ln)) continue;
+      if (END_OF_TERMS.test(ln)) break;
+      const m = ln.match(NUM_START);
+      if (m) {
+        if (buf.length) raw.push([curNum, curHead, buf.join(" ")]);
+        const rest = ln.slice(m[0].length).trim();
+        if (isHeadingText(rest)) { curNum = ""; curHead = ""; buf = []; pending = rest.replace(/:$/, ""); continue; }
+        curNum = (m[1] || m[2] || m[3] || "").trim().replace(/[.:]+$/, "");
+        curHead = pending; buf = [rest];
+        if (!/^\d+\.\d+/.test(curNum)) pending = "";
+      } else if (HEADING.test(ln) && ln.trim().length < 60) {
+        if (buf.length) { raw.push([curNum, curHead, buf.join(" ")]); curNum = ""; curHead = ""; buf = []; }
+        pending = ln.trim().replace(/:$/, "");
+      } else buf.push(ln.trim());
+    }
+    if (buf.length) raw.push([curNum, curHead, buf.join(" ")]);
+  } else {
+    let paras = text.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+    if (paras.length < 3) {
+      const ls = joinWrapped(lines.map(l => l.trim()).filter(Boolean));
+      if (ls.length >= 3 && ls.reduce((s, l) => s + l.length, 0) / ls.length >= 40) paras = ls;  // one clause per line
+      else paras = splitSentences(paras.join(" ")).filter(s => s.trim());
+    }
+    let pending = "";
+    for (let p of paras) {
+      p = p.split("\n").map(x => x.trim()).join(" ").replace(/^[-*\u2022]\s+/, "");
+      if (END_OF_TERMS.test(p)) break;
+      if (HEADING.test(p) && p.length < 60) { pending = p.replace(/:$/, ""); continue; }
+      raw.push(["", pending, p]); pending = "";
+    }
+  }
+  const out = [];
+  for (let [n, head, body] of raw) {
+    body = body.replace(/\s+/g, " ").trim();
+    if (!head) {
+      const m = body.match(INLINE_HEADING);
+      if (m && m[1].split(/\s+/).length <= 5) { head = m[1].trim(); body = body.slice(m[0].length).trim(); }
+    }
+    head = head && head === head.toUpperCase() ? titleCase(head) : head;
+    splitLong(body).forEach((piece, k) => {
+      if (piece.length < minChars || BOILERPLATE.test(piece)) return;
+      out.push({ index: out.length + 1, number: n, heading: k === 0 ? head : "", text: piece });
+    });
+  }
+  return out;
+}
+
+// ---------- Document-level checks (mirrors rental_risk/doccheck.py) ----------
+const DURATION = /\b(\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty|forty[- ]five|sixty|ninety|a|an)\s*(?:\(\s*\d{1,3}\s*\)\s*)?(?:clear\s+|calendar\s+|working\s+)?(day|week|month|year)s?\b/gi;
+const UNIT = { day: 1, week: 7, month: 30, year: 365 };
+const MONEY = /(?:rs|inr|₹|\$|usd|£|€|rupees)\s*\.?\s*([\d,]+(?:[.·]\d+)?)/gi;
+const T_ = "(?:tenants?|lessees?|licensees?)", L_ = "(?:landlords?|lessors?|licensors?|owners?)";
+function durations(t) {
+  const out = [];
+  for (const m of t.matchAll(DURATION)) {
+    const raw = m[1].toLowerCase().replace("-", " ");
+    const n = /^\d+$/.test(raw) ? parseInt(raw, 10) : NUMWORDS[raw];
+    if (n) out.push(n * UNIT[m[2].toLowerCase()]);
+  }
+  return out;
+}
+function amounts(t) {
+  const out = [];
+  for (const m of t.matchAll(MONEY)) { const v = parseFloat(m[1].replace(/,/g, "").replace("·", ".")); if (!isNaN(v) && v >= 100) out.push(v); }
+  return out;
+}
+function monthsMultiple(t) {
+  const m = t.match(/\b(\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s*(?:\(\s*\d+\s*\)\s*)?months?'?\s*(?:of\s+)?(?:the\s+)?(?:monthly\s+)?(?:rent|rental|license fee)/i);
+  return m ? num(m[1]) : null;
+}
+function partyForNotice(s) {
+  s = s.toLowerCase();
+  if (/\b(?:either party|both parties|either of the parties|each party)\b/.test(s)) return "both";
+  if (new RegExp("notice\\s+(?:from|by|given by|issued by|served by)\\s+(?:the\\s+)?" + L_).test(s)) return "landlord";
+  if (new RegExp("notice\\s+(?:from|by|given by|issued by|served by)\\s+(?:the\\s+)?" + T_).test(s)) return "tenant";
+  const t = s.search(new RegExp("\\b" + T_ + "\\b")), l = s.search(new RegExp("\\b" + L_ + "\\b"));
+  if (t >= 0 && (l < 0 || t < l)) return "tenant";
+  return l >= 0 ? "landlord" : null;
+}
+function documentChecks(clauses) {
+  const f = [], byType = {};
+  for (const c of clauses) (byType[c.clause_type] = byType[c.clause_type] || []).push(c);
+  let rent = null, rentIdx = null;
+  for (const c of [...(byType.RENT || []), ...clauses.filter(c => c.clause_type !== "RENT")]) {
+    const t = normalize(c.text);
+    if (/\b(?:rent|license fee)\b/i.test(t) && /\bmonth|\bper mensem\b|\bpm\b/i.test(t)) {
+      const a = amounts(t);
+      if (a.length && !t.toLowerCase().slice(0, 80).includes("deposit")) { rent = a[0]; rentIdx = c.index; break; }
+    }
+  }
+  for (const c of byType.DEPOSIT || []) {
+    const t = normalize(c.text);
+    if (monthsMultiple(t) != null || !rent) continue;
+    const a = amounts(t);
+    if (!a.length) continue;
+    const mult = a[0] / rent;
+    if (mult > 2.0001) f.push({ check_id: "DOC_DEPOSIT_RATIO", risk: RISKY, severity: mult >= 5 ? "high" : "medium",
+      title: `Deposit is about ${mult.toFixed(1)}× the monthly rent`,
+      explanation: `The security deposit equals roughly ${mult.toFixed(1)} months of rent. That is a lot of your money held by the landlord, and it is harder to recover in a dispute. For reference, India's Model Tenancy Act, 2021 suggests a cap of two months' rent for residential premises (it applies only in states that have adopted it).`,
+      ask: "Negotiate the deposit down to 2-3 months' rent, or ask for interest on the excess.", clause_indexes: [c.index, rentIdx].filter(Boolean).sort((x, y) => x - y) });
+    break;
+  }
+  const tn = [], ln = [];
+  for (const c of [...(byType.TERMINATION || []), ...(byType.RENEWAL || [])]) {
+    for (const s of splitSentences(normalize(c.text))) {
+      if (!s.toLowerCase().includes("notice")) continue;
+      const d = durations(s);
+      if (!d.length) continue;
+      const p = partyForNotice(s), v = Math.min(...d);
+      if (p === "tenant" || p === "both") tn.push([v, c.index]);
+      if (p === "landlord" || p === "both") ln.push([v, c.index]);
+    }
+  }
+  if (tn.length && ln.length) {
+    const t = tn.reduce((a, b) => b[0] > a[0] ? b : a), l = ln.reduce((a, b) => b[0] < a[0] ? b : a);
+    if (t[0] > l[0]) f.push({ check_id: "DOC_NOTICE_ASYMMETRY", risk: RISKY, severity: "high", title: "You must give more notice than the landlord",
+      explanation: `You have to give about ${t[0]} days' notice to leave, but the landlord only has to give about ${l[0]} days. The termination terms are tilted against you.`,
+      ask: "Ask for the same notice period for both parties.", clause_indexes: [...new Set([t[1], l[1]])].sort((a, b) => a - b) });
+  }
+  if (ln.length) {
+    const l = ln.reduce((a, b) => b[0] < a[0] ? b : a);
+    if (l[0] < 30) f.push({ check_id: "DOC_SHORT_NOTICE", risk: RISKY, severity: l[0] <= 15 ? "high" : "medium", title: `Only ${l[0]} days' notice to vacate`,
+      explanation: `The landlord can ask you to leave with only about ${l[0]} days' notice, which is very little time to find a new home.`,
+      ask: "Ask for at least one month's written notice.", clause_indexes: [l[1]] });
+  }
+  const expected = {
+    DEPOSIT: ["No security-deposit clause", "Nothing says how much deposit is held, when it is returned, or what can be deducted."],
+    TERMINATION: ["No termination / notice clause", "Nothing says how either side can end the agreement or how much notice is needed."],
+    MAINTENANCE: ["No repairs clause", "Nothing says who pays for repairs. That ambiguity usually ends up costing the tenant."],
+  };
+  for (const [t, [title, expl]] of Object.entries(expected))
+    if (!byType[t]) f.push({ check_id: "DOC_MISSING_" + t, risk: RISKY, severity: "low", title, explanation: expl, ask: "Ask for this to be added in writing before signing.", clause_indexes: [] });
+  return f;
+}
+
+// ---------- Explanation + pipeline (mirrors rental_risk/pipeline.py, rules engine) ----------
+function keyFacts(text) {
+  const t = normalize(text), facts = [];
+  for (const d of [...new Set(durations(t))].sort((a, b) => a - b)) facts.push(d >= 30 && d % 30 === 0 ? `${d / 30} month(s)` : `${d} day(s)`);
+  for (const a of amounts(t).slice(0, 3)) facts.push("₹" + a.toLocaleString("en-IN", { maximumFractionDigits: 0 }));
+  for (const m of [...t.matchAll(/(\d+(?:[.·]\d+)?)\s*(?:%|percent|per cent)/gi)].slice(0, 3)) facts.push(m[1].replace("·", ".") + "%");
+  return facts.slice(0, 6);
+}
+function explain(risk, hits, facts) {
+  const r = hits.filter(h => h.risk === RISKY).sort((a, b) => SEV[b.severity] - SEV[a.severity]);
+  const f = hits.filter(h => h.risk === FAV);
+  if (risk === RISKY) {
+    const parts = r.slice(0, 2).map(h => h.explanation);
+    if (facts.length) parts.push("Key numbers: " + facts.join(", ") + ".");
+    return [r[0].severity, parts.join(" "), r[0].ask || ""];
+  }
+  if (risk === FAV) return ["low", f.slice(0, 2).map(h => h.explanation).join(" "), ""];
+  return ["", "Standard clause; no risk indicators found.", ""];
+}
+const FOLD = new Set(["DOC_NOTICE_ASYMMETRY", "DOC_DEPOSIT_RATIO", "DOC_SHORT_NOTICE"]);
+function analyze(text) {
+  const clauses = segment(text).map(c => {
+    const full = c.heading ? `${c.heading}: ${c.text}` : c.text;
+    const [ctype, scores] = classifyType(full);
+    const hits = matchRules(full, ctype, secondBest(scores));
+    const facts = keyFacts(full), risk = riskFromHits(hits);
+    const [severity, explanation, ask] = explain(risk, hits, facts);
+    return { ...c, clause_type: ctype, type_label: (RULES.clause_types[ctype] || { label: "Other" }).label, risk, severity, findings: hits, explanation, ask, key_facts: facts };
+  });
+  if (clauses.some(c => c.findings.some(h => h.rule_id === "DEP_TIMELINE")))
+    for (const c of clauses) {
+      const n = c.findings.length;
+      c.findings = c.findings.filter(h => h.rule_id !== "DEP_NO_TIMELINE");
+      if (c.findings.length !== n) { c.risk = riskFromHits(c.findings); [c.severity, c.explanation, c.ask] = explain(c.risk, c.findings, c.key_facts); }
+    }
+  const byIdx = Object.fromEntries(clauses.map(c => [c.index, c]));
+  const doc = [];
+  for (const f of documentChecks(clauses)) {
+    if (f.check_id === "DOC_SHORT_NOTICE" && clauses.some(c => c.findings.some(h => h.rule_id === "TERM_SHORT_NOTICE" || h.rule_id === "TERM_IMMEDIATE_VACATE"))) continue;
+    doc.push(f);
+    if (!FOLD.has(f.check_id)) continue;
+    for (const i of f.clause_indexes) {
+      const c = byIdx[i];
+      if (!c || c.findings.some(h => h.rule_id === f.check_id) || (f.check_id === "DOC_DEPOSIT_RATIO" && c.clause_type !== "DEPOSIT")) continue;
+      c.findings.push({ rule_id: f.check_id, risk: RISKY, severity: f.severity, title: f.title, explanation: f.explanation, ask: f.ask, evidence: "" });
+      c.risk = RISKY; [c.severity, c.explanation, c.ask] = explain(RISKY, c.findings, c.key_facts);
+    }
+  }
+  const counts = { RISKY: 0, NEUTRAL: 0, TENANT_FAVORABLE: 0 }, sev = { high: 0, medium: 0, low: 0 };
+  for (const c of clauses) { counts[c.risk]++; if (c.risk === RISKY) sev[c.severity || "medium"]++; }
+  for (const f of doc) if (f.risk === RISKY) sev[f.severity]++;
+  const score = Object.entries(sev).reduce((s, [k, v]) => s + RULES.severity_weight[k] * v, 0);
+  const rating = sev.high >= 3 || score >= 14 ? "High" : score >= 5 ? "Moderate" : "Low";
+  return { clauses, doc, summary: { counts, sev, score, rating } };
+}
+
+
+// ================= Dashboard =================
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const $ = id => document.getElementById(id);
+const TYPE_LABEL = Object.fromEntries(Object.entries(RULES.clause_types).map(([k, v]) => [k, v.label]));
+TYPE_LABEL.OTHER = "Other";
+const RATING_RANK = { High: 3, Moderate: 2, Low: 1 };
+
+let docs = [];            // {id, name, text, rep, sample}
+let scope = "all";        // doc id or "all"
+let selected = null;      // "docId:index"
+const F = { risk: "", sev: "", type: "", reason: "", q: "" };
+let seq = 0;
+
+function highlight(text, findings) {
+  let out = esc(text);
+  for (const f of findings) {
+    const ev = (f.evidence || "").trim();
+    if (ev.length < 4) continue;
+    const words = ev.split(/\s+/).map(w => esc(w).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    out = out.replace(new RegExp(words.join("[\\s.]*"), "i"), m => `<mark class="${f.risk === RISKY ? "r" : "f"}">${m}</mark>`);
+  }
+  return out;
+}
+function addDoc(name, text, sample = false) {
+  const rep = analyze(text);
+  const doc = { id: "d" + (++seq), name: name || "Untitled", text, rep, sample };
+  docs.push(doc);
+  return doc;
+}
+function save() {
+  try { localStorage.setItem("crd-docs", JSON.stringify(docs.map(d => ({ name: d.name, text: d.text, sample: d.sample })))); } catch (e) {}
+}
+function load() {
+  try { const s = JSON.parse(localStorage.getItem("crd-docs") || "null"); if (Array.isArray(s)) { s.forEach(d => addDoc(d.name, d.text, d.sample)); return s.length > 0; } } catch (e) {}
+  return false;
+}
+function toast(msg) {
+  const t = $("toast"); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; }, 2200);
+}
+
+const inScope = () => scope === "all" ? docs : docs.filter(d => d.id === scope);
+function allClauses() {
+  return inScope().flatMap(d => d.rep.clauses.map(c => ({ ...c, doc: d, key: d.id + ":" + c.index })));
+}
+function reasonOf(c) {
+  const r = c.findings.filter(h => h.risk === c.risk).sort((a, b) => SEV[b.severity] - SEV[a.severity]);
+  return r[0] ? r[0].title : (c.risk === NEUTRAL ? "" : "");
+}
+function passes(c) {
+  if (F.risk && c.risk !== F.risk) return false;
+  if (F.sev && !(c.risk === RISKY && c.severity === F.sev)) return false;
+  if (F.type && c.clause_type !== F.type) return false;
+  if (F.reason && !c.findings.some(h => h.risk === RISKY && h.title === F.reason)) return false;
+  if (F.q && !(c.text + " " + (c.heading || "")).toLowerCase().includes(F.q.toLowerCase())) return false;
+  return true;
+}
+
+// ---------- render: documents ----------
+function renderDocs() {
+  const el = $("docs");
+  if (!docs.length) { el.innerHTML = `<span class="hint">No documents yet. Drop a .txt file, paste text, or load a sample.</span>`; return; }
+  const all = `<button type="button" class="chip solo" data-scope="all" aria-pressed="${scope === "all"}">All documents · ${docs.length}</button>`;
+  el.innerHTML = all + docs.map(d => `<span class="chip" role="button" tabindex="0" data-scope="${d.id}" aria-pressed="${scope === d.id}">
+    <span class="dot ${d.rep.summary.rating}" aria-hidden="true"></span>${esc(d.name)}${d.sample ? " (sample)" : ""} · ${d.rep.clauses.length}
+    <button type="button" class="x" data-remove="${d.id}" aria-label="Remove ${esc(d.name)}">×</button></span>`).join("");
+}
+
+// ---------- render: KPIs ----------
+function scopeSummary() {
+  const ds = inScope();
+  const counts = { RISKY: 0, NEUTRAL: 0, TENANT_FAVORABLE: 0 }, sev = { high: 0, medium: 0, low: 0 };
+  let docFindings = 0, worst = null;
+  for (const d of ds) {
+    const s = d.rep.summary;
+    for (const k in counts) counts[k] += s.counts[k];
+    for (const k in sev) sev[k] += s.sev[k];
+    docFindings += d.rep.doc.length;
+    if (!worst || RATING_RANK[s.rating] > RATING_RANK[worst.rep.summary.rating]) worst = d;
+  }
+  const total = counts.RISKY + counts.NEUTRAL + counts.TENANT_FAVORABLE;
+  return { ds, counts, sev, total, docFindings, worst };
+}
+function renderKpis() {
+  const s = scopeSummary();
+  if (!s.total) { $("kpis").innerHTML = ""; return; }
+  const rating = s.worst.rep.summary.rating;
+  const ratingSub = s.ds.length === 1 ? `overall risk · score ${s.worst.rep.summary.score}` : `highest of ${s.ds.length} documents · ${esc(s.worst.name)}`;
+  const pct = n => Math.round(100 * n / s.total);
+  const riskySev = s.sev.high + s.sev.medium + s.sev.low || 1;
+  $("kpis").innerHTML = `
+    <div class="panel kpi rating ${rating}"><span class="lbl">Overall risk</span><b>${rating}</b><span class="sub">${ratingSub}</span></div>
+    <div class="panel kpi"><span class="lbl">Risky clauses</span><b>${s.counts.RISKY}</b><span class="sub">${pct(s.counts.RISKY)}% of ${s.total} clauses</span></div>
+    <div class="panel kpi"><span class="lbl">By severity</span><b>${s.sev.high}<span class="sub"> high</span></b>
+      <span class="sub">${s.sev.medium} medium · ${s.sev.low} low (incl. agreement-level)</span>
+      <span class="sevbar" aria-hidden="true"><i class="seg-r" style="width:${100 * s.sev.high / riskySev}%"></i><i class="seg-h" style="width:${100 * s.sev.medium / riskySev}%"></i><i class="seg-n" style="width:${100 * s.sev.low / riskySev}%"></i></span></div>
+    <div class="panel kpi"><span class="lbl">In your favour</span><b>${s.counts.TENANT_FAVORABLE}</b><span class="sub">${pct(s.counts.TENANT_FAVORABLE)}% tenant-favourable</span></div>
+    <div class="panel kpi"><span class="lbl">Agreement-level</span><b>${s.docFindings}</b><span class="sub">cross-clause findings</span></div>`;
+}
+
+// ---------- render: charts ----------
+function renderCharts() {
+  const cs = allClauses();
+  const byType = {};
+  for (const c of cs) { const t = (byType[c.clause_type] = byType[c.clause_type] || { RISKY: 0, NEUTRAL: 0, TENANT_FAVORABLE: 0 }); t[c.risk]++; }
+  const types = Object.entries(byType).sort((a, b) => (b[1].RISKY - a[1].RISKY) || ((b[1].RISKY + b[1].NEUTRAL + b[1].TENANT_FAVORABLE) - (a[1].RISKY + a[1].NEUTRAL + a[1].TENANT_FAVORABLE)));
+  const maxT = Math.max(1, ...types.map(([, v]) => v.RISKY + v.NEUTRAL + v.TENANT_FAVORABLE));
+  $("chart-types").innerHTML = types.length ? types.map(([t, v]) => {
+    const tot = v.RISKY + v.NEUTRAL + v.TENANT_FAVORABLE, w = n => (100 * n / maxT).toFixed(2) + "%";
+    return `<button type="button" class="bar-row" data-type="${t}" aria-pressed="${F.type === t}" aria-label="${esc(TYPE_LABEL[t])}: ${v.RISKY} risky of ${tot}">
+      <span class="name">${esc(TYPE_LABEL[t])}</span>
+      <span class="track"><i class="seg-r" style="width:${w(v.RISKY)}"></i><i class="seg-n" style="width:${w(v.NEUTRAL)}"></i><i class="seg-f" style="width:${w(v.TENANT_FAVORABLE)}"></i></span>
+      <span class="val">${v.RISKY}/${tot}</span></button>`;
+  }).join("") : `<p class="empty-note">No clauses yet.</p>`;
+
+  const reasons = {};
+  for (const c of cs) for (const h of c.findings) if (h.risk === RISKY) {
+    const r = (reasons[h.title] = reasons[h.title] || { n: 0, sev: h.severity });
+    r.n++; if (SEV[h.severity] > SEV[r.sev]) r.sev = h.severity;
+  }
+  const top = Object.entries(reasons).sort((a, b) => b[1].n - a[1].n || SEV[b[1].sev] - SEV[a[1].sev]).slice(0, 9);
+  const maxR = Math.max(1, ...top.map(([, v]) => v.n));
+  const cls = { high: "seg-r", medium: "seg-h", low: "seg-n" };
+  $("chart-reasons").innerHTML = top.length ? top.map(([t, v]) => `
+    <button type="button" class="bar-row" data-reason="${esc(t)}" aria-pressed="${F.reason === t}" aria-label="${esc(t)}: ${v.n} clauses">
+      <span class="name" title="${esc(t)}">${esc(t)}</span>
+      <span class="track"><i class="${cls[v.sev]}" style="width:${(100 * v.n / maxR).toFixed(2)}%"></i></span>
+      <span class="val">${v.n}</span></button>`).join("") : `<p class="empty-note">No risky wording found.</p>`;
+}
+
+// ---------- render: agreement-level findings ----------
+function renderDocFindings() {
+  const items = inScope().flatMap(d => d.rep.doc.map(f => ({ f, d })));
+  $("docf-card").hidden = !items.length;
+  $("docf").innerHTML = items.sort((a, b) => SEV[b.f.severity] - SEV[a.f.severity]).map(({ f, d }) => `
+    <li><div class="t"><span class="sev ${f.severity}">${f.severity}</span>${esc(f.title)}</div>
+    <p>${esc(f.explanation)}</p>${f.ask ? `<p class="ask"><strong>Ask for:</strong> ${esc(f.ask)}</p>` : ""}
+    <span class="src">${esc(d.name)}${f.clause_indexes.length ? " · " + f.clause_indexes.map(i => { const c = d.rep.clauses[i - 1]; return `<button type="button" class="link" data-select="${d.id}:${i}">${c && c.number ? "clause " + esc(c.number) : "segment " + i}</button>`; }).join(", ") : ""}</span></li>`).join("");
+}
+
+// ---------- render: register ----------
+function visibleRows() {
+  return allClauses().filter(passes).sort((a, b) =>
+    (b.risk === RISKY) - (a.risk === RISKY) || SEV[b.severity] - SEV[a.severity] || docs.indexOf(a.doc) - docs.indexOf(b.doc) || a.index - b.index);
+}
+function renderTypeFilter() {
+  const present = [...new Set(allClauses().map(c => c.clause_type))];
+  $("f-type").innerHTML = `<option value="">All types</option>` + present.map(t => `<option value="${t}" ${F.type === t ? "selected" : ""}>${esc(TYPE_LABEL[t])}</option>`).join("");
+}
+function renderActiveFilters() {
+  const chips = [];
+  if (F.reason) chips.push(["reason", "Reason: " + F.reason]);
+  if (F.type) chips.push(["type", "Type: " + TYPE_LABEL[F.type]]);
+  $("active-filters").innerHTML = chips.map(([k, l]) => `<button type="button" data-clear="${k}" aria-label="Remove filter ${esc(l)}">${esc(l)} ×</button>`).join("") +
+    (chips.length || F.risk || F.sev || F.q ? `<button type="button" data-clear="all">Clear all filters</button>` : "");
+}
+function renderRows() {
+  const rows = visibleRows(), multi = inScope().length > 1;
+  $("count").textContent = `${rows.length} of ${allClauses().length} clauses`;
+  $("rows").innerHTML = rows.length ? rows.map(c => `
+    <tr class="row ${c.risk}" tabindex="0" data-key="${c.key}" aria-selected="${selected === c.key}">
+      <td class="ref">${c.number ? "§ " + esc(c.number) : "¶ " + c.index}${multi ? `<small>${esc(c.doc.name)}</small>` : ""}</td>
+      <td>${esc(c.type_label)}</td>
+      <td><span class="badge ${c.risk}">${LABEL[c.risk]}${c.risk === RISKY && c.severity ? " · " + c.severity : ""}</span></td>
+      <td class="reason">${esc(reasonOf(c))}</td>
+      <td><span class="excerpt">${esc(c.text)}</span></td></tr>`).join("")
+    : `<tr><td colspan="5" class="empty-note">No clauses match these filters.</td></tr>`;
+}
+function renderDetail() {
+  const el = $("detail");
+  const rows = visibleRows();
+  let c = allClauses().find(x => x.key === selected);
+  if (!c) c = rows[0];
+  if (!c) { el.innerHTML = `<h2>Why it's flagged</h2><p class="empty-note">Select a clause to see the reasoning.</p>`; return; }
+  selected = c.key;
+  const pos = rows.findIndex(r => r.key === c.key);
+  const risky = c.findings.filter(h => h.risk === RISKY).sort((a, b) => SEV[b.severity] - SEV[a.severity]);
+  const fav = c.findings.filter(h => h.risk === FAV);
+  const items = [...risky, ...fav];
+  el.innerHTML = `
+    <div class="head"><span class="eyebrow">${c.number ? "Clause " + esc(c.number) : "Segment " + c.index} · ${esc(c.doc.name)}</span>
+      <span class="navbtns"><button type="button" class="btn ghost" data-step="-1" ${pos <= 0 ? "disabled" : ""} aria-label="Previous clause">↑</button><button type="button" class="btn ghost" data-step="1" ${pos < 0 || pos >= rows.length - 1 ? "disabled" : ""} aria-label="Next clause">↓</button></span></div>
+    <div class="head"><span class="ctype">${esc(c.type_label)}</span><span class="badge ${c.risk}">${LABEL[c.risk]}${c.risk === RISKY && c.severity ? " · " + c.severity : ""}</span></div>
+    <blockquote>${c.heading ? `<strong>${esc(c.heading)}.</strong> ` : ""}${highlight(c.text, c.findings)}</blockquote>
+    ${c.key_facts.length ? `<div><span class="lbl">Key numbers</span><div class="facts">${c.key_facts.map(f => `<span>${esc(f)}</span>`).join("")}</div></div>` : ""}
+    <div><span class="lbl">${items.length ? "Why" : "Assessment"}</span></div>
+    ${items.length ? `<ul class="why-list">${items.map(h => `
+      <li class="${h.risk === RISKY ? "r" : "f"}"><div class="t">${h.risk === RISKY ? `<span class="sev ${h.severity}">${h.severity}</span>` : `<span class="badge TENANT_FAVORABLE">In your favour</span>`}${esc(h.title)}</div>
+      <p>${esc(h.explanation)}</p>${h.ask ? `<p class="ask"><strong>Ask for:</strong> ${esc(h.ask)}</p>` : ""}
+      ${h.evidence ? `<p class="hint">Matched wording: “${esc(h.evidence)}”</p>` : h.rule_id.startsWith("DOC_") ? `<p class="hint">Found by reading this clause together with the rest of the agreement.</p>` : ""}</li>`).join("")}</ul>`
+      : `<p class="empty-note">No risk indicators found. This reads as a standard clause; the rules check for one-sided wording, so unusual risks can still slip through.</p>`}`;
+}
+
+function renderAll() {
+  if (scope !== "all" && !docs.some(d => d.id === scope)) scope = "all";
+  renderDocs(); renderKpis(); renderCharts(); renderDocFindings(); renderTypeFilter(); renderActiveFilters(); renderRows(); renderDetail();
+}
+function refreshRegister() { renderCharts(); renderActiveFilters(); renderRows(); renderDetail(); }
+function select(key, scroll) {
+  selected = key;
+  document.querySelectorAll("#rows tr.row").forEach(r => r.setAttribute("aria-selected", String(r.dataset.key === key)));
+  renderDetail();
+  if (scroll && matchMedia("(max-width: 1080px)").matches) $("detail").scrollIntoView({ block: "start" });
+}
+
+// ---------- events ----------
+$("docs").addEventListener("click", e => {
+  const rm = e.target.closest("[data-remove]");
+  if (rm) { e.stopPropagation(); const d = docs.find(x => x.id === rm.dataset.remove); docs = docs.filter(x => x !== d); save(); renderAll(); toast(`Removed ${d.name}`); return; }
+  const ch = e.target.closest("[data-scope]");
+  if (ch) { scope = ch.dataset.scope; selected = null; renderAll(); }
+});
+$("docs").addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.matches(".chip[data-scope]")) { e.preventDefault(); e.target.click(); } });
+$("chart-types").addEventListener("click", e => { const b = e.target.closest("[data-type]"); if (!b) return; F.type = F.type === b.dataset.type ? "" : b.dataset.type; $("f-type").value = F.type; refreshRegister(); });
+$("chart-reasons").addEventListener("click", e => { const b = e.target.closest("[data-reason]"); if (!b) return; F.reason = F.reason === b.dataset.reason ? "" : b.dataset.reason; if (F.reason) { F.risk = ""; $("f-risk").value = ""; } refreshRegister(); });
+$("f-risk").addEventListener("change", e => { F.risk = e.target.value; refreshRegister(); });
+$("f-sev").addEventListener("change", e => { F.sev = e.target.value; refreshRegister(); });
+$("f-type").addEventListener("change", e => { F.type = e.target.value; refreshRegister(); });
+let qt; $("f-q").addEventListener("input", e => { clearTimeout(qt); qt = setTimeout(() => { F.q = e.target.value.trim(); refreshRegister(); }, 150); });
+$("active-filters").addEventListener("click", e => {
+  const b = e.target.closest("[data-clear]"); if (!b) return;
+  if (b.dataset.clear === "all") { Object.keys(F).forEach(k => F[k] = ""); ["f-risk", "f-sev", "f-type", "f-q"].forEach(id => $(id).value = ""); }
+  else { F[b.dataset.clear] = ""; if (b.dataset.clear === "type") $("f-type").value = ""; }
+  refreshRegister();
+});
+$("rows").addEventListener("click", e => { const r = e.target.closest("tr.row"); if (r) select(r.dataset.key, true); });
+$("rows").addEventListener("keydown", e => {
+  const r = e.target.closest("tr.row"); if (!r) return;
+  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(r.dataset.key, true); }
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); const n = e.key === "ArrowDown" ? r.nextElementSibling : r.previousElementSibling; if (n && n.matches("tr.row")) { n.focus(); select(n.dataset.key, false); } }
+});
+$("detail").addEventListener("click", e => {
+  const b = e.target.closest("[data-step]"); if (!b) return;
+  const rows = visibleRows(), i = rows.findIndex(r => r.key === selected), n = rows[i + Number(b.dataset.step)];
+  if (n) { select(n.key, false); const tr = document.querySelector(`#rows tr[data-key="${n.key}"]`); if (tr) tr.scrollIntoView({ block: "nearest" }); }
+});
+$("docf").addEventListener("click", e => {
+  const b = e.target.closest("[data-select]"); if (!b) return;
+  Object.keys(F).forEach(k => F[k] = ""); ["f-risk", "f-sev", "f-type", "f-q"].forEach(id => $(id).value = "");
+  refreshRegister(); select(b.dataset.select, false);
+  const tr = document.querySelector(`#rows tr[data-key="${b.dataset.select}"]`);
+  if (tr) { tr.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); tr.focus({ preventScroll: true }); }
+});
+
+function readFiles(files) {
+  const list = [...files].filter(f => /\.txt$/i.test(f.name) || f.type.startsWith("text/"));
+  const skipped = files.length - list.length;
+  if (!list.length) { toast("Only .txt files can be read here. Save PDF or Word files as text first."); return; }
+  let done = 0, last = null;
+  list.forEach(f => {
+    const r = new FileReader();
+    r.onload = () => {
+      last = addDoc(f.name.replace(/\.txt$/i, ""), String(r.result));
+      if (++done === list.length) {
+        scope = list.length === 1 ? last.id : "all"; selected = null; save(); renderAll();
+        const n = last.rep.clauses.length;
+        toast(list.length === 1 ? (n ? `Added ${last.name}: ${n} clauses` : `No clauses found in ${last.name}`) : `Added ${list.length} documents` + (skipped ? ` (${skipped} skipped)` : ""));
+      }
+    };
+    r.readAsText(f);
+  });
+}
+$("file").addEventListener("change", e => { readFiles(e.target.files); e.target.value = ""; });
+const drop = $("drop");
+["dragenter", "dragover"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => { if (e.dataTransfer && e.dataTransfer.files.length) readFiles(e.dataTransfer.files); });
+$("toggle-paste").addEventListener("click", e => {
+  const p = $("paste"); p.hidden = !p.hidden; e.currentTarget.setAttribute("aria-expanded", String(!p.hidden));
+  if (!p.hidden) $("paste-text").focus();
+});
+$("paste-add").addEventListener("click", () => {
+  const text = $("paste-text").value.trim();
+  if (!text) { toast("Paste some text first."); $("paste-text").focus(); return; }
+  const d = addDoc($("paste-name").value.trim() || `Pasted text ${docs.length + 1}`, text);
+  scope = d.id; selected = null; save(); renderAll();
+  $("paste-text").value = ""; $("paste-name").value = "";
+  toast(d.rep.clauses.length ? `Added ${d.name}: ${d.rep.clauses.length} clauses` : "No clauses found. Put each clause on its own line.");
+});
+$("clear-all").addEventListener("click", () => { if (!docs.length) return; docs = []; scope = "all"; selected = null; save(); renderAll(); toast("All documents removed"); });
+SAMPLES.forEach(s => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "link"; b.textContent = s.name;
+  b.addEventListener("click", () => {
+    const existing = docs.find(d => d.sample && d.name === s.name);
+    const d = existing || addDoc(s.name, s.text, true);
+    scope = d.id; selected = null; save(); renderAll();
+  });
+  $("samples").appendChild(b);
+});
+$("copy-csv").addEventListener("click", () => {
+  const q = v => `"${String(v).replace(/"/g, '""')}"`;
+  const lines = [["document", "clause", "type", "rating", "severity", "reasons", "explanation", "ask_for", "text"].join(",")];
+  for (const c of visibleRows()) lines.push([c.doc.name, c.number || "seg " + c.index, c.type_label, LABEL[c.risk], c.severity,
+    c.findings.map(h => h.title).join("; "), c.explanation, c.ask, c.text].map(q).join(","));
+  const csv = lines.join("\n");
+  const fallback = () => { $("paste").hidden = false; $("toggle-paste").setAttribute("aria-expanded", "true"); $("paste-text").value = csv; $("paste-text").select(); toast("Copy blocked here: the CSV is selected in the paste box."); };
+  try { navigator.clipboard.writeText(csv).then(() => toast(`Copied ${lines.length - 1} rows as CSV`), fallback); } catch (e) { fallback(); }
+});
+
+$("rule-count").textContent = RULES.rules.length;
+if (!load()) {
+  addDoc(SAMPLES[0].name, SAMPLES[0].text, true);
+  addDoc(SAMPLES[3].name, SAMPLES[3].text, true);
+}
+renderAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,731 @@
+{
+  "title": "leave and license risky",
+  "engine": "hybrid",
+  "clauses": [
+    {
+      "index": 1,
+      "number": "",
+      "heading": "",
+      "text": "This Leave and License Agreement is made and executed at Bengaluru on this 1st day of August 2026 between Mr. R. Prakash (hereinafter called the \"Licensor\") and Ms. A. Menon (hereinafter called the \"Licensee\"). WHEREAS the Licensor is the absolute owner of Flat No. 304, Green Meadows Apartments, and has agreed to grant the Licensee a licence to occupy the said premises on the following terms:",
+      "clause_type": "OTHER",
+      "type_label": "Other",
+      "risk": "NEUTRAL",
+      "severity": "",
+      "findings": [],
+      "explanation": "Standard clause; no risk indicators found.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "OTHER",
+        "ml_type_conf": 0.97,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.965,
+        "rule_type": "USE"
+      }
+    },
+    {
+      "index": 2,
+      "number": "1",
+      "heading": "Leave And License Agreement",
+      "text": "TERM: The licence is granted for a period of eleven (11) months commencing from 1st August 2026. This agreement shall be automatically renewed for a further period of eleven months unless the Licensee gives written notice at least ninety (90) days before expiry.",
+      "clause_type": "RENEWAL",
+      "type_label": "Renewal & term",
+      "risk": "RISKY",
+      "severity": "medium",
+      "findings": [
+        {
+          "rule_id": "REN_AUTO",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Automatic renewal",
+          "explanation": "The agreement renews by itself unless someone gives notice in time. Miss the window and you can be bound for another term, often at a higher rent.",
+          "ask": "Put the notice deadline in your calendar, or ask for renewal only by mutual written agreement.",
+          "evidence": "automatically renew"
+        }
+      ],
+      "explanation": "The agreement renews by itself unless someone gives notice in time. Miss the window and you can be bound for another term, often at a higher rent. Key numbers: 3 month(s), 11 month(s).",
+      "ask": "Put the notice deadline in your calendar, or ask for renewal only by mutual written agreement.",
+      "key_facts": [
+        "3 month(s)",
+        "11 month(s)"
+      ],
+      "detail": {
+        "ml_type": "RENEWAL",
+        "ml_type_conf": 0.995,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.786,
+        "rule_type": "RENEWAL"
+      }
+    },
+    {
+      "index": 3,
+      "number": "2",
+      "heading": "License Fee",
+      "text": "The Licensee shall pay a monthly license fee of Rs. 25,000/- (Rupees Twenty Five Thousand only) on or before the 5th day of every month. Upon renewal the license fee shall be increased by 15% over the last paid license fee.",
+      "clause_type": "RENT",
+      "type_label": "Rent & payment",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "REN_RENT_INCREASE_HIGH",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Steep rent increase",
+          "explanation": "The rent rises by more than 10%, above the increases customary on renewal (often around 5-10%).",
+          "ask": "Negotiate a lower cap (e.g. 5%) or a fixed rent for the first renewal.",
+          "evidence": "increased by 15%"
+        }
+      ],
+      "explanation": "The rent rises by more than 10%, above the increases customary on renewal (often around 5-10%). Key numbers: ₹25,000, 15%.",
+      "ask": "Negotiate a lower cap (e.g. 5%) or a fixed rent for the first renewal.",
+      "key_facts": [
+        "₹25,000",
+        "15%"
+      ],
+      "detail": {
+        "ml_type": "RENT",
+        "ml_type_conf": 0.853,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.713,
+        "rule_type": "RENT"
+      }
+    },
+    {
+      "index": 4,
+      "number": "3",
+      "heading": "Security Deposit",
+      "text": "The Licensee has paid an interest-free security deposit of Rs. 2,50,000/- to the Licensor. The deposit shall be refunded after the Licensee vacates the premises, after deducting any amounts due, at the sole discretion of the Licensor.",
+      "clause_type": "DEPOSIT",
+      "type_label": "Security deposit",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "GEN_SOLE_DISCRETION",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Decided at the landlord's sole discretion",
+          "explanation": "This clause lets one side decide on its own, with no objective standard and no way for you to challenge the decision.",
+          "ask": "Replace 'sole discretion' with an objective test (e.g. 'reasonable, documented costs') or require mutual agreement.",
+          "evidence": "sole discretion"
+        },
+        {
+          "rule_id": "DOC_DEPOSIT_RATIO",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Deposit is about 10.0× the monthly rent",
+          "explanation": "The security deposit equals roughly 10.0 months of rent. That is a lot of your money held by the landlord, and it is harder to recover in a dispute. For reference, India's Model Tenancy Act, 2021 suggests a cap of two months' rent for residential premises (it applies only in states that have adopted it).",
+          "ask": "Negotiate the deposit down to 2-3 months' rent, or ask for interest on the excess.",
+          "evidence": ""
+        }
+      ],
+      "explanation": "This clause lets one side decide on its own, with no objective standard and no way for you to challenge the decision. The security deposit equals roughly 10.0 months of rent. That is a lot of your money held by the landlord, and it is harder to recover in a dispute. For reference, India's Model Tenancy Act, 2021 suggests a cap of two months' rent for residential premises (it applies only in states that have adopted it). Key numbers: ₹250,000.",
+      "ask": "Replace 'sole discretion' with an objective test (e.g. 'reasonable, documented costs') or require mutual agreement.",
+      "key_facts": [
+        "₹250,000"
+      ],
+      "detail": {
+        "ml_type": "DEPOSIT",
+        "ml_type_conf": 0.999,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.87,
+        "rule_type": "DEPOSIT"
+      }
+    },
+    {
+      "index": 5,
+      "number": "4",
+      "heading": "",
+      "text": "A sum equivalent to one month's license fee shall be deducted from the security deposit towards painting and cleaning charges at the time of vacating, irrespective of the condition of the premises.",
+      "clause_type": "DEPOSIT",
+      "type_label": "Security deposit",
+      "risk": "RISKY",
+      "severity": "medium",
+      "findings": [
+        {
+          "rule_id": "DEP_FIXED_DEDUCTION",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Automatic deductions from deposit",
+          "explanation": "A fixed charge (often painting or cleaning) comes out of your deposit whatever condition you leave the home in. Repainting after normal use is usually ordinary wear and tear.",
+          "ask": "Make painting/cleaning deductions conditional on actual damage, with receipts.",
+          "evidence": "deducted from the security deposit towards painting"
+        },
+        {
+          "rule_id": "MAINT_REPAINT",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Repainting regardless of condition",
+          "explanation": "You must pay for repainting whatever state the home is in. Repainting after normal use is usually the owner's cost.",
+          "ask": "Make repainting conditional on damage beyond normal wear and tear.",
+          "evidence": "irrespective of the condition"
+        }
+      ],
+      "explanation": "A fixed charge (often painting or cleaning) comes out of your deposit whatever condition you leave the home in. Repainting after normal use is usually ordinary wear and tear. You must pay for repainting whatever state the home is in. Repainting after normal use is usually the owner's cost. Key numbers: 1 month(s).",
+      "ask": "Make painting/cleaning deductions conditional on actual damage, with receipts.",
+      "key_facts": [
+        "1 month(s)"
+      ],
+      "detail": {
+        "ml_type": "DEPOSIT",
+        "ml_type_conf": 0.891,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.982,
+        "rule_type": "DEPOSIT"
+      }
+    },
+    {
+      "index": 6,
+      "number": "5",
+      "heading": "Lock-In",
+      "text": "There shall be a lock-in period of eleven months. If the Licensee vacates during the lock-in period, the Licensee shall pay the license fee for the remaining lock-in period and the security deposit shall stand forfeited.",
+      "clause_type": "TERMINATION",
+      "type_label": "Termination & notice",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "DEP_FORFEIT",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Deposit can be forfeited",
+          "explanation": "The landlord can keep the whole deposit as a penalty, not just the cost of actual damage or unpaid rent.",
+          "ask": "Limit deductions to unpaid rent and documented repair costs; remove forfeiture.",
+          "evidence": "forfeit"
+        },
+        {
+          "rule_id": "TERM_LOCKIN",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Lock-in period",
+          "explanation": "You cannot leave during the lock-in without a penalty. If your plans change (job, studies, family), you may still owe money.",
+          "ask": "Keep the lock-in short and make it apply to both sides equally.",
+          "evidence": "Lock-In"
+        },
+        {
+          "rule_id": "TERM_PAY_REMAINDER",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Pay rent for months you don't live there",
+          "explanation": "If you leave early you must pay rent for the rest of the term, which can be a large lump sum.",
+          "ask": "Cap early-exit cost at one month's rent, or allow you to leave once a replacement tenant is found.",
+          "evidence": "pay the license fee for the remaining lock-in"
+        }
+      ],
+      "explanation": "The landlord can keep the whole deposit as a penalty, not just the cost of actual damage or unpaid rent. If you leave early you must pay rent for the rest of the term, which can be a large lump sum. Key numbers: 11 month(s).",
+      "ask": "Limit deductions to unpaid rent and documented repair costs; remove forfeiture.",
+      "key_facts": [
+        "11 month(s)"
+      ],
+      "detail": {
+        "ml_type": "TERMINATION",
+        "ml_type_conf": 0.496,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.979,
+        "rule_type": "TERMINATION"
+      }
+    },
+    {
+      "index": 7,
+      "number": "6",
+      "heading": "Termination",
+      "text": "The Licensor may terminate this agreement at any time without assigning any reason by giving fifteen (15) days notice to the Licensee. The Licensee may terminate this agreement by giving three (3) months notice in writing to the Licensor.",
+      "clause_type": "TERMINATION",
+      "type_label": "Termination & notice",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "TERM_LANDLORD_ANYTIME",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Can be ended without reason or notice",
+          "explanation": "The tenancy can be ended at any time or without a reason, leaving you exposed to sudden loss of your home.",
+          "ask": "Require a written notice period (at least 1 month) and limit landlord termination to specific breaches.",
+          "evidence": "at any time"
+        },
+        {
+          "rule_id": "TERM_SHORT_NOTICE",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Very short notice to vacate",
+          "explanation": "The landlord can end the tenancy with under a month's notice, which is very little time to find a new home.",
+          "ask": "Ask for at least one month's written notice.",
+          "evidence": "Licensor may terminate this agreement at any time without assigning any reason by giving fifteen (15) days"
+        },
+        {
+          "rule_id": "DOC_NOTICE_ASYMMETRY",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "You must give more notice than the landlord",
+          "explanation": "You have to give about 90 days' notice to leave, but the landlord only has to give about 15 days. The termination terms are tilted against you.",
+          "ask": "Ask for the same notice period for both parties.",
+          "evidence": ""
+        }
+      ],
+      "explanation": "The tenancy can be ended at any time or without a reason, leaving you exposed to sudden loss of your home. The landlord can end the tenancy with under a month's notice, which is very little time to find a new home. Key numbers: 15 day(s), 3 month(s).",
+      "ask": "Require a written notice period (at least 1 month) and limit landlord termination to specific breaches.",
+      "key_facts": [
+        "15 day(s)",
+        "3 month(s)"
+      ],
+      "detail": {
+        "ml_type": "TERMINATION",
+        "ml_type_conf": 0.992,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.926,
+        "rule_type": "TERMINATION"
+      }
+    },
+    {
+      "index": 8,
+      "number": "7",
+      "heading": "Late Payment",
+      "text": "If the license fee is not paid by the due date, the Licensee shall pay a late fee of Rs. 500/- per day of delay along with interest at 3% per month on the outstanding amount.",
+      "clause_type": "PENALTY",
+      "type_label": "Penalties & late fees",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "PEN_HIGH_MONTHLY_INTEREST",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "High monthly interest on late payment",
+          "explanation": "Interest of 2% or more per month is 24%+ per year, far above normal lending rates.",
+          "ask": "Ask for a modest flat late fee or a low annual interest rate.",
+          "evidence": "interest at 3% per month"
+        },
+        {
+          "rule_id": "PEN_DAILY",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Daily penalty",
+          "explanation": "Charges that accrue every day add up quickly, especially if a payment is delayed by a bank holiday or an emergency.",
+          "ask": "Ask for a grace period and a capped one-time late fee.",
+          "evidence": "per day"
+        }
+      ],
+      "explanation": "Interest of 2% or more per month is 24%+ per year, far above normal lending rates. Charges that accrue every day add up quickly, especially if a payment is delayed by a bank holiday or an emergency. Key numbers: ₹500, 3%.",
+      "ask": "Ask for a modest flat late fee or a low annual interest rate.",
+      "key_facts": [
+        "₹500",
+        "3%"
+      ],
+      "detail": {
+        "ml_type": "PENALTY",
+        "ml_type_conf": 0.961,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.666,
+        "rule_type": "PENALTY"
+      }
+    },
+    {
+      "index": 9,
+      "number": "8",
+      "heading": "Repairs",
+      "text": "The Licensee shall carry out all repairs and maintenance of the premises at her own cost, including normal wear and tear, plumbing, electrical and structural repairs.",
+      "clause_type": "MAINTENANCE",
+      "type_label": "Repairs & maintenance",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "MAINT_ALL_REPAIRS",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "You pay for all repairs",
+          "explanation": "Making you responsible for every repair includes major and structural problems that are normally the landlord's job.",
+          "ask": "Split responsibilities: minor day-to-day repairs for you, major/structural repairs for the landlord.",
+          "evidence": "Licensee shall carry out all repairs"
+        },
+        {
+          "rule_id": "MAINT_STRUCTURAL_TENANT",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Structural repairs on you",
+          "explanation": "Structural repairs (roof, walls, main plumbing or wiring) are expensive and are normally the owner's responsibility.",
+          "ask": "Make structural and major repairs the landlord's responsibility.",
+          "evidence": "Licensee shall carry out all repairs and maintenance of the premises at her own cost, including normal wear and tear, plumbing, electrical and structural"
+        },
+        {
+          "rule_id": "MAINT_WEAR_TEAR_INCLUDED",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Charged for normal wear and tear",
+          "explanation": "You can be charged for the natural ageing of the home from ordinary use, which tenants usually aren't liable for.",
+          "ask": "Add 'normal wear and tear excepted'.",
+          "evidence": "including normal wear and tear"
+        }
+      ],
+      "explanation": "Making you responsible for every repair includes major and structural problems that are normally the landlord's job. Structural repairs (roof, walls, main plumbing or wiring) are expensive and are normally the owner's responsibility.",
+      "ask": "Split responsibilities: minor day-to-day repairs for you, major/structural repairs for the landlord.",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "MAINTENANCE",
+        "ml_type_conf": 0.998,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.633,
+        "rule_type": "MAINTENANCE"
+      }
+    },
+    {
+      "index": 10,
+      "number": "9",
+      "heading": "Inspection",
+      "text": "The Licensor or his agents shall be entitled to enter and inspect the premises at any time without prior notice. The Licensor shall retain a duplicate set of keys to the premises.",
+      "clause_type": "ENTRY",
+      "type_label": "Landlord entry & access",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "ENTRY_ANYTIME",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Landlord can enter without notice",
+          "explanation": "The landlord can come into your home whenever they like, which affects your privacy and security.",
+          "ask": "Require at least 24 hours' written notice except in a genuine emergency.",
+          "evidence": "Inspection: The Licensor or his agents shall be entitled to enter and inspect the premises at any time"
+        },
+        {
+          "rule_id": "ENTRY_DUPLICATE_KEY",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Landlord keeps a key",
+          "explanation": "The landlord keeps a key to your home, so entry is possible without you knowing.",
+          "ask": "Ask that keys be used only in emergencies or with your consent.",
+          "evidence": "retain a duplicate set of keys"
+        }
+      ],
+      "explanation": "The landlord can come into your home whenever they like, which affects your privacy and security. The landlord keeps a key to your home, so entry is possible without you knowing.",
+      "ask": "Require at least 24 hours' written notice except in a genuine emergency.",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "ENTRY",
+        "ml_type_conf": 0.995,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.805,
+        "rule_type": "ENTRY"
+      }
+    },
+    {
+      "index": 11,
+      "number": "10",
+      "heading": "Guests",
+      "text": "The Licensee shall not allow any guests or visitors to stay overnight in the premises without the prior written permission of the Licensor.",
+      "clause_type": "USE",
+      "type_label": "Use of premises",
+      "risk": "RISKY",
+      "severity": "medium",
+      "findings": [
+        {
+          "rule_id": "USE_GUEST_RESTRICTION",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Restrictions on guests",
+          "explanation": "You need permission to have guests, which reaches into your private life in your own home.",
+          "ask": "Limit restrictions to long-term additional occupants, not ordinary visitors.",
+          "evidence": "Guests: The Licensee shall not allow any guests or visitors to stay overnight in the premises without the prior written permission"
+        }
+      ],
+      "explanation": "You need permission to have guests, which reaches into your private life in your own home.",
+      "ask": "Limit restrictions to long-term additional occupants, not ordinary visitors.",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "USE",
+        "ml_type_conf": 0.972,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.936,
+        "rule_type": "USE"
+      }
+    },
+    {
+      "index": 12,
+      "number": "11",
+      "heading": "Indemnity",
+      "text": "The Licensee shall indemnify the Licensor against all losses, claims and damages of whatsoever nature arising in connection with the premises. The Licensor shall not be liable for any loss, theft or injury suffered by the Licensee or her guests.",
+      "clause_type": "LIABILITY",
+      "type_label": "Liability & indemnity",
+      "risk": "RISKY",
+      "severity": "medium",
+      "findings": [
+        {
+          "rule_id": "GEN_OPEN_ENDED",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Open-ended scope",
+          "explanation": "Words like 'whatsoever' or 'irrespective of the cause' make the obligation unlimited, including situations that are not your fault.",
+          "ask": "Limit the obligation to losses caused by your own negligence or breach.",
+          "evidence": "whatsoever"
+        },
+        {
+          "rule_id": "LIAB_BROAD_INDEMNITY",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Broad indemnity",
+          "explanation": "You agree to cover the landlord's losses or claims broadly, possibly including ones you did not cause.",
+          "ask": "Limit the indemnity to losses caused by your negligence or breach of the agreement.",
+          "evidence": "indemnify the Licensor against all losses"
+        },
+        {
+          "rule_id": "LIAB_LANDLORD_EXEMPT",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Landlord excluded from all liability",
+          "explanation": "The landlord is not responsible for losses or injuries, even ones caused by poor upkeep of the building.",
+          "ask": "Add an exception for loss caused by the landlord's negligence or failure to repair.",
+          "evidence": "Licensor shall not be liable for any"
+        }
+      ],
+      "explanation": "Words like 'whatsoever' or 'irrespective of the cause' make the obligation unlimited, including situations that are not your fault. You agree to cover the landlord's losses or claims broadly, possibly including ones you did not cause.",
+      "ask": "Limit the obligation to losses caused by your own negligence or breach.",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "LIABILITY",
+        "ml_type_conf": 0.99,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.987,
+        "rule_type": "LIABILITY"
+      }
+    },
+    {
+      "index": 13,
+      "number": "12",
+      "heading": "Taxes",
+      "text": "Property tax and all municipal taxes in respect of the premises shall be borne by the Licensee during the term of this agreement.",
+      "clause_type": "RENT",
+      "type_label": "Rent & payment",
+      "risk": "RISKY",
+      "severity": "medium",
+      "findings": [
+        {
+          "rule_id": "RENT_LANDLORD_TAXES",
+          "risk": "RISKY",
+          "severity": "medium",
+          "title": "Owner's taxes passed to you",
+          "explanation": "Property/municipal tax is normally the owner's liability; this clause shifts it to you.",
+          "ask": "Ask that property and municipal taxes stay with the owner.",
+          "evidence": "Property tax and all municipal taxes in respect of the premises shall be borne by the Licensee"
+        }
+      ],
+      "explanation": "Property/municipal tax is normally the owner's liability; this clause shifts it to you.",
+      "ask": "Ask that property and municipal taxes stay with the owner.",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "RENT",
+        "ml_type_conf": 0.837,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.449,
+        "rule_type": "RENT"
+      }
+    },
+    {
+      "index": 14,
+      "number": "13",
+      "heading": "Default",
+      "text": "In case of any default, the Licensor shall be entitled to disconnect the electricity and water supply and change the locks of the premises.",
+      "clause_type": "PENALTY",
+      "type_label": "Penalties & late fees",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "TERM_SELF_HELP",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Self-help eviction",
+          "explanation": "The landlord may cut utilities, change locks or remove your belongings. Evicting a tenant normally requires due legal process, not self-help.",
+          "ask": "Delete this clause entirely.",
+          "evidence": "disconnect the electricity"
+        }
+      ],
+      "explanation": "The landlord may cut utilities, change locks or remove your belongings. Evicting a tenant normally requires due legal process, not self-help.",
+      "ask": "Delete this clause entirely.",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "TERMINATION",
+        "ml_type_conf": 0.327,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.498,
+        "rule_type": "PENALTY"
+      }
+    },
+    {
+      "index": 15,
+      "number": "14",
+      "heading": "Amendment",
+      "text": "The Licensor may modify the rules and conditions of this agreement at any time by written intimation to the Licensee.",
+      "clause_type": "OTHER",
+      "type_label": "Other",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "GEN_UNILATERAL_AMEND",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Terms can be changed one-sidedly",
+          "explanation": "One party can change the agreement after you sign it, so the deal you agreed to may not be the deal you get.",
+          "ask": "Add: 'No change to this agreement is valid unless made in writing and signed by both parties.'",
+          "evidence": "Licensor may modify the rules"
+        }
+      ],
+      "explanation": "One party can change the agreement after you sign it, so the deal you agreed to may not be the deal you get.",
+      "ask": "Add: 'No change to this agreement is valid unless made in writing and signed by both parties.'",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "OTHER",
+        "ml_type_conf": 0.284,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.778,
+        "rule_type": "OTHER"
+      }
+    },
+    {
+      "index": 16,
+      "number": "15",
+      "heading": "Overstay",
+      "text": "If the Licensee fails to vacate on expiry, she shall pay double the license fee for every month of overstay.",
+      "clause_type": "TERMINATION",
+      "type_label": "Termination & notice",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "PEN_MULTIPLE_RENT",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "Penalty of multiple times the rent",
+          "explanation": "Overstaying or a breach costs double (or more) the rent, a penalty far larger than the landlord's actual loss.",
+          "ask": "Replace with ordinary per-day rent for any overstay agreed in writing.",
+          "evidence": "double the license fee"
+        }
+      ],
+      "explanation": "Overstaying or a breach costs double (or more) the rent, a penalty far larger than the landlord's actual loss.",
+      "ask": "Replace with ordinary per-day rent for any overstay agreed in writing.",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "PENALTY",
+        "ml_type_conf": 0.471,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.98,
+        "rule_type": "TERMINATION"
+      }
+    },
+    {
+      "index": 17,
+      "number": "16",
+      "heading": "",
+      "text": "The Licensee hereby waives all rights to object to any deduction made from the security deposit.",
+      "clause_type": "DEPOSIT",
+      "type_label": "Security deposit",
+      "risk": "RISKY",
+      "severity": "high",
+      "findings": [
+        {
+          "rule_id": "GEN_WAIVER",
+          "risk": "RISKY",
+          "severity": "high",
+          "title": "You give up legal rights",
+          "explanation": "The clause asks you to waive rights or remedies you would otherwise have. Waivers like this are hard to undo once signed.",
+          "ask": "Strike the waiver, or limit it to a specific, named situation.",
+          "evidence": "waives all rights"
+        }
+      ],
+      "explanation": "The clause asks you to waive rights or remedies you would otherwise have. Waivers like this are hard to undo once signed.",
+      "ask": "Strike the waiver, or limit it to a specific, named situation.",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "DEPOSIT",
+        "ml_type_conf": 0.941,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.665,
+        "rule_type": "DEPOSIT"
+      }
+    },
+    {
+      "index": 18,
+      "number": "17",
+      "heading": "",
+      "text": "The premises shall be used only for residential purposes by the Licensee and her immediate family. The Licensee shall not sublet or assign the premises.",
+      "clause_type": "USE",
+      "type_label": "Use of premises",
+      "risk": "NEUTRAL",
+      "severity": "",
+      "findings": [],
+      "explanation": "Standard clause; no risk indicators found.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "USE",
+        "ml_type_conf": 0.98,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.713,
+        "rule_type": "USE"
+      }
+    },
+    {
+      "index": 19,
+      "number": "18",
+      "heading": "",
+      "text": "Disputes arising under this agreement shall be subject to the jurisdiction of courts in Bengaluru.",
+      "clause_type": "OTHER",
+      "type_label": "Other",
+      "risk": "NEUTRAL",
+      "severity": "",
+      "findings": [],
+      "explanation": "Standard clause; no risk indicators found.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "OTHER",
+        "ml_type_conf": 0.804,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.709,
+        "rule_type": "OTHER"
+      }
+    }
+  ],
+  "document_findings": [
+    {
+      "check_id": "DOC_DEPOSIT_RATIO",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "Deposit is about 10.0× the monthly rent",
+      "explanation": "The security deposit equals roughly 10.0 months of rent. That is a lot of your money held by the landlord, and it is harder to recover in a dispute. For reference, India's Model Tenancy Act, 2021 suggests a cap of two months' rent for residential premises (it applies only in states that have adopted it).",
+      "ask": "Negotiate the deposit down to 2-3 months' rent, or ask for interest on the excess.",
+      "clause_indexes": [
+        3,
+        4
+      ]
+    },
+    {
+      "check_id": "DOC_NOTICE_ASYMMETRY",
+      "risk": "RISKY",
+      "severity": "high",
+      "title": "You must give more notice than the landlord",
+      "explanation": "You have to give about 90 days' notice to leave, but the landlord only has to give about 15 days. The termination terms are tilted against you.",
+      "ask": "Ask for the same notice period for both parties.",
+      "clause_indexes": [
+        7
+      ]
+    }
+  ],
+  "summary": {
+    "clauses": 19,
+    "risk_counts": {
+      "RISKY": 16,
+      "NEUTRAL": 3,
+      "TENANT_FAVORABLE": 0
+    },
+    "severity_counts": {
+      "high": 13,
+      "medium": 5,
+      "low": 0
+    },
+    "score": 49,
+    "rating": "High"
+  }
+}

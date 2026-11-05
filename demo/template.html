@@ -1,0 +1,248 @@
+<title>Rental Clause Checker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700;8..144,800&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a two-pane review desk. Agreement text on the left, the marked-up reading on the right; stacks on phones.
+   Identity follows the project deck: deep navy ink, highlighter yellow for flagged text. */
+:root {
+  --paper: #f3f5f8;
+  --sheet: #ffffff;
+  --ink: #14213a;
+  --ink-soft: #55627a;
+  --rule: #dde2ea;
+  --highlight: #ffd84d;
+  --risk: #b3261e;
+  --risk-wash: #fbe7e5;
+  --fair: #1e7a43;
+  --fair-wash: #e3f3e8;
+  --caution: #8a5a00;
+  --mark-risk: #ffe27a;
+  --mark-fair: #c9ecd3;
+  --font-display: "Roboto Flex", "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Roboto Flex", "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0b1424; --sheet: #111d33; --ink: #e7ecf5; --ink-soft: #9aa8c0; --rule: #23324f;
+    --highlight: #f2c230; --risk: #ff8e85; --risk-wash: #3a1b22; --fair: #7fd6a0; --fair-wash: #15321f;
+    --caution: #f0c46a; --mark-risk: #6b5410; --mark-fair: #1f4a2e; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0b1424; --sheet: #111d33; --ink: #e7ecf5; --ink-soft: #9aa8c0; --rule: #23324f;
+  --highlight: #f2c230; --risk: #ff8e85; --risk-wash: #3a1b22; --fair: #7fd6a0; --fair-wash: #15321f;
+  --caution: #f0c46a; --mark-risk: #6b5410; --mark-fair: #1f4a2e; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 15px/1.55 var(--font-body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.top { display: grid; gap: 6px; margin-bottom: 22px; }
+.eyebrow { font: 500 12px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font: 800 clamp(26px, 4vw, 38px)/1.1 var(--font-display); margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+h1 .hl { background: linear-gradient(transparent 58%, var(--highlight) 58%, var(--highlight) 92%, transparent 92%); padding: 0 2px; }
+.lede { margin: 0; color: var(--ink-soft); max-width: 68ch; }
+.desk { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; align-items: start; }
+@media (max-width: 900px) { .desk { grid-template-columns: minmax(0, 1fr); } }
+.pane { background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; min-width: 0; }
+.input-pane { padding: 16px; display: grid; gap: 12px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); }
+@media (max-width: 900px) { .input-pane { position: static; } textarea { min-height: 32vh; } }
+.samples { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: 500 13px/1 var(--font-body); border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+  border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--sheet); border-color: var(--ink); }
+.chip:focus-visible, button:focus-visible, textarea:focus-visible, label.file:focus-within { outline: 2px solid var(--highlight); outline-offset: 2px; }
+label.lbl { font: 500 12px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+textarea { width: 100%; min-height: 46vh; resize: vertical; border: 1px solid var(--rule); border-radius: 8px; padding: 12px;
+  background: var(--paper); color: var(--ink); font: 13px/1.6 var(--font-mono); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button.primary { font: 700 14px/1 var(--font-body); background: var(--ink); color: var(--sheet); border: 0; border-radius: 8px; padding: 11px 16px; cursor: pointer; }
+label.file { font: 500 13px/1 var(--font-body); color: var(--ink); border: 1px dashed var(--ink-soft); border-radius: 8px; padding: 10px 12px; cursor: pointer; }
+label.file input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.note { font-size: 12.5px; color: var(--ink-soft); margin: 0; }
+.results { padding: 18px; display: grid; gap: 18px; }
+.verdict { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: center; }
+.rating { font: 800 13px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; border-radius: 8px; padding: 14px 16px; text-align: center; min-width: 120px; }
+.rating b { display: block; font: 800 26px/1.05 var(--font-display); letter-spacing: 0; text-transform: none; margin-top: 4px; }
+.rating.High { background: var(--risk-wash); color: var(--risk); }
+.rating.Moderate { background: color-mix(in srgb, var(--highlight) 28%, var(--sheet)); color: var(--caution); }
+.rating.Low { background: var(--fair-wash); color: var(--fair); }
+.counts { display: flex; flex-wrap: wrap; gap: 6px 18px; font-variant-numeric: tabular-nums; }
+.counts div { display: grid; }
+.counts b { font: 700 22px/1.1 var(--font-display); }
+.counts span { font-size: 12.5px; color: var(--ink-soft); }
+h2 { font: 700 15px/1.2 var(--font-display); margin: 0 0 10px; display: flex; gap: 8px; align-items: baseline; }
+h2 small { font: 400 12.5px var(--font-body); color: var(--ink-soft); }
+.docf { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.docf li { border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; display: grid; gap: 4px; }
+.docf .t { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-weight: 700; }
+.docf p { margin: 0; }
+.sev { font: 500 11px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; border-radius: 4px; padding: 3px 6px; }
+.sev.high { background: var(--risk); color: var(--sheet); }
+.sev.medium { background: var(--risk-wash); color: var(--risk); }
+.sev.low { border: 1px solid var(--rule); color: var(--ink-soft); }
+.ask { font-size: 13.5px; }
+.ask strong { font-weight: 700; }
+.refs { display: flex; gap: 6px; flex-wrap: wrap; }
+.refs button { font: 500 12px/1 var(--font-mono); background: none; border: 1px solid var(--rule); color: var(--ink); border-radius: 4px; padding: 4px 7px; cursor: pointer; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.clauses { display: grid; gap: 10px; }
+.clause { border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px 12px 16px; display: grid; gap: 8px; position: relative; scroll-margin-top: 16px; }
+.clause::before { content: ""; position: absolute; left: -1px; top: 10px; bottom: 10px; width: 4px; border-radius: 0 3px 3px 0; background: var(--rule); }
+.clause.RISKY::before { background: var(--risk); }
+.clause.TENANT_FAVORABLE::before { background: var(--fair); }
+.clause.flash { animation: flash 1.2s ease-out; }
+@keyframes flash { from { box-shadow: 0 0 0 3px var(--highlight); } to { box-shadow: 0 0 0 0 transparent; } }
+@media (prefers-reduced-motion: reduce) { .clause.flash { animation: none; } }
+.clause header { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.num { font: 500 12.5px/1 var(--font-mono); color: var(--ink-soft); }
+.ctype { font: 500 12px/1 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink); background: var(--paper); border-radius: 4px; padding: 4px 7px; }
+.badge { margin-left: auto; font: 700 12px/1 var(--font-body); border-radius: 999px; padding: 5px 10px; }
+.badge.RISKY { background: var(--risk-wash); color: var(--risk); }
+.badge.TENANT_FAVORABLE { background: var(--fair-wash); color: var(--fair); }
+.badge.NEUTRAL { color: var(--ink-soft); border: 1px solid var(--rule); }
+.clause .text { margin: 0; overflow-wrap: anywhere; }
+.clause .head { font-weight: 700; }
+mark { color: inherit; border-radius: 2px; padding: 0 1px; }
+mark.r { background: var(--mark-risk); }
+mark.f { background: var(--mark-fair); }
+.why { display: grid; gap: 4px; border-top: 1px dashed var(--rule); padding-top: 8px; }
+.why p { margin: 0; }
+.tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag { font-size: 12px; border-radius: 4px; padding: 2px 7px; }
+.tag.r { background: var(--risk-wash); color: var(--risk); }
+.tag.f { background: var(--fair-wash); color: var(--fair); }
+.empty { color: var(--ink-soft); padding: 24px 4px; text-align: center; }
+footer { margin-top: 26px; font-size: 12.5px; color: var(--ink-soft); max-width: 80ch; }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="eyebrow">Rental agreement review · rule-based engine</span>
+    <h1>Find the <span class="hl">risky clauses</span> before you sign</h1>
+    <p class="lede">Paste an agreement or pick a sample. Every clause is classified, checked against <span id="rule-count">the</span> risk rules, and explained in plain English. The whole agreement is also checked for unequal notice periods, oversized deposits and missing clauses.</p>
+  </header>
+
+  <div class="desk">
+    <section class="pane input-pane" aria-label="Agreement text">
+      <div class="samples" role="group" aria-label="Sample agreements" id="samples"></div>
+      <label class="lbl" for="agreement">Agreement text</label>
+      <textarea id="agreement" spellcheck="false"></textarea>
+      <div class="row">
+        <button class="primary" id="run" type="button">Check agreement</button>
+        <label class="file" for="file">Open .txt file<input id="file" type="file" accept=".txt,text/plain"></label>
+      </div>
+      <p class="note">Text stays in your browser. For PDF and Word files, and the trained-model engine, use the Python tool in the project.</p>
+    </section>
+
+    <section class="pane results" aria-live="polite" id="results"></section>
+  </div>
+
+  <footer>Automated screening, not legal advice. It catches common one-sided wording; it can miss unusual phrasing and can flag clauses that are fine in context. Have important agreements reviewed by a lawyer before signing.</footer>
+</div>
+
+<script>
+const RULES = /*__RULES__*/null;
+const SAMPLES = /*__SAMPLES__*/null;
+</script>
+<script>
+/*__ENGINE__*/
+// ---------- Rendering ----------
+const esc = s => s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function highlight(text, findings) {
+  let out = esc(text);
+  for (const f of findings) {
+    const ev = (f.evidence || "").trim();
+    if (ev.length < 4) continue;
+    const words = ev.split(/\s+/).map(w => esc(w).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    const rx = new RegExp(words.join("[\\s.]*"), "i");
+    out = out.replace(rx, m => `<mark class="${f.risk === RISKY ? "r" : "f"}">${m}</mark>`);
+  }
+  return out;
+}
+let filter = "all";
+try { filter = localStorage.getItem("rcc-filter") || "all"; } catch (e) {}
+const resultsEl = document.getElementById("results");
+
+function render(rep) {
+  const { clauses, doc, summary: s } = rep;
+  if (!clauses.length) { resultsEl.innerHTML = `<p class="empty">No clauses found. Paste the full agreement text, with each clause on its own line or paragraph.</p>`; return; }
+  const docHtml = doc.length ? `<section><h2>Whole-agreement findings <small>${doc.length}</small></h2><ul class="docf">${doc.map(f => `
+    <li><div class="t"><span class="sev ${f.severity}">${f.severity}</span>${esc(f.title)}</div><p>${esc(f.explanation)}</p>
+    ${f.ask ? `<p class="ask"><strong>Ask for:</strong> ${esc(f.ask)}</p>` : ""}
+    ${f.clause_indexes.length ? `<div class="refs">${f.clause_indexes.map(i => { const c = clauses[i - 1]; return `<button type="button" data-goto="${i}">${c && c.number ? "Clause " + esc(c.number) : "Segment " + i}</button>`; }).join("")}</div>` : ""}</li>`).join("")}</ul></section>` : "";
+  const filters = [["all", "All", clauses.length], [RISKY, "Risky", s.counts.RISKY], [FAV, "Tenant-favourable", s.counts.TENANT_FAVORABLE], [NEUTRAL, "Neutral", s.counts.NEUTRAL]];
+  resultsEl.innerHTML = `
+    <div class="verdict">
+      <div class="rating ${s.rating}">Overall risk<b>${s.rating}</b></div>
+      <div class="counts">
+        <div><b>${s.counts.RISKY}</b><span>risky clauses</span></div>
+        <div><b>${s.sev.high}</b><span>high severity</span></div>
+        <div><b>${s.counts.TENANT_FAVORABLE}</b><span>in your favour</span></div>
+        <div><b>${clauses.length}</b><span>clauses read</span></div>
+      </div>
+    </div>
+    ${docHtml}
+    <section><h2>Clause by clause</h2>
+      <div class="filters" role="group" aria-label="Filter clauses">${filters.map(([k, l, n]) => `<button type="button" class="chip" data-filter="${k}" aria-pressed="${filter === k}">${l} · ${n}</button>`).join("")}</div>
+      <div class="clauses">${clauses.map(c => `
+        <article class="clause ${c.risk}" id="clause-${c.index}" data-risk="${c.risk}" ${filter !== "all" && filter !== c.risk ? "hidden" : ""}>
+          <header><span class="num">${c.number ? "§ " + esc(c.number) : "¶ " + c.index}</span><span class="ctype">${esc(c.type_label)}</span>
+          <span class="badge ${c.risk}">${LABEL[c.risk]}${c.risk === RISKY && c.severity ? " · " + c.severity : ""}</span></header>
+          <p class="text">${c.heading ? `<span class="head">${esc(c.heading)}.</span> ` : ""}${highlight(c.text, c.findings)}</p>
+          ${c.risk !== NEUTRAL ? `<div class="why">
+            <div class="tags">${c.findings.map(h => `<span class="tag ${h.risk === RISKY ? "r" : "f"}">${esc(h.title)}</span>`).join("")}</div>
+            <p>${esc(c.explanation)}</p>${c.ask ? `<p class="ask"><strong>Ask for:</strong> ${esc(c.ask)}</p>` : ""}</div>` : ""}
+        </article>`).join("")}</div>
+    </section>`;
+}
+resultsEl.addEventListener("click", e => {
+  const g = e.target.closest("[data-goto]");
+  if (g) {
+    const el = document.getElementById("clause-" + g.dataset.goto);
+    if (el) { el.hidden = false; el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
+      el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); }
+    return;
+  }
+  const f = e.target.closest("[data-filter]");
+  if (f) {
+    filter = f.dataset.filter;
+    try { localStorage.setItem("rcc-filter", filter); } catch (err) {}
+    resultsEl.querySelectorAll("[data-filter]").forEach(b => b.setAttribute("aria-pressed", String(b === f)));
+    resultsEl.querySelectorAll(".clause").forEach(c => { c.hidden = !(filter === "all" || c.dataset.risk === filter); });
+  }
+});
+
+// ---------- Input ----------
+const ta = document.getElementById("agreement");
+const samplesEl = document.getElementById("samples");
+document.getElementById("rule-count").textContent = RULES.rules.length;
+function run() { render(analyze(ta.value)); }
+function pickSample(i) {
+  ta.value = SAMPLES[i].text;
+  samplesEl.querySelectorAll(".chip").forEach((b, j) => b.setAttribute("aria-pressed", String(j === i)));
+  run();
+}
+SAMPLES.forEach((s, i) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "chip"; b.textContent = s.name;
+  b.addEventListener("click", () => pickSample(i));
+  samplesEl.appendChild(b);
+});
+let timer;
+ta.addEventListener("input", () => {
+  samplesEl.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", "false"));
+  clearTimeout(timer); timer = setTimeout(run, 350);
+});
+document.getElementById("run").addEventListener("click", run);
+document.getElementById("file").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = () => { ta.value = String(r.result); samplesEl.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", "false")); run(); };
+  r.readAsText(file);
+});
+pickSample(0);
+</script>

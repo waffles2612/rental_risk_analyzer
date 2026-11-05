@@ -1,0 +1,140 @@
+id,text,clause_type,risk,source
+c001,"The monthly rent of Rs. 18,000 shall be paid on or before the 7th day of each English calendar month by NEFT to the Landlord's account.",RENT,NEUTRAL,authored-seed
+c002,"The Tenant shall pay rent of Rs. 22,500 per month in advance on or before the 5th of every month.",RENT,NEUTRAL,authored-seed
+c003,The Lessee shall pay the rent in cash only and the Lessor shall not be obliged to issue any receipt for the same.,RENT,RISKY,authored-seed
+c004,The Landlord reserves the right to revise the rent from time to time as he may deem fit and the Tenant shall pay the revised rent.,RENT,RISKY,authored-seed
+c005,"The Owner may increase the rent whenever the market rate in the locality goes up, and the new rent shall be binding on the Tenant.",RENT,RISKY,authored-seed
+c006,The Licensor shall acknowledge every payment of the licence fee by issuing a signed receipt or an email confirmation.,RENT,TENANT_FAVORABLE,authored-seed
+c007,The rent shall remain fixed for the entire term of this agreement and shall not be revised during the term.,RENT,TENANT_FAVORABLE,authored-seed
+c008,"Society maintenance charges shall be paid by the Owner, and electricity charges as per actual consumption shall be paid by the Tenant.",RENT,NEUTRAL,authored-seed
+c009,"All present and future taxes, cesses and levies on the said premises, including property tax, shall be paid by the Tenant.",RENT,RISKY,authored-seed
+c010,Twelve months' rent shall be paid in advance at the time of signing this agreement and shall not be adjusted against any dues.,RENT,RISKY,authored-seed
+c011,"The licence fee shall be Rs. 15,000 per month inclusive of society maintenance charges.",RENT,NEUTRAL,authored-seed
+c012,Rent shall be enhanced by 5% every year on the anniversary of the commencement date.,RENT,NEUTRAL,authored-seed
+c013,Any increase in the rent shall be by mutual written agreement of both parties and shall not exceed 5% per year.,RENT,TENANT_FAVORABLE,authored-seed
+c014,"Water charges, if any, shall be shared equally by all the occupants of the building.",RENT,NEUTRAL,authored-seed
+c015,"The Tenant shall additionally bear any charges that the Landlord may levy from time to time for common facilities, without limit.",RENT,RISKY,authored-seed
+c016,Rent paid by the Tenant shall be acknowledged in a rent register maintained by both parties and signed by the Landlord.,RENT,TENANT_FAVORABLE,authored-seed
+c017,"The Tenant has paid an interest-free refundable security deposit of Rs. 50,000, which shall be returned at the time of vacating after adjusting dues, if any.",DEPOSIT,TENANT_FAVORABLE,authored-seed
+c018,"The security deposit of Rs. 40,000 shall be refunded within 30 days of the Tenant handing over vacant and peaceful possession of the premises.",DEPOSIT,TENANT_FAVORABLE,authored-seed
+c019,The deposit shall be returned to the Lessee only after the Lessor finds a new tenant for the premises.,DEPOSIT,RISKY,authored-seed
+c020,"The Licensor may deduct from the deposit such amounts as he considers appropriate towards damages, and his decision shall be final.",DEPOSIT,RISKY,authored-seed
+c021,"At the time of vacating, two months' rent shall be deducted from the deposit towards repainting of the flat.",DEPOSIT,RISKY,authored-seed
+c022,Any deduction from the deposit shall be supported by bills and an itemised statement shared with the Tenant.,DEPOSIT,TENANT_FAVORABLE,authored-seed
+c023,The security deposit shall be equivalent to ten months' rent.,DEPOSIT,RISKY,authored-seed
+c024,The security deposit shall not exceed two months' rent.,DEPOSIT,TENANT_FAVORABLE,authored-seed
+c025,"An amount of Rs. 10,000 out of the deposit is a one-time non-refundable brokerage and documentation charge.",DEPOSIT,RISKY,authored-seed
+c026,"If the deposit is not refunded on the due date, the Landlord shall pay interest at 12% per annum on the delayed amount.",DEPOSIT,TENANT_FAVORABLE,authored-seed
+c027,"The deposit shall be refunded subject to deduction of unpaid rent, unpaid utility bills and the cost of repairing damage beyond normal wear and tear.",DEPOSIT,NEUTRAL,authored-seed
+c028,The Tenant shall not be entitled to adjust the security deposit against the rent for the last month.,DEPOSIT,NEUTRAL,authored-seed
+c029,"Upon handing over of keys, the deposit will be returned, less any deductions the Owner deems necessary.",DEPOSIT,RISKY,authored-seed
+c030,Both parties shall jointly inspect the premises before refund and record any damage in writing.,DEPOSIT,TENANT_FAVORABLE,authored-seed
+c031,The Owner shall refund the deposit by bank transfer simultaneously with the Tenant handing over the keys.,DEPOSIT,TENANT_FAVORABLE,authored-seed
+c032,"In case the Lessee vacates before the end of the term, the Lessor shall be entitled to retain the entire security deposit.",DEPOSIT,RISKY,authored-seed
+c033,Either party may terminate this agreement by giving the other party one month's prior written notice.,TERMINATION,TENANT_FAVORABLE,authored-seed
+c034,The Landlord may terminate this tenancy by giving the Tenant seven days' notice.,TERMINATION,RISKY,authored-seed
+c035,"The Licensor may revoke this licence whenever he requires the premises for his own use, without any notice.",TERMINATION,RISKY,authored-seed
+c036,The Tenant shall not be allowed to terminate this agreement before the expiry of the term.,TERMINATION,RISKY,authored-seed
+c037,"The lock-in period shall be six months, during which neither party may terminate except for breach.",TERMINATION,NEUTRAL,authored-seed
+c038,"If the Tenant leaves during the first year, he shall pay the rent for the balance period of the agreement.",TERMINATION,RISKY,authored-seed
+c039,The Tenant may terminate this agreement by giving two months' notice; the Landlord may terminate by giving one month's notice.,TERMINATION,RISKY,authored-seed
+c040,"The Landlord may terminate the agreement only if the Tenant defaults in paying rent for two consecutive months, after giving thirty days' written notice to remedy the default.",TERMINATION,TENANT_FAVORABLE,authored-seed
+c041,"On termination, the Tenant shall hand over vacant and peaceful possession of the premises in the same condition, subject to normal wear and tear.",TERMINATION,TENANT_FAVORABLE,authored-seed
+c042,The Tenant may end the tenancy early without penalty on account of job transfer by giving one month's notice.,TERMINATION,TENANT_FAVORABLE,authored-seed
+c043,"If the Tenant fails to vacate on expiry, the Landlord shall be free to remove the Tenant's belongings and take possession of the premises.",TERMINATION,RISKY,authored-seed
+c044,"Upon any breach by the Lessee, the Lessor may immediately cancel this lease and the Lessee shall vacate forthwith.",TERMINATION,RISKY,authored-seed
+c045,The notice period for termination by either party shall be sixty days.,TERMINATION,TENANT_FAVORABLE,authored-seed
+c046,This agreement shall come to an end on the expiry of the term unless renewed in writing.,TERMINATION,NEUTRAL,authored-seed
+c047,The Licensee shall vacate the premises within 48 hours if asked to do so by the Licensor.,TERMINATION,RISKY,authored-seed
+c048,Notice of termination shall be given in writing to the address mentioned above or by email.,TERMINATION,NEUTRAL,authored-seed
+c049,This agreement may be renewed for a further period on mutually agreed terms by executing a fresh agreement.,RENEWAL,NEUTRAL,authored-seed
+c050,"Unless either party gives notice sixty days before expiry, this agreement shall stand extended for another eleven months on the same terms.",RENEWAL,RISKY,authored-seed
+c051,The Tenant shall have the first right to renew this tenancy for a further period of three years.,RENEWAL,TENANT_FAVORABLE,authored-seed
+c052,On renewal the rent shall be increased by 20% of the existing rent.,RENEWAL,RISKY,authored-seed
+c053,"Renewal shall be at the discretion of the Landlord, who may fix any rent he considers fit for the renewed term.",RENEWAL,RISKY,authored-seed
+c054,The rent on renewal shall not be more than 5% higher than the last rent paid.,RENEWAL,TENANT_FAVORABLE,authored-seed
+c055,The licence is for eleven months from 1st June 2026 to 30th April 2027.,RENEWAL,NEUTRAL,authored-seed
+c056,"The tenancy shall automatically continue on a month-to-month basis after expiry, at a rent 10% higher, until terminated.",RENEWAL,RISKY,authored-seed
+c057,Any renewal shall require the written consent of both the Landlord and the Tenant.,RENEWAL,NEUTRAL,authored-seed
+c058,This lease shall be for a period of 36 months with an escalation of 5% after every 12 months.,RENEWAL,NEUTRAL,authored-seed
+c059,"The Tenant may, at his option, extend the lease for two further terms of one year each at the same rent.",RENEWAL,TENANT_FAVORABLE,authored-seed
+c060,"The agreement will be deemed renewed if the Tenant continues to stay after expiry, and the Tenant will then be bound by any revised terms the Owner sets.",RENEWAL,RISKY,authored-seed
+c061,The term of this agreement is eleven months commencing on the date of signing.,RENEWAL,NEUTRAL,authored-seed
+c062,Fresh stamp duty and registration charges on renewal shall be borne equally by both parties.,RENEWAL,NEUTRAL,authored-seed
+c063,"Minor repairs such as replacement of bulbs, tube lights and tap washers shall be done by the Tenant at his cost.",MAINTENANCE,NEUTRAL,authored-seed
+c064,"All major repairs, including structural repairs, seepage and leakage, shall be carried out by the Landlord at his own cost.",MAINTENANCE,TENANT_FAVORABLE,authored-seed
+c065,"The Tenant shall bear the cost of every repair to the premises, whether minor or major, during the tenancy.",MAINTENANCE,RISKY,authored-seed
+c066,"The Lessee shall keep the premises in good and tenantable condition, reasonable wear and tear excepted.",MAINTENANCE,TENANT_FAVORABLE,authored-seed
+c067,The Licensee shall be responsible for any damage to the premises including that arising from normal use and ageing of the fittings.,MAINTENANCE,RISKY,authored-seed
+c068,"Repairs to the overhead water tank, roof and main drainage lines shall be the responsibility of the Tenant.",MAINTENANCE,RISKY,authored-seed
+c069,"The Tenant shall get the entire flat repainted at his own cost before vacating, regardless of its condition.",MAINTENANCE,RISKY,authored-seed
+c070,"The Landlord shall attend to any repair request within seven days, failing which the Tenant may carry out the repair and deduct the cost from the rent.",MAINTENANCE,TENANT_FAVORABLE,authored-seed
+c071,The Tenant shall not make any structural alterations to the premises without the written consent of the Landlord.,MAINTENANCE,NEUTRAL,authored-seed
+c072,The fittings and fixtures listed in Annexure A are provided in working condition.,MAINTENANCE,NEUTRAL,authored-seed
+c073,Annual servicing of the air conditioners and the water purifier shall be done by the Tenant.,MAINTENANCE,NEUTRAL,authored-seed
+c074,"If any appliance supplied by the Owner breaks down, the Tenant shall replace it with a new one at his cost.",MAINTENANCE,RISKY,authored-seed
+c075,Pest control of the premises shall be arranged by the Landlord twice a year at his cost.,MAINTENANCE,TENANT_FAVORABLE,authored-seed
+c076,The Tenant shall inform the Landlord promptly of any defect requiring repair.,MAINTENANCE,NEUTRAL,authored-seed
+c077,"The Licensee shall pay for damage caused by natural calamities, fire or water leakage from adjoining flats.",MAINTENANCE,RISKY,authored-seed
+c078,A late fee of Rs. 200 shall be charged if rent is paid after the 10th of the month.,PENALTY,NEUTRAL,authored-seed
+c079,Rent not paid by the due date shall attract interest at 18% per annum.,PENALTY,NEUTRAL,authored-seed
+c080,"Delayed payment shall attract interest at the rate of 5% per month, compounded monthly.",PENALTY,RISKY,authored-seed
+c081,"A penalty of Rs. 1,000 for every day of delay in payment of rent shall be payable by the Tenant.",PENALTY,RISKY,authored-seed
+c082,"If the Tenant overstays beyond the term, he shall pay damages at three times the monthly rent for every month of overstay.",PENALTY,RISKY,authored-seed
+c083,No late fee shall be charged for payments received within five days of the due date.,PENALTY,TENANT_FAVORABLE,authored-seed
+c084,Any cheque that is dishonoured shall attract a charge of Rs. 500 in addition to bank charges.,PENALTY,NEUTRAL,authored-seed
+c085,"Breach of any condition of this agreement, however small, shall result in a fine of Rs. 25,000.",PENALTY,RISKY,authored-seed
+c086,Late payment charges shall not exceed 2% of the monthly rent in any month.,PENALTY,TENANT_FAVORABLE,authored-seed
+c087,If rent is unpaid for fifteen days the Landlord may lock the premises until the dues are cleared.,PENALTY,RISKY,authored-seed
+c088,The Tenant shall reimburse the Landlord for reasonable costs actually incurred because of a breach by the Tenant.,PENALTY,NEUTRAL,authored-seed
+c089,Failure to pay rent on time will result in the deposit being forfeited.,PENALTY,RISKY,authored-seed
+c090,The Landlord may inspect the premises once a month at a mutually convenient time after giving 24 hours' notice.,ENTRY,TENANT_FAVORABLE,authored-seed
+c091,The Owner and his family members may visit the premises whenever they wish.,ENTRY,RISKY,authored-seed
+c092,The Licensor shall have free access to the premises at all times for any purpose.,ENTRY,RISKY,authored-seed
+c093,"In an emergency such as fire or water leakage, the Landlord may enter the premises without notice.",ENTRY,NEUTRAL,authored-seed
+c094,The Landlord shall keep a spare key of the flat and may use it to enter when the Tenant is away.,ENTRY,RISKY,authored-seed
+c095,"During the last month of tenancy, the Tenant shall allow prospective tenants to view the premises at reasonable hours with prior intimation.",ENTRY,NEUTRAL,authored-seed
+c096,The Landlord shall not enter the premises without the Tenant's consent except in an emergency.,ENTRY,TENANT_FAVORABLE,authored-seed
+c097,The Owner may carry out surprise inspections of the premises.,ENTRY,RISKY,authored-seed
+c098,Inspection of the premises shall be carried out only in the presence of the Tenant or his authorised representative.,ENTRY,TENANT_FAVORABLE,authored-seed
+c099,The Landlord may enter between 10 am and 6 pm on weekdays to carry out repairs after informing the Tenant.,ENTRY,NEUTRAL,authored-seed
+c100,The Lessor's agents may show the flat to buyers at any hour without informing the Lessee.,ENTRY,RISKY,authored-seed
+c101,"The Tenant shall indemnify and keep indemnified the Landlord against all claims, losses and costs of any kind whatsoever.",LIABILITY,RISKY,authored-seed
+c102,The Tenant shall be liable only for loss or damage caused by his own negligence or wilful default.,LIABILITY,TENANT_FAVORABLE,authored-seed
+c103,"The Landlord shall not be responsible for any injury, loss or damage to the Tenant or his property for any reason.",LIABILITY,RISKY,authored-seed
+c104,The Landlord shall be liable for any injury caused by structural defects in the building of which he was informed.,LIABILITY,TENANT_FAVORABLE,authored-seed
+c105,The Tenant shall insure his own belongings; the building insurance shall be maintained by the Owner.,LIABILITY,NEUTRAL,authored-seed
+c106,"The Licensee alone shall be answerable for any accident occurring in the premises or common areas, irrespective of the cause.",LIABILITY,RISKY,authored-seed
+c107,Each party shall indemnify the other against losses arising from its own breach of this agreement.,LIABILITY,TENANT_FAVORABLE,authored-seed
+c108,The Owner will not be held responsible for theft of the Tenant's belongings from the premises.,LIABILITY,NEUTRAL,authored-seed
+c109,The Tenant shall be responsible for any fines imposed by the society on account of the conduct of the Tenant or his guests.,LIABILITY,NEUTRAL,authored-seed
+c110,"The Tenant shall pay the Landlord's legal costs in any dispute, irrespective of who succeeds.",LIABILITY,RISKY,authored-seed
+c111,"The Tenant shall be solely liable for all dues of the building society, including dues pending from before the start of the tenancy.",LIABILITY,RISKY,authored-seed
+c112,The premises shall be used only for residential purposes by the Tenant and his family.,USE,NEUTRAL,authored-seed
+c113,"The Tenant shall not sublet, assign or part with possession of the premises or any part thereof.",USE,NEUTRAL,authored-seed
+c114,No guest shall stay in the premises for more than one night without the Owner's written approval.,USE,RISKY,authored-seed
+c115,The Tenant may have guests and visitors in accordance with the society bye-laws.,USE,TENANT_FAVORABLE,authored-seed
+c116,The Licensee shall not keep any pets in the premises.,USE,NEUTRAL,authored-seed
+c117,The Tenant shall not cook non-vegetarian food in the premises.,USE,RISKY,authored-seed
+c118,The Tenant shall not carry on any illegal or immoral activity in the premises.,USE,NEUTRAL,authored-seed
+c119,"The Tenant may sublet a room with the Landlord's consent, which shall not be unreasonably refused.",USE,TENANT_FAVORABLE,authored-seed
+c120,"The Tenant shall follow all rules of the housing society, as amended from time to time by the society.",USE,NEUTRAL,authored-seed
+c121,The Lessee shall not have friends of the opposite gender visit the premises.,USE,RISKY,authored-seed
+c122,"The Tenant may install a washing machine, internet connection and other household appliances at his own cost and remove them on vacating.",USE,TENANT_FAVORABLE,authored-seed
+c123,The Tenant shall not create any nuisance or disturbance to the neighbours.,USE,NEUTRAL,authored-seed
+c124,The Licensee shall be home by 10 pm every night and the main gate will be locked after that.,USE,RISKY,authored-seed
+c125,The Tenant may work from home and receive deliveries at the premises.,USE,TENANT_FAVORABLE,authored-seed
+c126,This agreement is made at Chennai on this 3rd day of March 2026 between the parties named above.,OTHER,NEUTRAL,authored-seed
+c127,This agreement is executed in duplicate and each party shall retain one original copy.,OTHER,NEUTRAL,authored-seed
+c128,The stamp duty and registration charges for this agreement shall be shared equally by both parties.,OTHER,NEUTRAL,authored-seed
+c129,"The Tenant shall bear the entire stamp duty, registration charges and the Landlord's legal fees for this agreement.",OTHER,RISKY,authored-seed
+c130,"Any dispute shall be referred to an arbitrator appointed solely by the Landlord, whose decision shall be final and binding.",OTHER,RISKY,authored-seed
+c131,Any dispute between the parties shall be settled by the Rent Authority having jurisdiction over the premises.,OTHER,NEUTRAL,authored-seed
+c132,"The Owner may change the terms of this agreement by giving notice to the Tenant, and the Tenant shall be bound by the changes.",OTHER,RISKY,authored-seed
+c133,No amendment to this agreement shall be valid unless made in writing and signed by both parties.,OTHER,TENANT_FAVORABLE,authored-seed
+c134,The Tenant agrees not to approach any court or authority in respect of any matter arising out of this agreement.,OTHER,RISKY,authored-seed
+c135,Annexure A lists the furniture and fixtures provided with the premises.,OTHER,NEUTRAL,authored-seed
+c136,Notices under this agreement shall be sent by registered post or email to the addresses given above.,OTHER,NEUTRAL,authored-seed
+c137,The Tenant shall furnish a copy of his identity proof and police verification form as required by law.,OTHER,NEUTRAL,authored-seed
+c138,The Tenant has read and understood all terms and has signed this agreement voluntarily.,OTHER,NEUTRAL,authored-seed
+c139,The Landlord confirms that he has clear title to the premises and the right to let it out.,OTHER,TENANT_FAVORABLE,authored-seed

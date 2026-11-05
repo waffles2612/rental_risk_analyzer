@@ -1,0 +1,586 @@
+{
+  "title": "residential lease balanced",
+  "engine": "hybrid",
+  "clauses": [
+    {
+      "index": 1,
+      "number": "",
+      "heading": "",
+      "text": "This Tenancy Agreement is entered into on 10 September 2026 between Mrs. S. Iyer (\"Landlord\") and Mr. K. Thomas (\"Tenant\") for the residential premises at No. 12, 3rd Cross, Jayanagar, Bengaluru.",
+      "clause_type": "OTHER",
+      "type_label": "Other",
+      "risk": "NEUTRAL",
+      "severity": "",
+      "findings": [],
+      "explanation": "Standard clause; no risk indicators found.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "OTHER",
+        "ml_type_conf": 0.414,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.725,
+        "rule_type": "OTHER"
+      }
+    },
+    {
+      "index": 2,
+      "number": "1.1",
+      "heading": "Term",
+      "text": "The tenancy shall be for a period of twelve (12) months starting 1 October 2026. The Tenant shall have the option to renew the tenancy for a further twelve months on the same terms, subject to the rent increase in clause 2.3.",
+      "clause_type": "RENEWAL",
+      "type_label": "Renewal & term",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "REN_TENANT_OPTION",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Renewal at your option",
+          "explanation": "You decide whether to renew, which gives you security of tenure.",
+          "ask": "",
+          "evidence": "Tenant shall have the option to renew"
+        }
+      ],
+      "explanation": "You decide whether to renew, which gives you security of tenure.",
+      "ask": "",
+      "key_facts": [
+        "12 month(s)"
+      ],
+      "detail": {
+        "ml_type": "RENEWAL",
+        "ml_type_conf": 0.862,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.355,
+        "rule_type": "RENEWAL"
+      }
+    },
+    {
+      "index": 3,
+      "number": "2.1",
+      "heading": "Rent",
+      "text": "The monthly rent is Rs. 30,000, payable by bank transfer on or before the 5th of each month.",
+      "clause_type": "RENT",
+      "type_label": "Rent & payment",
+      "risk": "NEUTRAL",
+      "severity": "",
+      "findings": [],
+      "explanation": "Standard clause; no risk indicators found.",
+      "ask": "",
+      "key_facts": [
+        "₹30,000"
+      ],
+      "detail": {
+        "ml_type": "PENALTY",
+        "ml_type_conf": 0.383,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.585,
+        "rule_type": "RENT"
+      }
+    },
+    {
+      "index": 4,
+      "number": "2.2",
+      "heading": "Rent",
+      "text": "The Landlord shall issue a written receipt for every payment received.",
+      "clause_type": "RENT",
+      "type_label": "Rent & payment",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "RENT_RECEIPT",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Rent receipts provided",
+          "explanation": "You get written proof of each payment.",
+          "ask": "",
+          "evidence": "Landlord shall issue a written receipt"
+        }
+      ],
+      "explanation": "You get written proof of each payment.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "RENT",
+        "ml_type_conf": 0.378,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.652,
+        "rule_type": "RENT"
+      }
+    },
+    {
+      "index": 5,
+      "number": "2.3",
+      "heading": "Rent",
+      "text": "On renewal, the rent may be increased by not more than 5% of the rent last paid.",
+      "clause_type": "RENEWAL",
+      "type_label": "Renewal & term",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "REN_CAPPED",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Rent increase is capped",
+          "explanation": "Any increase is limited to a stated maximum, so future rent is predictable.",
+          "ask": "",
+          "evidence": "not more than 5%"
+        }
+      ],
+      "explanation": "Any increase is limited to a stated maximum, so future rent is predictable.",
+      "ask": "",
+      "key_facts": [
+        "5%"
+      ],
+      "detail": {
+        "ml_type": "RENEWAL",
+        "ml_type_conf": 0.737,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.424,
+        "rule_type": "RENT"
+      }
+    },
+    {
+      "index": 6,
+      "number": "3.1",
+      "heading": "Security Deposit",
+      "text": "The Tenant shall pay a refundable security deposit of Rs. 60,000.",
+      "clause_type": "DEPOSIT",
+      "type_label": "Security deposit",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [],
+      "explanation": "This clause adds protection for you as the tenant.",
+      "ask": "",
+      "key_facts": [
+        "₹60,000"
+      ],
+      "detail": {
+        "ml_type": "DEPOSIT",
+        "ml_type_conf": 0.96,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.547,
+        "rule_type": "DEPOSIT"
+      }
+    },
+    {
+      "index": 7,
+      "number": "3.2",
+      "heading": "Security Deposit",
+      "text": "The deposit shall be refunded within fifteen (15) days of the Tenant handing over vacant possession, less any amounts for damage beyond normal wear and tear, supported by an itemised statement with bills.",
+      "clause_type": "DEPOSIT",
+      "type_label": "Security deposit",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "DEP_TIMELINE",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Clear refund deadline",
+          "explanation": "The deposit has a defined return deadline, which protects you from indefinite delays.",
+          "ask": "",
+          "evidence": "refunded within fifteen (15) days"
+        },
+        {
+          "rule_id": "DEP_ITEMISED",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Deductions must be justified",
+          "explanation": "Any deduction must be backed by an itemised statement or receipts, so you can check what you are charged for.",
+          "ask": "",
+          "evidence": "itemised"
+        }
+      ],
+      "explanation": "The deposit has a defined return deadline, which protects you from indefinite delays. Any deduction must be backed by an itemised statement or receipts, so you can check what you are charged for.",
+      "ask": "",
+      "key_facts": [
+        "15 day(s)"
+      ],
+      "detail": {
+        "ml_type": "DEPOSIT",
+        "ml_type_conf": 0.935,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.881,
+        "rule_type": "DEPOSIT"
+      }
+    },
+    {
+      "index": 8,
+      "number": "4.1",
+      "heading": "Repairs and Maintenance",
+      "text": "The Tenant shall carry out minor day-to-day repairs such as replacing bulbs and fuses.",
+      "clause_type": "MAINTENANCE",
+      "type_label": "Repairs & maintenance",
+      "risk": "NEUTRAL",
+      "severity": "",
+      "findings": [],
+      "explanation": "Standard clause; no risk indicators found.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "MAINTENANCE",
+        "ml_type_conf": 0.585,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.814,
+        "rule_type": "MAINTENANCE"
+      }
+    },
+    {
+      "index": 9,
+      "number": "4.2",
+      "heading": "Repairs and Maintenance",
+      "text": "The Landlord shall carry out all major and structural repairs, including roof, plumbing lines and wiring, within a reasonable time of being informed.",
+      "clause_type": "MAINTENANCE",
+      "type_label": "Repairs & maintenance",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "MAINT_LANDLORD_MAJOR",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Landlord handles major repairs",
+          "explanation": "The landlord is responsible for major or structural repairs, as is standard.",
+          "ask": "",
+          "evidence": "Landlord shall carry out all major and structural repairs"
+        },
+        {
+          "rule_id": "MAINT_REPAIR_DEADLINE",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Repairs within a deadline",
+          "explanation": "The landlord must fix problems within a set time, and you have a remedy if they don't.",
+          "ask": "",
+          "evidence": "Landlord shall carry out all major and structural repairs, including roof, plumbing lines and wiring, within"
+        }
+      ],
+      "explanation": "The landlord is responsible for major or structural repairs, as is standard. The landlord must fix problems within a set time, and you have a remedy if they don't.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "MAINTENANCE",
+        "ml_type_conf": 0.696,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.59,
+        "rule_type": "MAINTENANCE"
+      }
+    },
+    {
+      "index": 10,
+      "number": "4.3",
+      "heading": "Repairs and Maintenance",
+      "text": "The Tenant shall keep the premises in good condition, normal wear and tear excepted.",
+      "clause_type": "MAINTENANCE",
+      "type_label": "Repairs & maintenance",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "MAINT_WEAR_TEAR_EXCEPTED",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Normal wear and tear excluded",
+          "explanation": "You aren't charged for ordinary ageing of the property.",
+          "ask": "",
+          "evidence": "normal wear and tear excepted"
+        }
+      ],
+      "explanation": "You aren't charged for ordinary ageing of the property.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "MAINTENANCE",
+        "ml_type_conf": 0.798,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.734,
+        "rule_type": "MAINTENANCE"
+      }
+    },
+    {
+      "index": 11,
+      "number": "5.1",
+      "heading": "Late Payment",
+      "text": "If rent remains unpaid seven days after the due date (grace period), a one-time late fee of Rs. 500 shall be payable.",
+      "clause_type": "PENALTY",
+      "type_label": "Penalties & late fees",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "PEN_GRACE",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Grace period for payment",
+          "explanation": "You get extra days to pay before any penalty applies.",
+          "ask": "",
+          "evidence": "grace period"
+        }
+      ],
+      "explanation": "You get extra days to pay before any penalty applies.",
+      "ask": "",
+      "key_facts": [
+        "7 day(s)",
+        "₹500"
+      ],
+      "detail": {
+        "ml_type": "PENALTY",
+        "ml_type_conf": 0.84,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.377,
+        "rule_type": "PENALTY"
+      }
+    },
+    {
+      "index": 12,
+      "number": "6.1",
+      "heading": "Access",
+      "text": "The Landlord may enter the premises for inspection or repairs with at least 24 hours prior written notice to the Tenant, except in an emergency.",
+      "clause_type": "ENTRY",
+      "type_label": "Landlord entry & access",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "ENTRY_NOTICE",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Entry only with notice",
+          "explanation": "The landlord must give advance notice before entering, protecting your privacy.",
+          "ask": "",
+          "evidence": "24 hours prior written notice"
+        }
+      ],
+      "explanation": "The landlord must give advance notice before entering, protecting your privacy.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "ENTRY",
+        "ml_type_conf": 0.891,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.743,
+        "rule_type": "ENTRY"
+      }
+    },
+    {
+      "index": 13,
+      "number": "7.1",
+      "heading": "Termination",
+      "text": "Either party may terminate this agreement by giving one month's written notice to the other party.",
+      "clause_type": "TERMINATION",
+      "type_label": "Termination & notice",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "TERM_MUTUAL",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Mutual termination rights",
+          "explanation": "Both sides can end the agreement on the same terms, so neither party has an unfair advantage.",
+          "ask": "",
+          "evidence": "Termination: Either party"
+        }
+      ],
+      "explanation": "Both sides can end the agreement on the same terms, so neither party has an unfair advantage.",
+      "ask": "",
+      "key_facts": [
+        "1 month(s)"
+      ],
+      "detail": {
+        "ml_type": "TERMINATION",
+        "ml_type_conf": 0.94,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.783,
+        "rule_type": "TERMINATION"
+      }
+    },
+    {
+      "index": 14,
+      "number": "7.2",
+      "heading": "Termination",
+      "text": "The Landlord may terminate the tenancy earlier only if the Tenant fails to pay rent for two consecutive months or materially breaches this agreement, after giving thirty days' written notice to remedy the breach.",
+      "clause_type": "TERMINATION",
+      "type_label": "Termination & notice",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "TERM_FOR_CAUSE",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Landlord can end it only for a reason",
+          "explanation": "The landlord can only end the tenancy for a real breach, and you get a chance to fix it first.",
+          "ask": "",
+          "evidence": "Landlord may terminate the tenancy earlier only if"
+        }
+      ],
+      "explanation": "The landlord can only end the tenancy for a real breach, and you get a chance to fix it first.",
+      "ask": "",
+      "key_facts": [
+        "1 month(s)"
+      ],
+      "detail": {
+        "ml_type": "TERMINATION",
+        "ml_type_conf": 0.883,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.475,
+        "rule_type": "TERMINATION"
+      }
+    },
+    {
+      "index": 15,
+      "number": "8.1",
+      "heading": "Use of Premises",
+      "text": "The premises shall be used for residential purposes only. The Tenant shall not sublet the premises without the Landlord's written consent, which shall not be unreasonably withheld.",
+      "clause_type": "USE",
+      "type_label": "Use of premises",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "USE_UNREASONABLY_WITHHELD",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Consent can't be unreasonably refused",
+          "explanation": "The landlord must have a good reason to say no, which keeps the permission process fair.",
+          "ask": "",
+          "evidence": "not be unreasonably withheld"
+        }
+      ],
+      "explanation": "The landlord must have a good reason to say no, which keeps the permission process fair.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "USE",
+        "ml_type_conf": 0.833,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.584,
+        "rule_type": "USE"
+      }
+    },
+    {
+      "index": 16,
+      "number": "8.2",
+      "heading": "Use of Premises",
+      "text": "The Tenant may keep one domestic pet.",
+      "clause_type": "USE",
+      "type_label": "Use of premises",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "USE_TENANT_PERMITTED",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Explicit freedom of use",
+          "explanation": "The agreement confirms things you are allowed to do, avoiding later disputes.",
+          "ask": "",
+          "evidence": "Tenant may keep one"
+        }
+      ],
+      "explanation": "The agreement confirms things you are allowed to do, avoiding later disputes.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "USE",
+        "ml_type_conf": 0.409,
+        "ml_risk": "RISKY",
+        "ml_risk_conf": 0.54,
+        "rule_type": "USE"
+      }
+    },
+    {
+      "index": 17,
+      "number": "9.1",
+      "heading": "Liability",
+      "text": "Each party shall be responsible only for loss or damage caused by its own negligence or breach of this agreement.",
+      "clause_type": "LIABILITY",
+      "type_label": "Liability & indemnity",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [
+        {
+          "rule_id": "LIAB_FAULT_BASED",
+          "risk": "TENANT_FAVORABLE",
+          "severity": "low",
+          "title": "Liability limited to fault",
+          "explanation": "Responsibility depends on who was actually at fault, which is fair to both sides.",
+          "ask": "",
+          "evidence": "caused by its own negligence"
+        }
+      ],
+      "explanation": "Responsibility depends on who was actually at fault, which is fair to both sides.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "LIABILITY",
+        "ml_type_conf": 0.836,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.589,
+        "rule_type": "LIABILITY"
+      }
+    },
+    {
+      "index": 18,
+      "number": "10.1",
+      "heading": "Utilities",
+      "text": "Electricity and water charges as per meter readings shall be paid by the Tenant. Property tax shall be paid by the Landlord.",
+      "clause_type": "RENT",
+      "type_label": "Rent & payment",
+      "risk": "NEUTRAL",
+      "severity": "",
+      "findings": [],
+      "explanation": "Standard clause; no risk indicators found.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "RENT",
+        "ml_type_conf": 0.802,
+        "ml_risk": "NEUTRAL",
+        "ml_risk_conf": 0.715,
+        "rule_type": "RENT"
+      }
+    },
+    {
+      "index": 19,
+      "number": "11.1",
+      "heading": "Disputes",
+      "text": "Any dispute shall first be discussed in good faith, failing which either party may approach the Rent Authority or competent court.",
+      "clause_type": "RENT",
+      "type_label": "Rent & payment",
+      "risk": "TENANT_FAVORABLE",
+      "severity": "low",
+      "findings": [],
+      "explanation": "This clause adds protection for you as the tenant.",
+      "ask": "",
+      "key_facts": [],
+      "detail": {
+        "ml_type": "OTHER",
+        "ml_type_conf": 0.337,
+        "ml_risk": "TENANT_FAVORABLE",
+        "ml_risk_conf": 0.496,
+        "rule_type": "RENT"
+      }
+    }
+  ],
+  "document_findings": [],
+  "summary": {
+    "clauses": 19,
+    "risk_counts": {
+      "RISKY": 0,
+      "NEUTRAL": 4,
+      "TENANT_FAVORABLE": 15
+    },
+    "severity_counts": {
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "score": 0,
+    "rating": "Low"
+  }
+}
